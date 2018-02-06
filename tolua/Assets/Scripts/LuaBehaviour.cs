@@ -8,27 +8,33 @@ public class LuaBehaviour : MonoBehaviour {
     private string data = null;
     private Dictionary<string, LuaFunction> mButtons = new Dictionary<string, LuaFunction>();
 
+    public LuaBehaviour()
+    {
+        LuaGame.DoFile(string.Format("{0}.lua", name));
+        LuaHelper.CallFunction(name, "Init", this);
+    }
+
+
+
     protected void Awake()
     {
-       LuaGame.CallFunction(name, "Awake", gameObject);
+        LuaHelper.CallFunction(name, "Awake");
     }
 
     protected void Start()
     {
-        LuaGame.CallFunction(name, "Start");
+        LuaHelper.CallFunction(name, "Start");
     }
 
-    protected void OnClick()
+    protected void OnEnable()
     {
-        LuaGame.CallFunction(name, "OnClick");
+        LuaHelper.CallFunction(name, "OnEnable");
     }
 
-    protected void OnClickEvent(GameObject go)
+    protected void OnDisable()
     {
-        LuaGame.CallFunction(name, "OnClick", go);
+        LuaHelper.CallFunction(name, "OnDisable");
     }
-
-   
 
     /// <summary>
     /// 添加单击事件

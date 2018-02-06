@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.IO;
 using LuaInterface;
 
 public class LuaGame : MonoBehaviour {
@@ -93,27 +94,12 @@ public class LuaGame : MonoBehaviour {
         mLuaState.LuaSetField(-2, "cjson.safe");
     }
 
-    public void DoFile(string filename)
+    public static void DoFile(string filename)
     {
-        mLuaState.DoFile(filename);
+        GetSingleton().luaState.DoFile(filename);
     }
 
 
-    public static object[] CallFunction(string module, string funcName, params object[] args)
-    {
-        string func = string.Format("{0}.{1}", module, funcName);
-        return CallFunction(func, args);
-    }
-
-    public static object[] CallFunction(string funcName, params object[] args)
-    {
-        LuaFunction func =GetSingleton().luaState.GetFunction(funcName);
-        if (func != null)
-        {
-            return func.LazyCall(args);
-        }
-        return null;
-    }
 
     public void LuaGC()
     {
@@ -125,8 +111,22 @@ public class LuaGame : MonoBehaviour {
     /// </summary>
     void InitLuaPath()
     {
-        mLuaState.AddSearchPath(LuaConst.luaDir);
-        mLuaState.AddSearchPath(LuaConst.toluaDir);
+        AddSearchPath(LuaConst.luaDir);      
+        AddSearchPath(LuaConst.toluaDir);
+    }
+
+    /// <summary>
+    /// 添加搜索目录，包括所有子目录
+    /// </summary>
+    /// <param name="path"></param>
+    void AddSearchPath(string path)
+    {
+        mLuaState.AddSearchPath(path);
+        string[] paths = Directory.GetDirectories(path, "*.*", SearchOption.AllDirectories);
+        for(int i =0; i < paths.Length;++i )
+        {
+            mLuaState.AddSearchPath(paths[i].Replace("\\", "/"));
+        }
     }
 
     private void OnDestroy()
@@ -142,13 +142,13 @@ public class LuaGame : MonoBehaviour {
 
     private void OnApplicationQuit()
     {
-        CallFunction("LuaGame", "OnApplicationQuit");
+        LuaHelper.CallFunction("LuaGame", "OnApplicationQuit");
     }
 
 
     private void OnLevelWasLoaded(int level)
     {
-        CallFunction("LuaGame", "OnLevelWasLoaded",level);
+        
 
     }
 
@@ -161,7 +161,7 @@ public class LuaGame : MonoBehaviour {
 
         mLuaState.DoFile("LuaGame.lua");
 
-        CallFunction("LuaGame","Start");
+        LuaHelper.CallFunction("LuaGame","Start");
     }
 
     // Update is called once per frame
