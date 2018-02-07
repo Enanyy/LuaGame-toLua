@@ -6,17 +6,16 @@ using LuaInterface;
 public class LuaBehaviour : MonoBehaviour {
 
     /// 调用先后顺序：构造函数->Awake->OnEnable->Start
-    /// 在Lua AddComponent后调用SetTable,则先后顺序是：
-    /// 构造函数->Awake->OnEnable->SetTable->Start
-    /// 所以要在SetTable后再调用一次Awake和OnEnable
+    /// 在Lua AddComponent后调用Init,则先后顺序是：
+    /// 构造函数->Awake->OnEnable->Init->Start
+    /// 所以要在Init后再调用一次Awake和OnEnable
 
-    private string mLuaModule;
     private LuaTable mLuaTable;
     private Dictionary<string, LuaFunction> mButtons = new Dictionary<string, LuaFunction>();
 
     public LuaBehaviour()
     {
-       
+        LuaGame.DoFile(string.Format("{0}.lua", name));
     }
 
     protected void Awake()
@@ -34,14 +33,14 @@ public class LuaBehaviour : MonoBehaviour {
         }
     }
 
-    public void SetTable(string module, LuaTable table)
+   
+
+    public void Init(LuaTable table)
     {
-        mLuaModule = module;
         mLuaTable = table;
      
         if (mLuaTable != null)
         {
-            mLuaTable.GetLuaState().DoFile(mLuaModule);
             mLuaTable.Call("Init", mLuaTable, this);
 
             //再调用一次Awake和OnEnable以通知Lua的Awake和OnEnable

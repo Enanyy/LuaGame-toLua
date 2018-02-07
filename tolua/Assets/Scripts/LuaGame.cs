@@ -162,7 +162,7 @@ public class LuaGame : MonoBehaviour {
         mLuaState.DoFile("LuaGame.lua");
 
         LuaHelper.CallFunction("LuaGame","Start");
-        LuaHelper.CallFunction("LuaGame", "Test",gameObject);
+      
     }
 
     // Update is called once per frame
