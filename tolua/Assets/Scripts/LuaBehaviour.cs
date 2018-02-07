@@ -15,7 +15,7 @@ public class LuaBehaviour : MonoBehaviour {
 
     public LuaBehaviour()
     {
-        LuaGame.DoFile(string.Format("{0}.lua", name));
+        //LuaGame.DoFile(string.Format("{0}.lua", name));
     }
 
     protected void Awake()

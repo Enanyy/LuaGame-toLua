@@ -159,9 +159,9 @@ public class LuaGame : MonoBehaviour {
 
         mLuaState.Start();
 
-        mLuaState.DoFile("LuaGame.lua");
+        mLuaState.DoFile("Main.lua");
 
-        LuaHelper.CallFunction("LuaGame","Start");
+        LuaHelper.CallFunction("Main", "Start");
       
     }
 

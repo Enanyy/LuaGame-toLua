@@ -2,15 +2,15 @@ require("Class")
 
 local GameObject = UnityEngine.GameObject
 --主入口函数。从这里开始lua逻辑
---LuaGame.cs会调用LuaGame.lua执行Lua逻辑
-LuaGame = {}
-function LuaGame:Start()					
-	print("LuaGame start")
+--LuaGame.cs会调用Main.lua执行Lua逻辑
+Main = {}
+function Main:Start()					
+	print("Main start")
 	
 	--添加Lua逻辑更新
-	UpdateBeat:Add(LuaGame.Update,self)	 		
-	LateUpdateBeat:Add(LuaGame.LateUpate,self)	 		
-	FixedUpdateBeat:Add(LuaGame.FixedUpdate,self)	 	
+	UpdateBeat:Add(Main.Update,self)	 		
+	LateUpdateBeat:Add(Main.LateUpate,self)	 		
+	FixedUpdateBeat:Add(Main.FixedUpdate,self)	 	
 	
 	self.TestGameObject()
 	
@@ -19,46 +19,47 @@ end
 
 
 --场景切换通知
-function LuaGame:OnLevelWasLoaded(level)
+function Main:OnLevelWasLoaded(level)
 	collectgarbage("collect")
 	Time.timeSinceLevelLoad = 0
 end
 
-function LuaGame:OnApplicationQuit()
+function Main:OnApplicationQuit()
 end
 --Lua逻辑更新
-function LuaGame:Update()
+function Main:Update()
 	--print("LuaGame update")
     --print(self)
 end
 
-function LuaGame:LateUpate()
+function Main:LateUpate()
 	--print("LuaGame LateUpate")
 
 end
 
-function LuaGame:FixedUpdate()
+function Main:FixedUpdate()
 	--print("LuaGame FixedUpdate")
 
 end
 
 -------------------------------------------Test Start-----------------------------------------
-function LuaGame.Test(self, go)
+function Main.Test(self, go)
 
 	self:Test1()
 	print(go.name)
 end
 
-function LuaGame:Test1()
+function Main:Test1()
 
 	print("test1")
 	print(self)
 	
 end
 
-function LuaGame:TestGameObject()
+function Main:TestGameObject()
 
-
+    LuaGame.DoFile("UI_Main")
+	
 	local mainGo = GameObject('UI_Main')
 	local mainBehaviour = mainGo:AddComponent(typeof(LuaBehaviour))
 	local mainUI = Class:New(UI_Main)
@@ -83,4 +84,4 @@ end
 -------------------------------------------Test End-----------------------------------------
 
 
-return LuaGame
+return Main
