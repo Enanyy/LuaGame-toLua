@@ -1,4 +1,8 @@
-require("Class")
+require("class")
+
+----
+----Lua表不要与C# 需要Wrap的类同名
+----
 
 local GameObject = UnityEngine.GameObject
 --主入口函数。从这里开始lua逻辑
@@ -62,13 +66,15 @@ function Main:TestGameObject()
 	
 	local mainGo = GameObject('UI_Main')
 	local mainBehaviour = mainGo:AddComponent(typeof(LuaBehaviour))
-	local mainUI = Class:New(UI_Main)
+	local mainUI = UI_Main.new()
+	mainUI.data = "AAAAAAA"
 
 	mainBehaviour:Init(mainUI)
 
-	local mainGo1 = GameObject('UI_Main')
+	local mainGo1 = GameObject('UI_Main1')
 	local mainBehaviour1 = mainGo1:AddComponent(typeof(LuaBehaviour))
-	local mainUI1 = Class:New(UI_Main)
+	local mainUI1 = UI_Main.new()
+	mainUI1.data = "BBBBBBB"
 	mainBehaviour1:Init(mainUI1)
 
 	
