@@ -1,17 +1,21 @@
+require("Class")
+
 local GameObject = UnityEngine.GameObject
 --主入口函数。从这里开始lua逻辑
 LuaGame = {}
 function LuaGame:Start()					
 	print("logic start")
-	print(self)
-	--添加Lua逻辑更新
-	UpdateBeat:Add(LuaGame.Update,self);	 		
-	LateUpdateBeat:Add(LuaGame.LateUpate,self);	 		
-	FixedUpdateBeat:Add(LuaGame.FixedUpdate,self);	 	
 	
-	local go = GameObject('UI_Main')
-	local behaviour = go:AddComponent(typeof(LuaBehaviour))
+	--添加Lua逻辑更新
+	UpdateBeat:Add(LuaGame.Update,self)	 		
+	LateUpdateBeat:Add(LuaGame.LateUpate,self)	 		
+	FixedUpdateBeat:Add(LuaGame.FixedUpdate,self)	 	
+	
+	self.TestGameObject()
+	
 end
+
+
 
 --场景切换通知
 function LuaGame:OnLevelWasLoaded(level)
@@ -36,5 +40,44 @@ function LuaGame:FixedUpdate()
 	--print("logic FixedUpdate")
 
 end
+
+-------------------------------------------Test Start-----------------------------------------
+function LuaGame.Test(self, go)
+
+	self:Test1()
+	print(go.name)
+end
+
+function LuaGame:Test1()
+
+	print("test1")
+	print(self)
+	
+end
+
+function LuaGame:TestGameObject()
+
+	local mainGo = GameObject('UI_Main')
+	local mainBehaviour = mainGo:AddComponent(typeof(LuaBehaviour))
+	local mainUI = Class:New(UI_Main)
+	mainBehaviour:SetTable("UI_Main",mainUI)
+
+	local mainGo1 = GameObject('UI_Main')
+	local mainBehaviour1 = mainGo1:AddComponent(typeof(LuaBehaviour))
+	local mainUI1 = Class:New(UI_Main)
+	mainBehaviour1:SetTable("UI_Main",mainUI1)
+
+	
+	
+	if mainUI ~= mainUI1 then
+		print("mainUI!=mainUI1")
+	else
+		print("mainUI==mainUI1")
+	end
+
+end
+
+-------------------------------------------Test End-----------------------------------------
+
 
 return LuaGame

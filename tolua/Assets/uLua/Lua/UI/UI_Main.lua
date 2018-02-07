@@ -1,12 +1,10 @@
-require("LuaBehaviour")
+require("Test")
+require("Class")
 
-UI_Main = {
-    behaviour = nil,
-}
-UI_Main.__index = UI_Main
+UI_Main = Class:New()
 
-function UI_Main:Init(super)
-    self.behaviour = super
+function UI_Main:Init(behaviour)
+    self.behaviour = behaviour
     print(self.behaviour.name)
 end
 

@@ -7,12 +7,31 @@ public class LuaBehaviourWrap
 	public static void Register(LuaState L)
 	{
 		L.BeginClass(typeof(LuaBehaviour), typeof(UnityEngine.MonoBehaviour));
+		L.RegFunction("SetTable", SetTable);
 		L.RegFunction("AddClick", AddClick);
 		L.RegFunction("RemoveClick", RemoveClick);
 		L.RegFunction("ClearClick", ClearClick);
 		L.RegFunction("__eq", op_Equality);
 		L.RegFunction("__tostring", ToLua.op_ToString);
 		L.EndClass();
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int SetTable(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 3);
+			LuaBehaviour obj = (LuaBehaviour)ToLua.CheckObject<LuaBehaviour>(L, 1);
+			string arg0 = ToLua.CheckString(L, 2);
+			LuaTable arg1 = ToLua.CheckLuaTable(L, 3);
+			obj.SetTable(arg0, arg1);
+			return 0;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
