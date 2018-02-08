@@ -10,27 +10,22 @@ local Queue = System.Collections.Queue
 --Unity中的AssetBundle类
 local AssetBundle = UnityEngine.AssetBundle
 
-local mInstance = nil
 
-AssetManager = {}
+--new 一个全局对象，该对象的类继承于BehaviourBase
+AssetManager = Class(BehaviourBase).new()
 
-function AssetManager:GetSingleton()
+function AssetManager:Initialize()
 
-    if mInstance == nil then
+    --确保只被初始化一次
+    if  self.initialized  == nil or self.initialized == false then
     
-        mInstance  = {}
-        setmetatable(mInstance, AssetManager)
-        self.__index = self
+        self.initialized = true
 
         self.mManifestAssetBundle = nil
         self.mManifest = nil
         self.mAssetBundleDic = {}
         self.mLoadingAssetQueue = Queue.New() --直接使用C#的队列
-        function self:Init(v) 
-            self.behaviour = v
-            self.gameObject = v.gameObject
-            self.transform = v.transform
-        end
+       
    
         local go = GameObject('AssetManager')     
         GameObject.DontDestroyOnLoad(go)
@@ -158,7 +153,7 @@ function AssetManager:Load(varAssetBundleName, varAssetName, varCallback)
 
     --tmpDependences的类型是C#的 string[]
     local tmpDependences = self.mManifest:GetAllDependencies (varAssetBundleName)
-    print("tmpDependences" .. tmpDependences.Length )
+    print("tmpDependences Length =" .. tmpDependences.Length )
 
     if tmpDependences.Length > 0 then
 
@@ -198,6 +193,8 @@ function AssetManager:Load(varAssetBundleName, varAssetName, varCallback)
                 self.mAssetBundleDic[tmpAssetBundleName] = tmpLoadedAssetbundle
             end
 
+            tmpLoadedAssetbundle:AddReference()
+
             self:LoadAsset (tmpAssetBundleName, varAssetName, varCallback)
 
         else
@@ -235,6 +232,13 @@ function AssetManager:LoadAsset(varAssetBundleName,varAssetName,varCallback)
     end
     return tmpObject ~= nil
 
+end
+
+function AssetManager:GetLoadedAssetbundle(varAssetbundleName)
+	
+	local tmpLoadedAssetBundle = self.mAssetBundleDic[string.lower( varAssetBundleName )]
+
+    return tmpLoadedAssetBundle
 end
 
 function AssetManager:OnDestroy()

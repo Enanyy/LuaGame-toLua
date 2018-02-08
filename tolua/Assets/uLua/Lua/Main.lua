@@ -13,7 +13,7 @@ function Main:Start()
 	print("Main start")
 	
 	--初始化资源管理器
-	AssetManager:GetSingleton()
+	--AssetManager:Initialize()
 
 	--添加Lua逻辑更新
 	UpdateBeat:Add(Main.Update,self)	 		
@@ -26,8 +26,8 @@ function Main:Start()
 	--]]
 
 
-	local a = AssetManager:GetSingleton()
-	local b = AssetManager:GetSingleton()
+	local a = AssetManager:Initialize()
+	local b = AssetManager:Initialize()
 
 	if a == b then
 		print("a == b")
@@ -35,13 +35,16 @@ function Main:Start()
 		print("a != b")		
 	end
 
-	AssetManager:GetSingleton():Load("assetbundle.unity3d", "Assets/R/UI/UI_Main.prefab", function (varObject) 
+	
+	
+	AssetManager:Load("assetbundle.unity3d", "Assets/R/UI/UI_Main.prefab", function (varObject) 
 		if varObject then
 			local go = GameObject.Instantiate(varObject)
 		end
 	end)
 	--local dataPath = AssetManager.GetAssetBundlePath()
 	--print(dataPath)
+	
 	
 end
 
@@ -73,6 +76,7 @@ function Main:FixedUpdate()
 end
 
 -------------------------------------------Test Start-----------------------------------------
+
 function Main.Test(self, go)
 
 	self:Test1()
