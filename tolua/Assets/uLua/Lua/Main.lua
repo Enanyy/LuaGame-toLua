@@ -1,10 +1,10 @@
 require("class")
-
 ----
 ----Lua表不要与C# 需要Wrap的类同名
 ----
 
 local GameObject = UnityEngine.GameObject
+local Stack = System.Collections.Stack
 --主入口函数。从这里开始lua逻辑
 --LuaGame.cs会调用Main.lua执行Lua逻辑
 Main = {}
@@ -17,7 +17,7 @@ function Main:Start()
 	FixedUpdateBeat:Add(Main.FixedUpdate,self)	 	
 	
 	self.TestGameObject()
-	
+	self.TestStack()
 end
 
 
@@ -87,6 +87,18 @@ function Main:TestGameObject()
 
 end
 
+
+----测试C#导出栈类
+function Main.TestStack()
+    
+    local stack = Stack.New()
+    stack:Push(1)
+    stack:Push(2)
+    stack:Push(3)
+
+    print("top:"..stack:Peek())
+
+end
 -------------------------------------------Test End-----------------------------------------
 
 
