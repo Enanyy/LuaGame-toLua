@@ -1,4 +1,5 @@
-require("class")
+require("Class")
+require("AssetManager")
 ----
 ----Lua表不要与C# 需要Wrap的类同名
 ----
@@ -11,13 +12,37 @@ Main = {}
 function Main:Start()					
 	print("Main start")
 	
+	--初始化资源管理器
+	AssetManager:GetSingleton()
+
 	--添加Lua逻辑更新
 	UpdateBeat:Add(Main.Update,self)	 		
 	LateUpdateBeat:Add(Main.LateUpate,self)	 		
 	FixedUpdateBeat:Add(Main.FixedUpdate,self)	 	
 	
-	self.TestGameObject()
-	self.TestStack()
+	--[[ 
+	--self.TestGameObject()
+	--self.TestStack()
+	--]]
+
+
+	local a = AssetManager:GetSingleton()
+	local b = AssetManager:GetSingleton()
+
+	if a == b then
+		print("a == b")
+	else
+		print("a != b")		
+	end
+
+	AssetManager:GetSingleton():Load("assetbundle.unity3d", "Assets/R/UI/UI_Main.prefab", function (varObject) 
+		if varObject then
+			local go = GameObject.Instantiate(varObject)
+		end
+	end)
+	--local dataPath = AssetManager.GetAssetBundlePath()
+	--print(dataPath)
+	
 end
 
 
@@ -33,7 +58,8 @@ end
 --Lua逻辑更新
 function Main:Update()
 	--print("LuaGame update")
-    --print(self)
+	--print(self)
+	AssetManager:Update()
 end
 
 function Main:LateUpate()
@@ -53,9 +79,17 @@ function Main.Test(self, go)
 	print(go.name)
 end
 
-function Main:Test1()
 
-	print("test1")
+---测试 C# string[] 数组 array 是C#中传入的数组
+function Main:Test1(array)
+
+	print("array length =" .. array.Length)
+	for i = 0, array.Length - 1 do
+		print("array[".. i .."] =" .. array:GetValue(i))
+	end
+	
+	
+
 	print(self)
 	
 end

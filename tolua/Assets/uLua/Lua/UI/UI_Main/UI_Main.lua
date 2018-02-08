@@ -1,5 +1,5 @@
-require("BehaviourBase")
 require("Class")
+require("BehaviourBase")
 
 --UI_Main继承于BehaviourBase
 UI_Main = Class(BehaviourBase)

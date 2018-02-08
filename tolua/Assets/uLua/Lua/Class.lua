@@ -1,10 +1,12 @@
-
-
+----
+----用来创建一个类，如：A = Class()，实例化 local a = A.new()
+----如要初始化需定义构造函数，如：A:ctor(...), new(...)的时候会调用ctor(...)来初始化
+----继承：B = Class(A)，类B继承于类A，local b = B.new() 实例化一个B的对象
+----
 local setmetatable = setmetatable
-
 local class={}
  
-----构造一个对象
+----构造一个类
 function Class(super)
     local class_type = {}
     class_type.ctor =false

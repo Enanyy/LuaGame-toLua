@@ -105,6 +105,8 @@ public static class CustomSettings
         _GT(typeof(CameraClearFlags)),
         _GT(typeof(AudioClip)),        
         _GT(typeof(AssetBundle)),
+        _GT(typeof(AssetBundleManifest)),
+        _GT(typeof(AssetBundleCreateRequest)),
         _GT(typeof(ParticleSystem)),
         _GT(typeof(AsyncOperation)).SetBaseType(typeof(System.Object)),        
         _GT(typeof(LightType)),
