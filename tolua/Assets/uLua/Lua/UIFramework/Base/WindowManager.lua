@@ -3,6 +3,7 @@ require("WindowPath")
 
 local GameObject = UnityEngine.GameObject
 local Camera = UnityEngine.Camera
+local CameraClearFlags = UnityEngine.CameraClearFlags
 local Screen = UnityEngine.Screen
 local Object = UnityEngine.Object
 local AudioListener = UnityEngine.AudioListener
@@ -20,7 +21,7 @@ function  WindowManager:Initialize()
         self.initialized = true
 
         self.uiLayer = LayerMask.NameToLayer("UI")              --UI显示层
-        self.blurLayer = LayerMask.NameToLayer("Blur")          --背景模糊层
+        self.blurLayer = LayerMask.NameToLayer("Blur")          --背景模糊层 Unity没有该层的话请创建
 
         local go = GameObject('WindowManager')     
         GameObject.DontDestroyOnLoad(go)
@@ -34,6 +35,7 @@ function  WindowManager:Initialize()
 
         self.uiCamera = p:GetComponentInChildren(typeof(UICamera))
         local camera = self.uiCamera:GetComponent( typeof( Camera ))
+        camera.clearFlags = CameraClearFlags.Depth
         NGUITools.MakeMask(camera, self.uiLayer)
         NGUITools.SetLayer(self.uiCamera.gameObject, self.uiLayer)
         self.uiCamera:GetComponent( typeof(Camera)).depth = 1
@@ -68,6 +70,7 @@ function  WindowManager:Initialize()
 
         self.blurCamera = blurGo:GetComponent(typeof(UICamera))  
         local camera = self.blurCamera:GetComponent(typeof(Camera))
+        camera.clearFlags = CameraClearFlags.Depth        
         NGUITools.MakeMask(camera,  self.blurLayer)
         NGUITools.SetLayer(blurGo,  self.blurLayer)
         camera.depth = 0
