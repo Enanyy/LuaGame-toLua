@@ -9,7 +9,7 @@ local class={}
 ----构造一个类
 function Class(super)
     local class_type = {}
-    class_type.ctor =false
+    class_type.ctor = false
     class_type.super = super
 
     class_type.new=function(...) 

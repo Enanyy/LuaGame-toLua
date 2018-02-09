@@ -1,11 +1,12 @@
 require("Class")
 require("AssetManager")
 ----
-----Lua表不要与C# 需要Wrap的类同名
+----Lua表不要与C#中需要Wrap的类同名，会引起混乱
 ----
 
 local GameObject = UnityEngine.GameObject
 local Stack = System.Collections.Stack
+
 --主入口函数。从这里开始lua逻辑
 --LuaGame.cs会调用Main.lua执行Lua逻辑
 Main = {}
@@ -13,7 +14,7 @@ function Main:Start()
 	print("Main start")
 	
 	--初始化资源管理器
-	--AssetManager:Initialize()
+	AssetManager:Initialize()
 
 	--添加Lua逻辑更新
 	UpdateBeat:Add(Main.Update,self)	 		
@@ -25,7 +26,8 @@ function Main:Start()
 	--self.TestStack()
 	--]]
 
-
+	--[[ 
+	--测试是否单例模式
 	local a = AssetManager:Initialize()
 	local b = AssetManager:Initialize()
 
@@ -34,10 +36,11 @@ function Main:Start()
 	else
 		print("a != b")		
 	end
-
+	--]]
+	self:TestOverWrite()
 	
 	
-	AssetManager:Load("assetbundle.unity3d", "Assets/R/UI/UI_Main.prefab", function (varObject) 
+	AssetManager:Load("assetbundle.unity3d", "Assets/R/UI/UI_Main/UI_Main.prefab", function (varObject) 
 		if varObject then
 			local go = GameObject.Instantiate(varObject)
 		end
@@ -76,7 +79,7 @@ function Main:FixedUpdate()
 end
 
 -------------------------------------------Test Start-----------------------------------------
-
+--测试static函数
 function Main.Test(self, go)
 
 	self:Test1()
@@ -97,7 +100,7 @@ function Main:Test1(array)
 	print(self)
 	
 end
-
+--测试创建GameObject
 function Main:TestGameObject()
 
     LuaGame.DoFile("UI_Main")
@@ -137,6 +140,31 @@ function Main.TestStack()
     print("top:"..stack:Peek())
 
 end
+
+--测试继承和重写
+A = Class()
+function A:print()
+	print("A:print")
+end
+
+B = Class(A)
+
+function B:print()
+	print("B:print")
+
+	A.new():print()
+end
+
+function Main:TestOverWrite()
+
+	local a = A.new()
+	a:print()
+
+	local b = B.new()
+	b:print()
+
+end
+
 -------------------------------------------Test End-----------------------------------------
 
 
