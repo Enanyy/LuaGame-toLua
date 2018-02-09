@@ -1,8 +1,17 @@
 require("Class")
-require("BehaviourBase")
+require("BaseWindow")
 
---UI_Main继承于BehaviourBase
-UI_Main = Class(BehaviourBase)
+--UI_Main继承于BaseWindow
+UI_Main = Class(BaseWindow)
+
+function UI_Main:ctor(behaviour, path)
+    self.path  = path
+    self.windowType = 0 --主界面
+
+    self.base = BaseWindow.new(behaviour, self.path, self.windowType)
+
+
+end
 
 function UI_Main:Awake()
     -- body

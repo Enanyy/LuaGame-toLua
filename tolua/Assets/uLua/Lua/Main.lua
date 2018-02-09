@@ -1,5 +1,7 @@
 require("Class")
 require("AssetManager")
+require("WindowManager")
+require("UI_Main")
 ----
 ----Lua表不要与C#中需要Wrap的类同名，会引起混乱
 ----
@@ -15,6 +17,8 @@ function Main:Start()
 	
 	--初始化资源管理器
 	AssetManager:Initialize()
+	--初始化窗口管理器
+	WindowManager:Initialize()
 
 	--添加Lua逻辑更新
 	UpdateBeat:Add(Main.Update,self)	 		
@@ -39,6 +43,7 @@ function Main:Start()
 	--]]
 	self:TestOverWrite()
 	
+	--[[ 
 	
 	AssetManager:Load("assetbundle.unity3d", "Assets/R/UI/UI_Main/UI_Main.prefab", function (varObject) 
 		if varObject then
@@ -47,7 +52,8 @@ function Main:Start()
 	end)
 	--local dataPath = AssetManager.GetAssetBundlePath()
 	--print(dataPath)
-	
+	--]]
+	WindowManager:Open(UI_Main, "UI_Main")
 	
 end
 
@@ -149,10 +155,13 @@ end
 
 B = Class(A)
 
+function B:ctor()
+	self.base = A.new()
+end
 function B:print()
 	print("B:print")
 
-	A.new():print()
+	self.base:print()
 end
 
 function Main:TestOverWrite()

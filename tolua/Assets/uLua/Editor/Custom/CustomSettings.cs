@@ -101,9 +101,11 @@ public static class CustomSettings
         _GT(typeof(Shader)),        
         _GT(typeof(Renderer)),
         _GT(typeof(WWW)),
-        _GT(typeof(Screen)),        
+        _GT(typeof(Screen)),
+        _GT(typeof(LayerMask)),
         _GT(typeof(CameraClearFlags)),
-        _GT(typeof(AudioClip)),        
+        _GT(typeof(AudioClip)),
+        _GT(typeof(AudioListener)),
         _GT(typeof(AssetBundle)),
         _GT(typeof(AssetBundleManifest)),
         _GT(typeof(AssetBundleCreateRequest)),
@@ -149,8 +151,53 @@ public static class CustomSettings
         _GT(typeof(Resources)),     
         _GT(typeof(LuaProfiler)),
 
+        //LuaGame
         _GT(typeof(LuaGame)),
         _GT(typeof(LuaBehaviour)),
+
+        //Effect    
+        _GT(typeof(BlurEffect)),
+
+        //NGUI
+         _GT(typeof(UIRoot)),
+         _GT(typeof(UIRoot.Scaling)),   
+         _GT(typeof(UICamera)),
+         _GT(typeof(UIViewport)),
+         _GT(typeof(UIPanel)),
+         _GT(typeof(UILabel)),
+         _GT(typeof(UIWidget)),
+         _GT(typeof(UIWidget.Pivot)),
+         _GT(typeof(UIAnchor)),
+         _GT(typeof(UIAtlas)),
+         _GT(typeof(UIFont)),
+         _GT(typeof(UITexture)),
+         _GT(typeof(UISprite)),
+         _GT(typeof(UIGrid)),
+         _GT(typeof(UITable)),
+         _GT(typeof(UIInput)),
+         _GT(typeof(UIEventListener)),
+         _GT(typeof(UIScrollBar)),
+         _GT(typeof(UICenterOnChild)),
+         _GT(typeof(UIScrollView)),
+         _GT(typeof(UIButton)),
+         _GT(typeof(UITextList)),
+         _GT(typeof(UIPlayTween)),
+         _GT(typeof(UIDragScrollView)),
+         _GT(typeof(UISpriteAnimation)),
+         _GT(typeof(UIWrapContent)),
+         _GT(typeof(TweenWidth)),
+         _GT(typeof(TweenAlpha)),
+         _GT(typeof(TweenColor)),
+         _GT(typeof(TweenRotation)),
+         _GT(typeof(TweenPosition)),
+         _GT(typeof(TweenScale)),
+         _GT(typeof(TweenHeight)),
+         _GT(typeof(TypewriterEffect)),
+         _GT(typeof(UIToggle)),
+         _GT(typeof(Localization)),
+         _GT(typeof(NGUITools)),
+         _GT(typeof(NGUIText)),
+
     };
 
     public static List<Type> dynamicList = new List<Type>()
@@ -187,7 +234,7 @@ public static class CustomSettings
     //ngui优化，下面的类没有派生类，可以作为sealed class
     public static List<Type> sealedList = new List<Type>()
     {
-        /*typeof(Transform),
+        typeof(Transform),
         typeof(UIRoot),
         typeof(UICamera),
         typeof(UIViewport),
@@ -200,9 +247,7 @@ public static class CustomSettings
         typeof(UISprite),
         typeof(UIGrid),
         typeof(UITable),
-        typeof(UIWrapGrid),
         typeof(UIInput),
-        typeof(UIScrollView),
         typeof(UIEventListener),
         typeof(UIScrollBar),
         typeof(UICenterOnChild),
@@ -222,7 +267,7 @@ public static class CustomSettings
         typeof(TweenHeight),
         typeof(TypewriterEffect),
         typeof(UIToggle),
-        typeof(Localization),*/
+        typeof(Localization),
     };
 
     public static BindType _GT(Type t)
