@@ -358,27 +358,40 @@ function WindowManager:Show()
 
    if self.mWindowStack.Count > 0 then
     
-        local window =self.mWindowStack:Peek()
-        if window and window.isPause then
+        local window = self.mWindowStack:Pop()
+        if window  then
 
-            window:OnResume()
-
+           
             --弹出类型
             if window.windowType == 2 then
-   
-                if self.mWindowStack.Count >=2 then
-                
-                    window = self.mWindowStack:Pop()
 
-                    local secondWindow = self.mWindowStack:Peek()
+                self.mTmpWindowStack:Clear()
 
-                    if secondWindow and secondWindow.isPause then
-                    
-                        secondWindow:OnResume()
+                while ( self.mWindowStack.Count > 0)
+                do
+                    local w = self.mWindowStack:Peek()
+                    if w.windowType ~= 2 then
+                        w:OnResume()
+                        break
+                    else
+                        w = self.mWindowStack:Pop()
+                        w:OnResume()
+                        self.mTmpWindowStack:Push(w)
                     end
-
-                    self.mWindowStack:Push(window)
+                
                 end
+   
+                while (self.mTmpWindowStack.Count > 0)
+                do
+                    self.mWindowStack:Push(self.mTmpWindowStack:Pop())
+                end
+                self.mTmpWindowStack:Clear()
+
+            end
+            
+            self.mWindowStack:Push(window)
+            if window.isPause then
+                window:OnResume()
             end
         end
     end
