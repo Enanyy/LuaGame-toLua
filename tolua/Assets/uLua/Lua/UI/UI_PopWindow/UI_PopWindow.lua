@@ -1,13 +1,13 @@
 require("Class")
 require("BaseWindow")
 
---UI_Main继承于BaseWindow
-UI_Main = Class(BaseWindow)
-local this = UI_Main
+--UI_PopWindow继承于BaseWindow
+UI_PopWindow = Class(BaseWindow)
+local this = UI_PopWindow
 
 function this:ctor(behaviour, path)
     self.path  = path
-    self.windowType = 0 --主界面
+    self.windowType = 2 --弹出行界面
 
     self.base = BaseWindow.new(behaviour, self.path, self.windowType)
 
@@ -23,27 +23,24 @@ function this:Start()
 
     print(self.behaviour.name..".Start ")
 
-    local fadeWindow = self.transform:Find("FadeWindow")
+    local mainWindow = self.transform:Find("MainWindow")
 
-    self.behaviour:AddClick(fadeWindow.gameObject, function() 
-        print("Click FadeWindow")
+    self.behaviour:AddClick(mainWindow.gameObject, function() 
+        print("Click MainWindow")
     end)
 
-    local scaleWindow = self.transform:Find("ScaleWindow")
-    self.behaviour:AddClick(scaleWindow.gameObject, function() 
-        print("Click ScaleWindow")
+    local dialog = self.transform:Find("Dialog")
+    self.behaviour:AddClick(dialog.gameObject, function() 
+        print("Click Dialog")        
+        WindowManager:Open(UI_Dialog,"UI_Dialog")
     end)
-    local moveWindow = self.transform:Find("MoveWindow")
-    self.behaviour:AddClick(moveWindow.gameObject, function() 
-        print("Click MoveWindow")
-    end)
-    local popWindow = self.transform:Find("PopWindow")
-    self.behaviour:AddClick(popWindow.gameObject, function() 
-        print("Click PopWindow")
-        WindowManager:Open(UI_PopWindow,"UI_PopWindow")
+
+    local close = self.transform:Find("Close")
+    self.behaviour:AddClick(close.gameObject, function() 
+        print("Click Close")        
+       self:Close()
     end)
    
-    
 end
 
 function this:OnEnter()

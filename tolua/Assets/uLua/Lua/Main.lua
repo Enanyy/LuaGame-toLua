@@ -1,7 +1,6 @@
 require("Class")
 require("AssetManager")
 require("WindowManager")
-require("UI_Main")
 ----
 ----Lua表不要与C#中需要Wrap的类同名，会引起混乱
 ----

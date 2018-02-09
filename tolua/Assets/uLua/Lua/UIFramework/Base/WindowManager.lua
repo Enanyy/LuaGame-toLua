@@ -19,6 +19,9 @@ function  WindowManager:Initialize()
     
         self.initialized = true
 
+        self.uiLayer = LayerMask.NameToLayer("UI")              --UI显示层
+        self.blurLayer = LayerMask.NameToLayer("Blur")          --背景模糊层
+
         local go = GameObject('WindowManager')     
         GameObject.DontDestroyOnLoad(go)
 
@@ -31,8 +34,8 @@ function  WindowManager:Initialize()
 
         self.uiCamera = p:GetComponentInChildren(typeof(UICamera))
         local camera = self.uiCamera:GetComponent( typeof( Camera ))
-        NGUITools.MakeMask(camera, LayerMask.NameToLayer("UI"))
-        NGUITools.SetLayer(self.uiCamera.gameObject, LayerMask.NameToLayer("UI"))
+        NGUITools.MakeMask(camera, self.uiLayer)
+        NGUITools.SetLayer(self.uiCamera.gameObject, self.uiLayer)
         self.uiCamera:GetComponent( typeof(Camera)).depth = 1
 
         self.uiRoot = p:GetComponent(typeof(UIRoot))
@@ -59,13 +62,14 @@ function  WindowManager:Initialize()
 
 
         local blurGo = GameObject.Instantiate(self.uiCamera.gameObject)
+        blurGo.name = "BlurCamera"
         blurGo.transform:SetParent(self.uiRoot.transform)
         Object.Destroy(blurGo:GetComponent(typeof(AudioListener)))
 
         self.blurCamera = blurGo:GetComponent(typeof(UICamera))  
         local camera = self.blurCamera:GetComponent(typeof(Camera))
-        NGUITools.MakeMask(camera, LayerMask.NameToLayer("Blur"))
-        NGUITools.SetLayer(blurGo, LayerMask.NameToLayer("Blur"))
+        NGUITools.MakeMask(camera,  self.blurLayer)
+        NGUITools.SetLayer(blurGo,  self.blurLayer)
         camera.depth = 0
         self.blurCamera.enabled = false
 
@@ -96,7 +100,7 @@ function WindowManager:Open(class, name, callback)
 
     if  t then
     
-        self.mTmpWindowStack.Clear();
+        self.mTmpWindowStack:Clear();
 
         while (self.mWindowStack.Count > 0)
         do
@@ -135,7 +139,7 @@ function WindowManager:Open(class, name, callback)
                 
                     local go = GameObject.Instantiate(varGo)
 
-                    NGUITools.SetLayer(go, LayerMask.NameToLayer("UI"))
+                    NGUITools.SetLayer(go,  self.uiLayer)
 
                     local tran = go.transform:Find(name)
 
@@ -156,13 +160,6 @@ function WindowManager:Open(class, name, callback)
 
                     t = class.new(behaviour, path)
 
-                    if t == nil then
-                        print("t is nil")
-                    else
-                        print(" t not nil")
-                    end
-                    
-
                     behaviour:Init(t)
 
                     if  t.windowType == 0 then
@@ -172,6 +169,7 @@ function WindowManager:Open(class, name, callback)
 
                         if  window ~= nil then
                         
+                            error("已经存在一个 windowType = 0 的界面，本界面将销毁.")
                             GameObject.Destroy(tran.gameObject)
                             self:SetTouchable(true)
 
@@ -204,12 +202,12 @@ function WindowManager:Push(t, callback)
         
         if self.mWindowStack.Count > 0 then
 
-            --打开Root 关闭其他的
-                if  t.windowType == 1 then
+                --打开Root 关闭其他的
+                if  t.windowType == 0 then
                 
                     while (self.mWindowStack.Count > 0)
                     do
-                        local window =self. mWindowStack:Pop()
+                        local window =self.mWindowStack:Pop()
 
                         if window then
                         
@@ -411,12 +409,12 @@ function WindowManager:SetBlur()
     if self.mWindowStack.Count > 0 then
     
         local w = self.mWindowStack:Pop()
-        NGUITools.SetLayer(w.gameObject, LayerMask.NameToLayer("UI"))
+        NGUITools.SetLayer(w.gameObject,  self.uiLayer)
 
         if self.mWindowStack.Count > 0 then
         
             local b = self.mWindowStack:Peek()
-            NGUITools.SetLayer(b.gameObject, LayerMask.NameToLayer("Blur"))
+            NGUITools.SetLayer(b.gameObject,  self.blurLayer)
         end
 
         self.mWindowStack:Push(w)

@@ -68,14 +68,17 @@ function BaseWindow:OnResume()
     end
 
     self.transform:SetAsLastSibling()
+    WindowManager:SetBlur()
+    
 end
 
 function BaseWindow:OnExit()
     if self.gameObject then
         GameObject.Destroy(self.gameObject)
     end
+    WindowManager:SetBlur()
 end
 
 function BaseWindow:Close()
-
+    WindowManager:Close()
 end
