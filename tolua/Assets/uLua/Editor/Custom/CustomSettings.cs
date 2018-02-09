@@ -197,6 +197,8 @@ public static class CustomSettings
          _GT(typeof(Localization)),
          _GT(typeof(NGUITools)),
          _GT(typeof(NGUIText)),
+         _GT(typeof(EventDelegate)),
+         
 
     };
 
