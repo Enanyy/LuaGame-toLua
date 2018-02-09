@@ -27,6 +27,7 @@ function this:Start()
 
     self.behaviour:AddClick(mainWindow.gameObject, function() 
         print("Click MainWindow")
+        WindowManager:Open(UI_Main,"UI_Main")
     end)
 
     local dialog = self.transform:Find("Dialog")

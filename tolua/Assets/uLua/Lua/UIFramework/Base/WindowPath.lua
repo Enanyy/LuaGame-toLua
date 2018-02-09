@@ -1,6 +1,10 @@
 require("UI_Main")
 require("UI_PopWindow")
+require("UI_FadeWindow")
+require("UI_ScaleWindow")
+require("UI_MoveWindow")
 require("UI_Dialog")
+
 
 WindowPath = {
     paths = {
