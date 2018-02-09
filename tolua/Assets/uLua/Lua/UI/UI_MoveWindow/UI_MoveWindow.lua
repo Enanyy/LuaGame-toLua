@@ -1,5 +1,6 @@
 require("Class")
 require("BaseWindow")
+require("WindowMove")
 
 --UI_MoveWindow继承于BaseWindow
 UI_MoveWindow = Class(BaseWindow)
@@ -11,6 +12,7 @@ function this:ctor(behaviour, path)
 
     self.base = BaseWindow.new(behaviour, self.path, self.windowType)
 
+    self.from = "Top" 
 
 end
 
@@ -58,27 +60,46 @@ function this:OnEnter()
     if self.base then
         self.base:OnEnter()
     end
+
+    local pos = WindowMove.GetPivot(self.from)
+    self.transform.localPosition = pos
 end
 
 function this:OnPause()
     self.isPause = true
+
+    WindowMove.Begin(self, self.from, 0.3, false, function() self.base:OnPause() end)
+    --[[ 
     
     if self.base then
         self.base:OnPause()
     end
+    --]]
 end
 
 function this:OnResume()
     self.isPause = false
+
+    WindowMove.Begin(self, self.from, 0.3, true, function() self.base:OnResume() end)
+    --[[ 
+    
     if self.base then
         self.base:OnResume()
     end
+    --]]
+    
 end
 
 function this:OnExit()
+
+    WindowMove.Begin(self, self.from, 0.3, false, function() self.base:OnExit() end)
+    --[[ 
+    
     if self.base then
         self.base:OnExit()
     end
+    --]]
+    
 end
 
 function this:Close()
