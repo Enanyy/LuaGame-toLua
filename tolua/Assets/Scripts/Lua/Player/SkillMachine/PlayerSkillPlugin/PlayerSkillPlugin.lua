@@ -12,3 +12,8 @@ function PlayerSkillPlugin:SetPlayerSkillState(state)
     self.mPlayerSkillState = state
 
 end
+
+function PlayerSkillPlugin:Init(configure)
+
+    
+end

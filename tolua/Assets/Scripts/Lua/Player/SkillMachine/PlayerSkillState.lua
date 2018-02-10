@@ -24,7 +24,10 @@ PlayerSkillState = Class(State)
 
 function PlayerSkillState:ctor(name)
     self.mPlayerSkillType = "None"
-    self.mCacheSkillState = nil
+	self.mChangeAble = true
+	self.mWeight = 0
+    self.mSkillTime = 0
+    
     self.mChangeList = {}
     self.mCancelList = {}
     self.mSkillPluginList = {}
@@ -34,10 +37,49 @@ function PlayerSkillState:ctor(name)
     self.mFadeLength = 0
     self.mChanging = false 
 
-	self.mChangeAble = true
-	self.mWeight = 0
-	self.mSkillTime = 0
+    self.mCacheSkillState = nil
 	self.mRunTime = 0
+end
+
+function PlayerSkillState:Init(configure)
+    if configure == nil then return end
+
+    self.mPlayerSkillType = configure.enum
+    self.mSkillTime = configure.skillTime
+    self.mChangeAble =configure.changeable
+    self.mWeight = configure.weight
+
+    if configure.ChangeList then
+
+        for i,v in ipairs(configure.ChangeList) do
+
+            local change = SkillChange.new(v.enum, v.before, v.fadeLength)
+            table.insert ( self.mCancelList, change)
+
+        end
+    end
+
+    if configure.CancelList then
+        for i,v in ipairs(configure.CancelList) do
+
+            local cancel = SkillCancel.new(v.enum, v.endAt, v.beginAt, v.speed, v.fadeLength)
+            table.insert ( self.mCancelList, cancel)
+
+        end
+    end
+
+    if configure.PluginList then
+        for i,v in ipairs(configure.PluginList) do
+
+            local plugin = v.class.new()
+            plugin:Init(v)
+            plugin:SetPlayerSkillState(self)
+            plugin:SetStateMachine(self.machine)
+            table.insert ( self.mCancelList, plugin)
+
+        end
+    end
+
 end
 
 function PlayerSkillState:Cache(state)
@@ -287,7 +329,7 @@ function PlayerSkillState:OnResume()
     
     if self.mSkillPluginList then
         for i,v in ipairs(self.mSkillPluginList) do
-                v:OnResume()
+            v:OnResume()
         end
     end
 end

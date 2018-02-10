@@ -23,7 +23,7 @@ Role_Configure_Ahri = {
             },
 
             CancelList = {
-
+               -- {enum = "Idle", before = 0.5, fadeLength = 0.2 },
             },
 
             PluginList = {

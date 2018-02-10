@@ -1,4 +1,5 @@
 require("StateMachine")
+require("PlayerSkillState")
 
 PlayerSKillMachine = Class(StateMachine)
 
@@ -7,12 +8,25 @@ PlayerSKillMachine = Class(StateMachine)
 --基类的函数就不起作用了
 
 function PlayerSKillMachine:ctor(playerCharacter)
-    self.playerSkillStates = {} --状态列表
-    self.playerCharacter   = playerCharacter
+    self.name = "None"
+    self.mPlayerSkillStateDic = {} --状态列表
+    self.mPlayerCharacter   = playerCharacter
 end
 
 
 function PlayerSKillMachine:Init(configure)
+
+    if configure == nil or configure.StateList == nil then return end
+
+    self.name = configure.name
+
+    for i,v in ipairs(configure.StateList) do
+       local skillType = v.enum
+       local state = PlayerSkillState.new(v.name)
+       state:Init(v)
+       state:SetStateMachine(self)
+       self.mPlayerSkillStateDic[skillType] = state
+    end
 
 end
 
@@ -29,9 +43,9 @@ end
 
 function PlayerSKillMachine:GetPlayerSkillState(skillType)
 
-    if self.playerSkillStates ~= nil then
+    if self.mPlayerSkillStateDic ~= nil then
 
-        return self.playerSkillStates[skillType]
+        return self.mPlayerSkillStateDic[skillType]
     
     end
     return nil
