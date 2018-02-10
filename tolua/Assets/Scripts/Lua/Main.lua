@@ -155,19 +155,21 @@ end
 B = Class(A)
 
 function B:ctor()
-	self.base = A.new()
+	--self.base = A.new()
 end
+--[[
 function B:print()
 	print("B:print")
 
 	self.base:print()
 end
-
+--]]
 function Main:TestOverWrite()
 
 	local a = A.new()
 	a:print()
 
+	--没有重写 调用A的print
 	local b = B.new()
 	b:print()
 
