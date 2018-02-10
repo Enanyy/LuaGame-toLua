@@ -2,6 +2,7 @@
 using System.Collections;
 using System.IO;
 using LuaInterface;
+using UnityEngine.SceneManagement;
 
 public class LuaGame : MonoBehaviour {
 
@@ -169,6 +170,7 @@ public class LuaGame : MonoBehaviour {
 
         //LuaHelper.CallFunction("Main", "Test1",array);
 
+        SceneManager.LoadScene("FrameScene");
 
     }
 
