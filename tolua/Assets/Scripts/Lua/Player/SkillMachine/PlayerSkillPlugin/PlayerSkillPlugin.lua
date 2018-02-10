@@ -1,5 +1,6 @@
 require("Class")
 require("State")
+require("PlayerSkillType")
 
 PlayerSkillPlugin = Class(State)
 
@@ -15,5 +16,5 @@ end
 
 function PlayerSkillPlugin:Init(configure)
 
-    
+
 end
