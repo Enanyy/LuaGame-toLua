@@ -67,9 +67,3 @@ function this:OnExit()
         self.base:OnExit()
     end
 end
-
-function this:Close()
-    if self.base then
-        self.base:Close()
-    end
-end

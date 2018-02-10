@@ -9,9 +9,8 @@ function this:ctor(behaviour, path)
     self.path  = path
     self.windowType = 0 --主界面
 
-    self.base = BaseWindow.new(behaviour, self.path, self.windowType)
-
-
+    --不用重写基类的函数，就不需要保存基类的base对象了
+    --self.base = BaseWindow.new(behaviour, self.path, self.windowType)
 end
 
 function this:Awake()
@@ -46,37 +45,4 @@ function this:Start()
     end)
    
     
-end
-
-function this:OnEnter()
-    if self.base then
-        self.base:OnEnter()
-    end
-end
-
-function this:OnPause()
-    self.isPause = true
-    
-    if self.base then
-        self.base:OnPause()
-    end
-end
-
-function this:OnResume()
-    self.isPause = false
-    if self.base then
-        self.base:OnResume()
-    end
-end
-
-function this:OnExit()
-    if self.base then
-        self.base:OnExit()
-    end
-end
-
-function this:Close()
-    if self.base then
-        self.base:Close()
-    end
 end

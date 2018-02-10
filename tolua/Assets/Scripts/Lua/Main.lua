@@ -7,6 +7,7 @@ require("WindowManager")
 
 local GameObject = UnityEngine.GameObject
 local Stack = System.Collections.Stack
+local Time = UnityEngine.Time
 
 --主入口函数。从这里开始lua逻辑
 --LuaGame.cs会调用Main.lua执行Lua逻辑
@@ -71,6 +72,7 @@ function Main:Update()
 	--print("LuaGame update")
 	--print(self)
 	AssetManager:Update()
+	--print("Time.deltaTime =" ..Time.deltaTime)
 end
 
 function Main:LateUpate()

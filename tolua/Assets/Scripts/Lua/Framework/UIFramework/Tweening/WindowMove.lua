@@ -1,12 +1,10 @@
 
 WindowMove = {}
-function WindowMove.Begin(window, from, duration, active, callback)
+function WindowMove.Begin(window, pos, duration, active, callback)
 
     if window == nil then
         return
     end
-
-    local pos = WindowMove.GetPivot(from)
 
     local tween = window.transform:GetComponent(typeof(TweenPosition))
     if tween == nil then

@@ -10,9 +10,12 @@ function this:ctor(behaviour, path)
     self.path  = path
     self.windowType = 1 --普通界面
 
+    --因为要重写基类的OnPause、OnResume和OnExit方法做一些动画
+    --所以要保存一份基类的对象，以调用基类的方法，因为重写后基类的方法被覆盖了
     self.base = BaseWindow.new(behaviour, self.path, self.windowType)
 
-    self.from = "Top" 
+    --从哪个方向移动进来，详看WindowMove，当然也可以自定义位置
+    self.pos = WindowMove.GetPivot("Top")
 
 end
 
@@ -61,14 +64,13 @@ function this:OnEnter()
         self.base:OnEnter()
     end
 
-    local pos = WindowMove.GetPivot(self.from)
-    self.transform.localPosition = pos
+    self.transform.localPosition = self.pos
 end
 
 function this:OnPause()
     self.isPause = true
 
-    WindowMove.Begin(self, self.from, 0.3, false, function() self.base:OnPause() end)
+    WindowMove.Begin(self, self.pos, 0.3, false, function() self.base:OnPause() end)
     --[[ 
     
     if self.base then
@@ -80,7 +82,7 @@ end
 function this:OnResume()
     self.isPause = false
 
-    WindowMove.Begin(self, self.from, 0.3, true, function() self.base:OnResume() end)
+    WindowMove.Begin(self, self.pos, 0.3, true, function() self.base:OnResume() end)
     --[[ 
     
     if self.base then
@@ -92,7 +94,7 @@ end
 
 function this:OnExit()
 
-    WindowMove.Begin(self, self.from, 0.3, false, function() self.base:OnExit() end)
+    WindowMove.Begin(self, self.pos, 0.3, false, function() self.base:OnExit() end)
     --[[ 
     
     if self.base then
@@ -102,8 +104,3 @@ function this:OnExit()
     
 end
 
-function this:Close()
-    if self.base then
-        self.base:Close()
-    end
-end

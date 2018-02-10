@@ -1,5 +1,6 @@
 require("Class")
 require("BaseWindow")
+require("WindowFade")
 
 --UI_FadeWindow继承于BaseWindow
 UI_FadeWindow = Class(BaseWindow)
@@ -9,6 +10,8 @@ function this:ctor(behaviour, path)
     self.path  = path
     self.windowType = 1 --普通界面
 
+    --因为要重写基类的OnPause、OnResume和OnExit方法做一些动画
+    --所以要保存一份基类的对象，以调用基类的方法，因为重写后基类的方法被覆盖了
     self.base = BaseWindow.new(behaviour, self.path, self.windowType)
 
 
@@ -54,35 +57,39 @@ function this:Start()
     
 end
 
-function this:OnEnter()
-    if self.base then
-        self.base:OnEnter()
-    end
-end
+
 
 function this:OnPause()
     self.isPause = true
     
+    WindowFade.Begin(self, 0.4, false, function() self.base:OnPause() end)
+    --[[ 
     if self.base then
         self.base:OnPause()
     end
+    --]]
 end
 
 function this:OnResume()
     self.isPause = false
+    WindowFade.Begin(self, 0.4, true, function() self.base:OnResume() end)
+    --[[ 
+    
     if self.base then
         self.base:OnResume()
     end
+    --]]
+    
 end
 
 function this:OnExit()
+
+    WindowFade.Begin(self, 0.4, false, function() self.base:OnExit() end)
+    --[[ 
+    
     if self.base then
         self.base:OnExit()
     end
-end
-
-function this:Close()
-    if self.base then
-        self.base:Close()
-    end
+    --]]
+    
 end

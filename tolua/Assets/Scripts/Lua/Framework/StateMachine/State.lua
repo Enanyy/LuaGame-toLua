@@ -3,7 +3,7 @@ require("Class")
 --定义状态类
 State = Class()
 
-function State.ctor(name)
+function State:ctor(name)
     self.name = name
 end
 
@@ -15,4 +15,18 @@ function State:OnEnter()
 
 end
 
-function State:
+function State:OnExecute()
+
+end
+
+function State:OnExit()
+
+end
+
+function State:OnPause()
+
+end
+
+function State:OnResume()
+
+end
