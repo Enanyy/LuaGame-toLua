@@ -58,6 +58,7 @@ public class LuaGame : MonoBehaviour {
     {
         mInstance = this;
         mLuaLooper = gameObject.AddComponent<LuaLooper>();
+        DontDestroyOnLoad(gameObject);
 
 
         mLuaState = new LuaState();
