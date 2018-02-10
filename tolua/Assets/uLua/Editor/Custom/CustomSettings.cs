@@ -146,7 +146,8 @@ public static class CustomSettings
 
 
         _GT(typeof(UnityEngine.AI.NavMeshAgent)),
-
+        _GT(typeof(UnityEngine.AI.NavMeshPathStatus)),
+        
 
         _GT(typeof(QualitySettings)),
         _GT(typeof(RenderSettings)),                                                   
