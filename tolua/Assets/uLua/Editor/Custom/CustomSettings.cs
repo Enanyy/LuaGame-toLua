@@ -144,6 +144,10 @@ public static class CustomSettings
         _GT(typeof(PlayMode)),
         _GT(typeof(WrapMode)),
 
+
+        _GT(typeof(UnityEngine.AI.NavMeshAgent)),
+
+
         _GT(typeof(QualitySettings)),
         _GT(typeof(RenderSettings)),                                                   
         _GT(typeof(BlendWeights)),           
