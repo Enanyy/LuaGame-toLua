@@ -54,32 +54,46 @@ function PlayerSkillState:Init(configure)
 
         for i,v in ipairs(configure.ChangeList) do
 
-            local change = SkillChange.new(v.enum, v.before, v.fadeLength)
-            table.insert ( self.mCancelList, change)
+            local change = SkillChange.new(v.enum, v.endAt, v.beginAt, v.speed, v.fadeLength)
+            table.insert ( self.mChangeList, change)
 
         end
     end
+
+    -- for i,v in ipairs(self.mChangeList) do 
+    --     print("SkillChange:"..v.mSkillType)
+    -- end
 
     if configure.CancelList then
         for i,v in ipairs(configure.CancelList) do
 
-            local cancel = SkillCancel.new(v.enum, v.endAt, v.beginAt, v.speed, v.fadeLength)
-            table.insert ( self.mCancelList, cancel)
+            local cancel = SkillCancel.new(v.enum, v.before, v.fadeLength)
+            table.insert (self.mCancelList, cancel)
 
         end
     end
+
+    -- for i,v in ipairs(self.mCancelList) do 
+    --     print("SkillCancel:"..v.mSkillType)
+    -- end
 
     if configure.PluginList then
         for i,v in ipairs(configure.PluginList) do
 
-            local plugin = v.class.new()
-            plugin:Init(v)
+            local plugin = v.class.new(v.name)
+            --先设置状态和状态机
             plugin:SetPlayerSkillState(self)
             plugin:SetStateMachine(self.machine)
-            table.insert ( self.mCancelList, plugin)
-
+            --根据配置初始化
+            plugin:Init(v)
+            
+            table.insert (self.mSkillPluginList, plugin)
         end
     end
+
+    -- for i,v in ipairs(self.mSkillPluginList) do 
+    --     print("SkillPlugin:"..v.name)
+    -- end
 
 end
 
@@ -144,12 +158,17 @@ function PlayerSkillState:OnEnter()
 
     for i,v in ipairs(self.mSkillPluginList) do
         v:OnEnter()
+        print("PlayerSkillState:OnEnter "..v.name)
     end
+    print("PlayerSkillState:OnEnter "..self.name)
+    
 
 end
 
 function PlayerSkillState:OnExit()
 
+    print("PlayerSkillState:OnExit "..self.name)
+    
     self.mCacheSkillState = nil
     self.mSpeed = 1
     self.mChangeAt = 0
@@ -167,6 +186,7 @@ end
 
 function PlayerSkillState:OnExecute()
 
+    --print("PlayerSkillState:OnExecute "..self.name)
     if self.mSkillPluginList then
         for i,v in ipairs(self.mSkillPluginList) do
             v:OnExecute()

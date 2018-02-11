@@ -40,7 +40,7 @@ function StateMachine:OnExecute()
     end
 
     if self.currentState ~= nil then
-        print("StateMachine:OnExecute state:"..self.currentState.name )
+        --print("StateMachine:OnExecute state:"..self.currentState.name )
 
         self.currentState:OnExecute()
     end

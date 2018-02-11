@@ -23,26 +23,39 @@ function PlayerSKillMachine:Init(configure)
     for i,v in ipairs(configure.StateList) do
        local skillType = v.enum
        local state = PlayerSkillState.new(v.name)
-       state:Init(v)
+       --先设置状态机
        state:SetStateMachine(self)
+       --根据配置初始化
+       state:Init(v)
        self.mPlayerSkillStateDic[skillType] = state
     end
 
+    for k, v in pairs(self.mPlayerSkillStateDic) do 
+        print ("PlayerSKillMachine:Init state =" ..k)
+    end 
 end
 
 
 function PlayerSKillMachine:Cache(skillType)
 
+    print("PlayerSKillMachine:Cache " ..skillType)
     local state = self:GetPlayerSkillState(skillType)
     if state == nil then
+        print("PlayerSKillMachine:Cache " ..skillType .." nil")
+        
         return false
     end
     local current = self:GetCurrentState()
     if current == nil then
+        print("PlayerSKillMachine:ChangeState " ..skillType)
+        
         self:ChangeState(state)
 
         return true
     else
+
+        print("PlayerSKillMachine:ChangeState current = "..current.name .." Cache:" ..skillType)
+        
         return current:Cache(state)
     end
 
