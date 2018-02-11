@@ -22,8 +22,6 @@ public class LuaGame : MonoBehaviour {
     }
     #endregion
 
-    public const bool DebugMode = false;
-
     private LuaState mLuaState;
     public LuaState luaState { get { return mLuaState; } }
 
@@ -176,8 +174,17 @@ public class LuaGame : MonoBehaviour {
 
     }
 
-    // Update is called once per frame
-    void Update () {
-	
-	}
+    public static bool  DebugMode()
+    {
+        return LuaHelper.InvokeFunction<bool>("Main", "DebugMode");
+    }
+
+    public static Object LoadAssetAtPath(string path)
+    {
+#if UNITY_EDITOR
+        return UnityEditor.AssetDatabase.LoadAssetAtPath<Object>(path);
+#else
+        return null;
+#endif
+    }
 }

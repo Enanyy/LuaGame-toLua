@@ -139,8 +139,23 @@ end
 function AssetManager:Load(varAssetBundleName, varAssetName, varCallback)
 
     local tmpAssetBundleName = string.lower( varAssetBundleName )
-
+    
     local tmpLoadTask = nil
+
+    --Editor模式
+    if Main:AssetMode() == 0 then
+
+        local o = LuaGame.LoadAssetAtPath(varAssetName)
+        
+        if varCallback then
+            varCallback(o)
+        end
+        tmpLoadTask = LoadTask.new(varAssetBundleName, varAssetName,nil)
+        tmpLoadTask.state = 2
+        
+        return tmpLoadTask
+    end
+
 
 
     if self:LoadAsset (tmpAssetBundleName, varAssetName, varCallback) then
@@ -151,31 +166,33 @@ function AssetManager:Load(varAssetBundleName, varAssetName, varCallback)
         return tmpLoadTask
     end
 
+    if self.mManifest then
     --tmpDependences的类型是C#的 string[]
     local tmpDependences = self.mManifest:GetAllDependencies (varAssetBundleName)
-    print("tmpDependences Length =" .. tmpDependences.Length )
+        print("tmpDependences Length =" .. tmpDependences.Length )
 
-    if tmpDependences.Length > 0 then
+        if tmpDependences.Length > 0 then
 
-        for  i = 0, tmpDependences.Length - 1 do
+            for  i = 0, tmpDependences.Length - 1 do
 
-            local tmpDependentAssetBundleName = string.lower( tmpDependences:GetValue(i) )
+                local tmpDependentAssetBundleName = string.lower( tmpDependences:GetValue(i) )
 
-            if self.mAssetBundleDic[tmpDependentAssetBundleName] == nil then
+                if self.mAssetBundleDic[tmpDependentAssetBundleName] == nil then
         
-                self.mLoadingAssetQueue:Enqueue (LoadTask.new (tmpDependentAssetBundleName, nil, function (varAssetBundle)
+                    self.mLoadingAssetQueue:Enqueue (LoadTask.new (tmpDependentAssetBundleName, nil, function (varAssetBundle)
 
-                    if self.mAssetBundleDic[tmpAssetBundleName] ==  nil then 
+                        if self.mAssetBundleDic[tmpAssetBundleName] ==  nil then 
                 
-                        self.mAssetBundleDic[tmpAssetBundleName] = LoadedAssetBundle.new (self.mManifest, tmpAssetBundleName, varAssetBundle)
+                            self.mAssetBundleDic[tmpAssetBundleName] = LoadedAssetBundle.new (self.mManifest, tmpAssetBundleName, varAssetBundle)
                 
-                    else
+                        else
                 
-                        print("Dependence "..tmpDependentAssetBundleName .." was Loaded.")
-                    end
-                end))
-            end
-        end		
+                            print("Dependence "..tmpDependentAssetBundleName .." was Loaded.")
+                        end
+                    end))
+                end
+            end		
+        end
     end
 
     tmpLoadTask =  LoadTask.new (varAssetBundleName, varAssetName, function (varAssetBundle)

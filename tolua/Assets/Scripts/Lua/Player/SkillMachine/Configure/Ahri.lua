@@ -2,6 +2,10 @@
 --包含所有插件
 require("PlayerSkillState")
 
+----
+----技能配置 阿狸
+----
+
 Role_Configure_Ahri = {
 
     name = "Ahri",

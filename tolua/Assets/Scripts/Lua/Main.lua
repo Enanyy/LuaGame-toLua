@@ -13,6 +13,17 @@ local Time = UnityEngine.Time
 --主入口函数。从这里开始lua逻辑
 --LuaGame.cs会调用Main.lua执行Lua逻辑
 Main = {}
+
+function Main:DebugMode()
+	
+	return true
+end
+
+function Main:AssetMode()
+	local assetmode = UnityEngine.PlayerPrefs.GetInt("assetmode")
+	return assetmode
+end
+
 function Main:Start()					
 	print("Main start")
 	
@@ -44,7 +55,7 @@ function Main:Start()
 		print("a != b")		
 	end
 	--]]
-	self:TestOverWrite()
+	--self:TestOverWrite()
 	
 	--[[ 
 	
@@ -95,16 +106,13 @@ function Main:Update()
 	PlayerManager:Update()
 
 
-	--print("Time.deltaTime =" ..Time.deltaTime)
 end
 
 function Main:LateUpate()
-	--print("LuaGame LateUpate")
 
 end
 
 function Main:FixedUpdate()
-	--print("LuaGame FixedUpdate")
 
 end
 
