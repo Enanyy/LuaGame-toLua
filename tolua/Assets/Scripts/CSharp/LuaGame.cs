@@ -144,13 +144,14 @@ public class LuaGame : MonoBehaviour {
 
     private void OnApplicationQuit()
     {
-        LuaHelper.CallFunction("LuaGame", "OnApplicationQuit");
+        LuaHelper.CallFunction("Main", "OnApplicationQuit");
     }
 
 
     private void OnLevelWasLoaded(int level)
     {
-        
+
+        LuaHelper.CallFunction("Main", "OnLevelWasLoaded", level);
 
     }
 

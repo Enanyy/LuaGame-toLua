@@ -1,6 +1,7 @@
 require("Class")
 require("AssetManager")
 require("WindowManager")
+require("PlayerManager")
 ----
 ----Lua表不要与C#中需要Wrap的类同名，会引起混乱
 ----
@@ -19,6 +20,8 @@ function Main:Start()
 	AssetManager:Initialize()
 	--初始化窗口管理器
 	WindowManager:Initialize()
+	--初始化人物管理器
+	PlayerManager:Initialize()
 
 	--添加Lua逻辑更新
 	UpdateBeat:Add(Main.Update,self)	 		
@@ -62,7 +65,21 @@ end
 --场景切换通知
 function Main:OnLevelWasLoaded(level)
 	collectgarbage("collect")
+
+	print("Main:OnLevelWasLoaded")
 	Time.timeSinceLevelLoad = 0
+
+	local tmpPlayerInfo = PlayerInfo.new(1)
+	tmpPlayerInfo.guid = 0
+	
+
+	local t = {}
+	t[0] = "1111"
+
+	PlayerManager:CreatePlayerCharacter(0, tmpPlayerInfo, function (varPlayerCharacter) 
+	
+	
+	end)
 end
 
 function Main:OnApplicationQuit()

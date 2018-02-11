@@ -100,7 +100,9 @@ public class AssetBundleEditor : Editor
             {
                 GameObject go = AssetDatabase.LoadAssetAtPath<GameObject>(tmpAssetImport.assetPath);
                 if (go 
-                    && (go.GetComponent<UIRoot>() || go.GetComponent<UIAtlas>()))
+                    && ( (tmpStringFilePath.Contains("/UI/") && (go.GetComponent<UIRoot>() || go.GetComponent<UIAtlas>()))
+                        ||(tmpStringFilePath.Contains("/Character/"))
+                    ))
                 {
                     tmpAssetImport.assetBundleName = assetbundleName;
                 }

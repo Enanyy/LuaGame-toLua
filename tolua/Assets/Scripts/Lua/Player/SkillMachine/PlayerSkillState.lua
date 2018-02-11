@@ -222,7 +222,7 @@ function PlayerSkillState:OnExecute()
         
             local tmpCancel = self:GetSkillCancel(self.mCacheSkillState.mPlayerSkillType)
 
-            if tmpCancel end self.mRunTime < tmpCancel.mBefore then
+            if tmpCancel and self.mRunTime < tmpCancel.mBefore then
             
                 self.mCacheSkillState.mFadeLength = tmpCancel.mFadeLength
                 self.machine:ChangeState(self.mCacheSkillState)
@@ -287,7 +287,7 @@ function PlayerSkillState:OnExecute()
 
 end
 
-function PlayerSkillState:GetSkillChange(PlayerSkillType varSkillType)
+function PlayerSkillState:GetSkillChange(varSkillType)
 	   
     if self.mChangeList == nil then return nil end
 
@@ -302,7 +302,7 @@ function PlayerSkillState:GetSkillChange(PlayerSkillType varSkillType)
 
 end
 
-function PlayerSkillState:GetSkillCancel(PlayerSkillType varSkillType)
+function PlayerSkillState:GetSkillCancel(varSkillType)
 
     if self.mChangeList == nil then return nil end
 

@@ -5,10 +5,10 @@ StateMachine = Class()
 
 --构造函数
 function StateMachine:ctor()
-    local self.currentState = nil     --当前状态
-    local self.previousState = nil    --前一个状态
+    self.currentState = nil     --当前状态
+    self.previousState = nil    --前一个状态
 
-    local self.pause = false        --是否暂停
+    self.pause = false        --是否暂停
 end
 
 function StateMachine:ChangeState(state)
