@@ -2,6 +2,7 @@ require("Class")
 require("State")
 require("PlayerSkillType")
 
+
 PlayerSkillPlugin = Class(State)
 
 function PlayerSkillPlugin:ctor(name)

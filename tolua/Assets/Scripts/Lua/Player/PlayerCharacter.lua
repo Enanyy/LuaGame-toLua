@@ -2,7 +2,6 @@ require("Class")
 require("BehaviourBase")
 require("FashionBody")
 require("PlayerSKillMachine")
-require("Ahri")
 
 local GameObject = UnityEngine.GameObject
 local Quaternion = UnityEngine.Quaternion
@@ -20,6 +19,7 @@ function PlayerCharacter:CreatePlayerCharacter( varGuid, varPlayerInfo, varCallb
     self.mGuid = varGuid
     self.mProfession = varPlayerInfo.profession
     self.mPlayerInfo = varPlayerInfo
+    self.mMoveSpeed = 0
 
     local tmpBody = GameObject ("FashionBody")
 	tmpBody.transform:SetParent (self.transform)
@@ -91,5 +91,13 @@ function PlayerCharacter:PlaySkill(varSkillType)
 	end
 
 
-	return	self.mSkillMachine.Cache (varSkillType)
+	return	self.mSkillMachine:Cache (varSkillType)
+end
+
+function PlayerCharacter:OnMoveToPointSuccess()
+    print("移动成功")
+end
+
+function PlayerCharacter:OnMoveToPointFail()
+    print("移动失败")
 end

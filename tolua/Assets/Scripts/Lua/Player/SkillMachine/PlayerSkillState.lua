@@ -1,6 +1,11 @@
 require("Class")
 require("State")
 
+--包含所有插件
+require("PlayerSkillAnimationPlugin")
+require("PlayerSkillMovePlugin")
+require("PlayerSkillMoveSpeedPlugin")
+
 --引用UnityEngine.Time
 local Time = UnityEngine.Time
 
@@ -60,10 +65,6 @@ function PlayerSkillState:Init(configure)
         end
     end
 
-    -- for i,v in ipairs(self.mChangeList) do 
-    --     print("SkillChange:"..v.mSkillType)
-    -- end
-
     if configure.CancelList then
         for i,v in ipairs(configure.CancelList) do
 
@@ -73,9 +74,6 @@ function PlayerSkillState:Init(configure)
         end
     end
 
-    -- for i,v in ipairs(self.mCancelList) do 
-    --     print("SkillCancel:"..v.mSkillType)
-    -- end
 
     if configure.PluginList then
         for i,v in ipairs(configure.PluginList) do
@@ -91,9 +89,6 @@ function PlayerSkillState:Init(configure)
         end
     end
 
-    -- for i,v in ipairs(self.mSkillPluginList) do 
-    --     print("SkillPlugin:"..v.name)
-    -- end
 
 end
 
@@ -154,21 +149,19 @@ end
 
 function PlayerSkillState:OnEnter()
 
+    print("PlayerSkillState:OnEnter "..self.name .." mSpeed="..self.mSpeed)
+
     if self.mSkillPluginList == nil then return end
 
     for i,v in ipairs(self.mSkillPluginList) do
         v:OnEnter()
-        print("PlayerSkillState:OnEnter "..v.name)
+      
     end
-    print("PlayerSkillState:OnEnter "..self.name)
     
-
 end
 
 function PlayerSkillState:OnExit()
 
-    print("PlayerSkillState:OnExit "..self.name)
-    
     self.mCacheSkillState = nil
     self.mSpeed = 1
     self.mChangeAt = 0
@@ -181,12 +174,12 @@ function PlayerSkillState:OnExit()
     for i,v in ipairs(self.mSkillPluginList) do
         v:OnExit()
     end
+    print("PlayerSkillState:OnExit "..self.name.." mSpeed="..self.mSpeed)
 
 end
 
 function PlayerSkillState:OnExecute()
 
-    --print("PlayerSkillState:OnExecute "..self.name)
     if self.mSkillPluginList then
         for i,v in ipairs(self.mSkillPluginList) do
             v:OnExecute()
@@ -200,7 +193,7 @@ function PlayerSkillState:OnExecute()
             self.mChanging = false
             self.mChangeAt  = self.mSkillTime
             self.mFadeLength = 0
-            self.mSpeed = 0
+            self.mSpeed = 1
         end
     end
 

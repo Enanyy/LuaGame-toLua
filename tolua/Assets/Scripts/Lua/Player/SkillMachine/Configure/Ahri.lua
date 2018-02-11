@@ -1,6 +1,6 @@
 
 --包含所有插件
-require("SkillPlugin")
+require("PlayerSkillState")
 
 Role_Configure_Ahri = {
 
@@ -59,7 +59,8 @@ Role_Configure_Ahri = {
 
             PluginList = {
                 { name = "PlayerSkillAnimationPlugin", class = PlayerSkillAnimationPlugin,  animationClip ="Ahri_run",loop = true },
-                { name = "PlayerSkillMovePlugin", class = PlayerSkillMovePlugin,  beginAt= 0,  endAt = 0 },
+                { name = "PlayerSkillMovePlugin", class = PlayerSkillMovePlugin,  beginAt= 0,  endAt = 2147483647 },
+                { name = "PlayerSkillMoveSpeedPlugin", class = PlayerSkillMoveSpeedPlugin },
             }
         },
         ---------------------------移动结束--------------------------------        

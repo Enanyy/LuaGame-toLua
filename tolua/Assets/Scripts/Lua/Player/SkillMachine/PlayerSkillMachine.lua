@@ -1,5 +1,9 @@
 require("StateMachine")
 require("PlayerSkillState")
+require("PlayerSkillType")
+--包含所有配置
+require("Ahri")
+
 
 PlayerSKillMachine = Class(StateMachine)
 
@@ -30,33 +34,29 @@ function PlayerSKillMachine:Init(configure)
        self.mPlayerSkillStateDic[skillType] = state
     end
 
-    for k, v in pairs(self.mPlayerSkillStateDic) do 
-        print ("PlayerSKillMachine:Init state =" ..k)
-    end 
+  
 end
 
 
 function PlayerSKillMachine:Cache(skillType)
 
-    print("PlayerSKillMachine:Cache " ..skillType)
     local state = self:GetPlayerSkillState(skillType)
     if state == nil then
-        print("PlayerSKillMachine:Cache " ..skillType .." nil")
-        
+          
         return false
     end
     local current = self:GetCurrentState()
     if current == nil then
-        print("PlayerSKillMachine:ChangeState " ..skillType)
-        
+      
         self:ChangeState(state)
 
         return true
     else
 
-        print("PlayerSKillMachine:ChangeState current = "..current.name .." Cache:" ..skillType)
+        local result = current:Cache(state)
+        print("PlayerSKillMachine:ChangeState current = "..current.name .." Cache:" ..skillType .. ".."..tostring(result))
         
-        return current:Cache(state)
+        return result
     end
 
 end

@@ -5,6 +5,10 @@ require("PlayerCharacter")
 local GameObject = UnityEngine.GameObject
 local Quaternion = UnityEngine.Quaternion
 local Camera = UnityEngine.Camera
+local Input = UnityEngine.Input
+local Physics = UnityEngine.Physics
+local NavMesh = UnityEngine.AI.NavMesh
+local NavMeshHit = UnityEngine.AI.NavMeshHit
 
 PlayerManager = Class(BehaviourBase).new()
 
@@ -22,7 +26,9 @@ function  PlayerManager:Initialize()
         behaviour:Init(self)
         self:Init(behaviour)
 
-        self.mPlayerCharacterDic = {} --人物列表
+        self.mPlayerCharacterDic = {}           --人物列表
+
+        self.mPlayerCharacterSelf = nil         --自己
 
     end
 
@@ -49,12 +55,14 @@ function  PlayerManager:CreatePlayerCharacter(varGuid,  varPlayerInfo, varCallba
             if varGuid == 0 then
                 local camera = GameObject("MainCamera")
                 GameObject.DontDestroyOnLoad(camera)
-                camera:AddComponent(typeof(Camera))
+                self.mCamera = camera:AddComponent(typeof(Camera))
                 self.mSmoothFollow = camera:AddComponent(typeof(SmoothFollow))
                 self.mSmoothFollow.target = tmpPlayerCharacter.transform
                 self.mSmoothFollow.followBehind = false
                 self.mSmoothFollow.distance =3
                 self.mSmoothFollow.height = 8
+
+                self.mPlayerCharacterSelf = tmpPlayerCharacter
             end
 		
 
@@ -65,27 +73,43 @@ function  PlayerManager:CreatePlayerCharacter(varGuid,  varPlayerInfo, varCallba
             end
         end)
 
-        if tmpPlayerCharacter == nil then
-            print("tmpPlayerCharacter nil")
+        local tmpFlag, tmpHit = NavMesh.SamplePosition(Vector3.zero, nil, 10, NavMesh.AllAreas)
+        if tmpFlag then
+            tmpPlayerCharacter.transform.position = tmpHit.position
         end
 
-
-       --if self.mPlayerCharacterDic == nil then self.mPlayerCharacterDic = {} end
-       --able.insert(self.mPlayerCharacterDic, tmpPlayerCharacter)
-       self.mPlayerCharacterDic[varGuid] = tmpPlayerCharacter
+        self.mPlayerCharacterDic[varGuid] = tmpPlayerCharacter
        
 end
 
 
 function PlayerManager:Update()
 
-    --print("PlayerManager:Update")
     if self.mPlayerCharacterDic then
 
         for k,v in pairs(self.mPlayerCharacterDic) do
 
             v:Update()
-            --print("PlayerManager:Update " .. k)
+        end
+
+    end
+
+    if self.mCamera then
+
+        if Input.GetMouseButtonDown (0) then
+           
+            local tmpRay = self.mCamera:ScreenPointToRay (Input.mousePosition)
+            local tmpLayer = 2 ^ LayerMask.NameToLayer("Default")                
+
+            local tmpFlag, tmpHit = Physics.Raycast(tmpRay,nil, 5000, tmpLayer)
+         
+
+            if tmpFlag then
+                if self.mPlayerCharacterSelf then
+                    self.mPlayerCharacterSelf:MoveToPoint(tmpHit.point)
+                end
+            end
+
         end
 
     end

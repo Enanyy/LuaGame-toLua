@@ -20,14 +20,24 @@ function PlayerSkillAnimationPlugin:Init(configure)
     self.mAnimationClip = configure.animationClip
     self.mLoop = configure.loop
 
-    print("PlayerSkillAnimationPlugin:Init"..self.mAnimationClip)
+    local tmpPlayerCharacter = self.machine.mPlayerCharacter
+
+    if tmpPlayerCharacter.mBody then
+        self.mAnimation = tmpPlayerCharacter.mBody.transform:GetComponentInChildren(typeof(Animation))
+
+    end
 
 end
 
 function PlayerSkillAnimationPlugin:OnEnter()
-    print("PlayerSkillAnimationPlugin:OnEnter")
+    
     self.mDone = false
-    self.mAnimationState = self:GetAnimationState()
+    self:GetAnimationState()
+
+    if self.mAnimationState == nil then
+        print("mAnimationState = nil")
+    end
+
     self:PlayAnimation()
 
 end
@@ -39,20 +49,14 @@ function PlayerSkillAnimationPlugin:OnExecute()
 end
 
 function PlayerSkillAnimationPlugin:OnExit()
-    print("PlayerSkillAnimationPlugin:OnExit")
     
-    if self.mAnimationState then
-        
-        print(self.mAnimationClip .. ":" .. self.mAnimationState.length .. "," .. self.mAnimationState.time)
-            
-    end
 end
 
 function PlayerSkillAnimationPlugin:OnPause()
       
     if self.mAnimationState then
         
-        self.mAnimation[self.mAnimationClip].speed = 0
+        self.mAnimationState.speed = 0
 
      end
 end
@@ -68,38 +72,13 @@ end
 
 function PlayerSkillAnimationPlugin:PlayAnimation()
 
-    if self.machine == nil then
+    if self.mAnimationState == nil then
         return 
     end
 
-    local tmpPlayerCharacter = self.machine.mPlayerCharacter
-    if tmpPlayerCharacter == nil then
-        return
-    end
 
-    if self.mAnimation == nil then
-        
-        if tmpPlayerCharacter.mBody then
-            self.mAnimation = tmpPlayerCharacter.mBody.transform:GetComponentInChildren(typeof(Animation))
-    
-        end
-    end
-    
-    
-    if self.mAnimation == nil then
-        
-        return
-    end
-
-    if self.mAnimationState == nil or self.mAnimationState.name ~= self.mAnimationClip then
-        self.mAnimationState = self:GetAnimationState()
-    end
-
-    if  self.mAnimationState ~= nil then
-        
-        self.mAnimationState.speed = self.mPlayerSkillState.mSpeed
-    end
-
+    self.mAnimationState.speed = self.mPlayerSkillState.mSpeed
+  
     if self.mDone then
         
         return
@@ -113,10 +92,8 @@ function PlayerSkillAnimationPlugin:PlayAnimation()
     end
  
         
-    if  --self.mPlayerSkillState.mChangeAt == 0 and
-        self.mPlayerSkillState.mFadeLength > 0 
-    then
-        
+    if  self.mPlayerSkillState.mFadeLength > 0 then
+
         self.mAnimation:CrossFade(self.mAnimationClip, self.mPlayerSkillState.mFadeLength)
         
     else
@@ -135,19 +112,18 @@ end
 function PlayerSkillAnimationPlugin:GetAnimationState()
     
     if self.mAnimation == nil then
-        return nil
+        return 
     end
 
+   
     local it = self.mAnimation:GetEnumerator()
     while (it:MoveNext())
     do
         if it.Current.name == self.mAnimationClip then
            
-            local tmpAnimationState = it.Current
-
-            return tmpAnimationState
+            self.mAnimationState =  it.Current
+            
+            break
         end
     end
-
-    return nil
 end
