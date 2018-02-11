@@ -87,8 +87,14 @@ end
 --Lua逻辑更新
 function Main:Update()
 	--print("LuaGame update")
-	--print(self)
+
+	--资源管理器更新
 	AssetManager:Update()
+
+	--人物管理器更新
+	PlayerManager:Update()
+
+
 	--print("Time.deltaTime =" ..Time.deltaTime)
 end
 

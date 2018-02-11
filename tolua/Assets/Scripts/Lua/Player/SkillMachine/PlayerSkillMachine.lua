@@ -7,10 +7,10 @@ PlayerSKillMachine = Class(StateMachine)
 --不要重写StateMachine的函数了，不然会被覆盖掉的
 --基类的函数就不起作用了
 
-function PlayerSKillMachine:ctor(playerCharacter)
+function PlayerSKillMachine:ctor(varPlayerCharacter)
     self.name = "None"
     self.mPlayerSkillStateDic = {} --状态列表
-    self.mPlayerCharacter   = playerCharacter
+    self.mPlayerCharacter   = varPlayerCharacter
 end
 
 
@@ -37,7 +37,14 @@ function PlayerSKillMachine:Cache(skillType)
     if state == nil then
         return false
     end
+    local current = self:GetCurrentState()
+    if current == nil then
+        self:ChangeState(state)
 
+        return true
+    else
+        return current:Cache(state)
+    end
 
 end
 

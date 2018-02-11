@@ -2,6 +2,7 @@ require("Class")
 require("BehaviourBase")
 require("FashionBody")
 require("PlayerSKillMachine")
+require("Ahri")
 
 local GameObject = UnityEngine.GameObject
 local Quaternion = UnityEngine.Quaternion
@@ -10,7 +11,7 @@ PlayerCharacter = Class(BehaviourBase)
 
 function PlayerCharacter:ctor()
 
-    
+    self.mTargetPosition = Vector3.zero
 
 end
 
@@ -51,8 +52,17 @@ end
 
 function PlayerCharacter:Update()
 
+    --print("PlayerCharacter:Update")
     if self.mSkillMachine then
+
+        local current = self.mSkillMachine:GetCurrentState()
+
+        if current == nil then
+            self.mSkillMachine:Cache(PlayerSkillType.Idle)
+        end
+
         self.mSkillMachine:OnExecute()
+
     end
 
 
@@ -66,7 +76,7 @@ function PlayerCharacter:MoveToPoint(varTargetPosition, varSuccessAction,varFail
     if tmpDistance > 0.1 then
 
 
-        self.targetPosition = varTargetPosition
+        self.mTargetPosition = varTargetPosition
 
         self:PlaySkill (PlayerSkillType.Run)
     end

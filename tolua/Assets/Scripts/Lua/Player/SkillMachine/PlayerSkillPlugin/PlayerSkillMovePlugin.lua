@@ -21,16 +21,7 @@ function PlayerSkillMovePlugin:Init(configure)
     self.mBeginAt = configure.mBeginAt
     self.mEndAt   = configure.mEndAt
 
-    self.mNavMeshAgent = self.machine.mPlayerCharacter.gameObject:GetComponent(typeof(NavMeshAgent))
-    if self.mNavMeshAgent == nil then
-        self.mNavMeshAgent = self.machine.mPlayerCharacter.gameObject:AddComponent(typeof(NavMeshAgent))
-    end
-
-    self.mNavMeshAgent.stoppingDistance = self.mStopDistance
-    self.mNavMeshAgent.angularSpeed = 720000
-    self.mNavMeshAgent.acceleration = 100
-    self.mNavMeshAgent.speed = self.machine.mPlayerCharacter.mPlayerInfo.baseSpeed
-    self.mNavMeshAgent.enabled = false
+    
 end
 
 function PlayerSkillMovePlugin:OnEnter ()
@@ -38,29 +29,44 @@ function PlayerSkillMovePlugin:OnEnter ()
     self.mRemainingDistance = 0
     self.mBeginMove = false
     self.mFindPath = false
+    
+    if self.mNavMeshAgent == nil then
+
+        self.mNavMeshAgent = self.machine.mPlayerCharacter.gameObject:GetComponent(typeof(NavMeshAgent))
+        if self.mNavMeshAgent == nil then
+            self.mNavMeshAgent = self.machine.mPlayerCharacter.gameObject:AddComponent(typeof(NavMeshAgent))
+        end
+    
+        self.mNavMeshAgent.stoppingDistance = self.mStopDistance
+        self.mNavMeshAgent.angularSpeed = 720000
+        self.mNavMeshAgent.acceleration = 100
+        self.mNavMeshAgent.speed = self.machine.mPlayerCharacter.mPlayerInfo.baseSpeed
+        
+    end
     self.mNavMeshAgent.enabled = true
+
+
 end
 
 function PlayerSkillMovePlugin:OnExecute ()
 
-    
     local tmpPlayerCharacter =self.machine.mPlayerCharacter
 
-    if tmpPlayerCharacter.targetPosition != self.mNavMeshAgent.destination then
+    if tmpPlayerCharacter.mTargetPosition ~= self.mNavMeshAgent.destination then
      
         if  self.mPlayerSkillState.mRunTime >=  self.mBeginAt and  self.mPlayerSkillState.mRunTime <  self.mEndAt then
          
-            local tmpDistance = Vector3.Distance (tmpPlayerCharacter.transform.position, tmpPlayerCharacter.targetPosition)
+            local tmpDistance = Vector3.Distance (tmpPlayerCharacter.transform.position, tmpPlayerCharacter.mTargetPosition)
 
             if  tmpDistance > 0.5 then 
             
                 self.mNavMeshAgent.isStopped = false
-                if self.mNavMeshAgent:SetDestination (tmpPlayerCharacter.targetPosition) then
+                if self.mNavMeshAgent:SetDestination (tmpPlayerCharacter.mTargetPosition) then
                     self.mFindPath = true;
                  
                 else 
                     
-                    print ("SetDestination Fail: " .. tmpPlayerCharacter.targetPosition)
+                    print ("SetDestination Fail: " .. tmpPlayerCharacter.mTargetPosition)
                     --self.mBeginMove = true
                 end
             else 
@@ -90,15 +96,15 @@ function PlayerSkillMovePlugin:OnExecute ()
              then
                         
                 self.mFindPath = false
-                tmpPlayerCharacter.targetPosition = tmpPlayerCharacter.transform.position
-                self.mNavMeshAgent.destination = tmpPlayerCharacter.targetPosition
+                tmpPlayerCharacter.mTargetPosition = tmpPlayerCharacter.transform.position
+                self.mNavMeshAgent.destination = tmpPlayerCharacter.mTargetPosition
                 tmpPlayerCharacter:SendMessage ("OnMoveToPointFailed")
                 tmpPlayerCharacter:PlaySkill (PlayerSkillType.Idle)
               
             end
         else 
 
-            local tmpTargetPosition = tmpPlayerCharacter.targetPosition
+            local tmpTargetPosition = tmpPlayerCharacter.mTargetPosition
             tmpTargetPosition.y = tmpPlayerCharacter.transform.position.y
             local tmpRemainingDistance = Vector3.Distance (tmpPlayerCharacter.transform.position, tmpTargetPosition)
 
@@ -122,9 +128,9 @@ function PlayerSkillMovePlugin:OnExecute ()
             self.mNavMeshAgent.speed = tmpPlayerCharacter.moveSpeed
         end
 
-        tmpPlayerCharacter.targetPosition.y = tmpPlayerCharacter.transform.position.y
+        tmpPlayerCharacter.mTargetPosition.y = tmpPlayerCharacter.transform.position.y
 
-        Vector3 tmpTargetPosition = tmpPlayerCharacter.targetPosition
+        local tmpTargetPosition = tmpPlayerCharacter.mTargetPosition
         tmpTargetPosition.y = tmpPlayerCharacter.transform.position.y
 
         local tmpRemainingDistance = Vector3.Distance (tmpPlayerCharacter.transform.position, tmpTargetPosition)
@@ -143,13 +149,12 @@ function PlayerSkillMovePlugin:OnExecute ()
               
                 
                   print (self.mRemainingDistance .. "==" .. tmpRemainingDistance)
-            }
+            end
 
             tmpPlayerCharacter:SendMessage ("OnMoveToPointSucceed")
 
             tmpPlayerCharacter:PlaySkill (PlayerSkillType.Idle)
 
-        } 
         else 
 
             self.mRemainingDistance = tmpRemainingDistance

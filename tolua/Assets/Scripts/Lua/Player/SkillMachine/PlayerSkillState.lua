@@ -1,4 +1,5 @@
 require("Class")
+require("State")
 
 --引用UnityEngine.Time
 local Time = UnityEngine.Time
@@ -19,7 +20,7 @@ function SkillCancel:ctor(varSkillType, varBefore, varFadeLegnth)
     self.mFadeLength =varFadeLegnth
 end
 
---技能状态
+--技能状态,继承于State类
 PlayerSkillState = Class(State)
 
 function PlayerSkillState:ctor(name)

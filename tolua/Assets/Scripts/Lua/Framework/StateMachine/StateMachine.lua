@@ -26,7 +26,7 @@ function StateMachine:ChangeState(state)
     self.currentState = state
 
     --为状态设置状态机
-    self.currentState:SetMachine(self)
+    self.currentState:SetStateMachine(self)
     self.currentState:OnEnter()
 
     return true
@@ -35,11 +35,12 @@ end
 --状态机更新
 function StateMachine:OnExecute()
     
-    if self.isPause then
+    if self.pause then
         return
     end
 
     if self.currentState ~= nil then
+        print("StateMachine:OnExecute state:"..self.currentState.name )
 
         self.currentState:OnExecute()
     end

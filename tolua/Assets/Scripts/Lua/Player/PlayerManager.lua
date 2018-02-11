@@ -4,14 +4,9 @@ require("PlayerCharacter")
 
 local GameObject = UnityEngine.GameObject
 local Quaternion = UnityEngine.Quaternion
+local Camera = UnityEngine.Camera
 
 PlayerManager = Class(BehaviourBase).new()
-
-function PlayerManager:ctor()
-
-    self.mPlayerCharacterDic = {} --人物列表
-
-end
 
 --初始化函数
 function  PlayerManager:Initialize()
@@ -26,6 +21,8 @@ function  PlayerManager:Initialize()
         local behaviour = go:AddComponent(typeof(LuaBehaviour))  
         behaviour:Init(self)
         self:Init(behaviour)
+
+        self.mPlayerCharacterDic = {} --人物列表
 
     end
 
@@ -49,15 +46,17 @@ function  PlayerManager:CreatePlayerCharacter(varGuid,  varPlayerInfo, varCallba
 
 		tmpPlayerCharacter:CreatePlayerCharacter (varGuid, varPlayerInfo, function()
 
-			--[[
-			SmoothFollow tmpSmoothFollow = Camera.main.GetComponent<SmoothFollow>()
-			if(tmpSmoothFollow == null)tmpSmoothFollow = Camera.main.gameObject.AddComponent<SmoothFollow>()
-			tmpSmoothFollow.target = tmpPlayerCharacter.transform
-			tmpSmoothFollow.followBehind = false
-			tmpSmoothFollow.distance =3
-			tmpSmoothFollow.height = 8
-
-		    --]]
+            if varGuid == 0 then
+                local camera = GameObject("MainCamera")
+                GameObject.DontDestroyOnLoad(camera)
+                camera:AddComponent(typeof(Camera))
+                self.mSmoothFollow = camera:AddComponent(typeof(SmoothFollow))
+                self.mSmoothFollow.target = tmpPlayerCharacter.transform
+                self.mSmoothFollow.followBehind = false
+                self.mSmoothFollow.distance =3
+                self.mSmoothFollow.height = 8
+            end
+		
 
 			if varCallback ~= nil then
 
@@ -71,8 +70,8 @@ function  PlayerManager:CreatePlayerCharacter(varGuid,  varPlayerInfo, varCallba
         end
 
 
-       if self.mPlayerCharacterDic == nil then self.mPlayerCharacterDic = {} end
-       --table.insert(self.mPlayerCharacterDic, tmpPlayerCharacter)
+       --if self.mPlayerCharacterDic == nil then self.mPlayerCharacterDic = {} end
+       --able.insert(self.mPlayerCharacterDic, tmpPlayerCharacter)
        self.mPlayerCharacterDic[varGuid] = tmpPlayerCharacter
        
 end
@@ -80,5 +79,15 @@ end
 
 function PlayerManager:Update()
 
+    --print("PlayerManager:Update")
+    if self.mPlayerCharacterDic then
+
+        for k,v in pairs(self.mPlayerCharacterDic) do
+
+            v:Update()
+            --print("PlayerManager:Update " .. k)
+        end
+
+    end
 
 end
