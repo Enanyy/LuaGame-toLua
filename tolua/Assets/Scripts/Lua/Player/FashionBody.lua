@@ -1,6 +1,6 @@
 require("Class")
 require("BehaviourBase")
-local GameObject = UnityEngine.GameObject
+require("UnityClass")
 
 FashionBody = Class(BehaviourBase)
 

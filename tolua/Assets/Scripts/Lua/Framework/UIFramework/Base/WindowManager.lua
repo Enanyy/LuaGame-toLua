@@ -1,14 +1,6 @@
 require("Class")
 require("WindowPath")
-
-local GameObject = UnityEngine.GameObject
-local Camera = UnityEngine.Camera
-local CameraClearFlags = UnityEngine.CameraClearFlags
-local Screen = UnityEngine.Screen
-local Object = UnityEngine.Object
-local AudioListener = UnityEngine.AudioListener
-
-local Stack  = System.Collections.Stack
+require("UnityClass")
 
 --全局的WindowManager对象，继承于BehaviourBase
 WindowManager = Class(BehaviourBase).new()

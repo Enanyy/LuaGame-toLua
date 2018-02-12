@@ -1,9 +1,7 @@
 require("Class")
 require("BehaviourBase")
 require("WindowType")
-
-local GameObject = UnityEngine.GameObject
-local BoxCollider = UnityEngine.BoxCollider
+require("UnityClass")
 
 BaseWindow = Class(BehaciourBase)
 

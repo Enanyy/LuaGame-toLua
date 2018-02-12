@@ -1,8 +1,7 @@
 require("PlayerSkillPlugin")
+require("UnityClass")
 
-local Animation = UnityEngine.Animation
-local AnimationState = UnityEngine.AnimationState
-local WrapMode = UnityEngine.WrapMode
+
 
 PlayerSkillAnimationPlugin = Class(PlayerSkillPlugin)
 

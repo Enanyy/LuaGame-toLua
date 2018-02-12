@@ -2,10 +2,8 @@ require("Class")
 require("State")
 --包含所有配置和插件
 require("Configures")
+require("UnityClass")
 
-
---引用UnityEngine.Time
-local Time = UnityEngine.Time
 
 SkillChange = Class()
 function SkillChange:ctor(varSkillType, varEndAt, varBeginAt, varSpeed,  varFadeLength)

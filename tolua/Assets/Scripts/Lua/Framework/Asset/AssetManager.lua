@@ -2,14 +2,7 @@ require("Class")
 require("BehaviourBase")
 require("LoadTask")
 require("LoadedAssetBundle")
-
-local GameObject = UnityEngine.GameObject
-local Application = UnityEngine.Application
-local Queue = System.Collections.Queue
-
---Unity中的AssetBundle类
-local AssetBundle = UnityEngine.AssetBundle
-
+require("UnityClass")
 
 --new 一个全局对象，该对象的类继承于BehaviourBase
 AssetManager = Class(BehaviourBase).new()

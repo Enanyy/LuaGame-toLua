@@ -1,9 +1,6 @@
 require("Class")
 
-local Input = UnityEngine.Input
-local Physics = UnityEngine.Physics
-local LayerMask = UnityEngine.LayerMask
-local KeyCode = UnityEngine.KeyCode
+
 
 PlayerInput = Class()
 

@@ -1,8 +1,6 @@
 require("Class")
 require("File")
-
---Unity中的AssetBundle类
-local AssetBundle = UnityEngine.AssetBundle
+require("UnityClass")
 
 --资源加载任务类
 LoadTask = Class()

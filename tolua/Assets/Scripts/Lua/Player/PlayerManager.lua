@@ -3,15 +3,8 @@ require("PlayerInfo")
 require("PlayerCharacter")
 require("SmoothFollow")
 require("PlayerInput")
+require("UnityClass")
 
-local GameObject = UnityEngine.GameObject
-local Quaternion = UnityEngine.Quaternion
-local Camera = UnityEngine.Camera
-
---local NavMesh = UnityEngine.AI.NavMesh    -- Unity5.6
---local NavMeshHit = UnityEngine.AI.NavMeshHit --Unity5.6
-local NavMesh = UnityEngine.NavMesh    
-local NavMeshHit = UnityEngine.NavMeshHit
 
 PlayerManager = Class(BehaviourBase).new()
 

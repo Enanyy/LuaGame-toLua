@@ -1,7 +1,6 @@
 require("Class")
 require("BehaviourBase")
-
-local Time = UnityEngine.Time
+require("UnityClass")
 
 SmoothFollow = Class(BehaviourBase)
 local this = SmoothFollow
