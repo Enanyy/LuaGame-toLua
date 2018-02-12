@@ -86,6 +86,7 @@ function  PlayerManager:CreatePlayerCharacter(varGuid,  varPlayerInfo, varCallba
         if tmpFlag then
             tmpPlayerCharacter.transform.position = tmpHit.position
         end
+        tmpPlayerCharacter.transform.rotation = Quaternion.Euler(varPlayerInfo.direction.x, varPlayerInfo.direction.y, varPlayerInfo.direction.z)
 
         self.mPlayerCharacterDic[varGuid] = tmpPlayerCharacter
        

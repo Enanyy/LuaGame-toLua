@@ -10,6 +10,8 @@ function PlayerInfo:ctor(profession)
 
 	self.position = Vector3.zero
 
+	self.direction = Vector3.zero
+
 	self.baseSpeed = 5 --//基础移速
 
 	self.baseAttack = 1 --基础攻速
