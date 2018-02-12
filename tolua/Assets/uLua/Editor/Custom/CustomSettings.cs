@@ -38,6 +38,7 @@ public static class CustomSettings
         _DT(typeof(System.Action<int>)),
         _DT(typeof(System.Comparison<int>)),
         _DT(typeof(System.Func<int, int>)),
+        _DT(typeof(EventDelegate.Callback)),
     };
 
     //在这里添加你要导出注册到lua的类型列表
@@ -214,7 +215,7 @@ public static class CustomSettings
          _GT(typeof(NGUITools)),
          _GT(typeof(NGUIText)),
          _GT(typeof(EventDelegate)),
-         
+
 
     };
 
