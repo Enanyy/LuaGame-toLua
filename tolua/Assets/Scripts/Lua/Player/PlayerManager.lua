@@ -7,8 +7,10 @@ local Quaternion = UnityEngine.Quaternion
 local Camera = UnityEngine.Camera
 local Input = UnityEngine.Input
 local Physics = UnityEngine.Physics
-local NavMesh = UnityEngine.AI.NavMesh
-local NavMeshHit = UnityEngine.AI.NavMeshHit
+--local NavMesh = UnityEngine.AI.NavMesh    -- Unity5.6
+--local NavMeshHit = UnityEngine.AI.NavMeshHit --Unity5.6
+local NavMesh = UnityEngine.NavMesh    
+local NavMeshHit = UnityEngine.NavMeshHit
 
 PlayerManager = Class(BehaviourBase).new()
 
