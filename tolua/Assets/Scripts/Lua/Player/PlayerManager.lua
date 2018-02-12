@@ -31,8 +31,6 @@ function  PlayerManager:Initialize()
 
         self.mPlayerCharacterDic = {}           --人物列表
 
-        self.mPlayerCharacterSelf = nil         --自己
-
     end
 
     return self
@@ -78,7 +76,7 @@ function  PlayerManager:CreatePlayerCharacter(varGuid,  varPlayerInfo, varCallba
                 NGUITools.MakeMask(self.mCamera, layer)
                 NGUITools.SetLayer(camera, layer)
 
-                self.mPlayerCharacterSelf = tmpPlayerCharacter
+              
                 --输入控制
                 self.mPlayerInput = PlayerInput.new(tmpPlayerCharacter,self.mCamera)
             end
@@ -141,7 +139,7 @@ function PlayerManager:RemovePlayerCharacter(varGuid)
            GameObject.Destroy(tmpPlayerCharacter.gameObject) 
         end
         tmpPlayerCharacter = nil
-        
+
     end
 end
 

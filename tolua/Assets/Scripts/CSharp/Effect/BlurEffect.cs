@@ -17,7 +17,7 @@ public class BlurEffect : MonoBehaviour
 
     //降采样次数
     [Range(0, 6), Tooltip("[降采样次数]向下采样的次数。此值越大,则采样间隔越大,需要处理的像素点越少,运行速度越快。")]
-    public int downSample = 5;
+    public int downSample = 1;
     //模糊扩散度
     [Range(0.0f, 20.0f), Tooltip("[模糊扩散度]进行高斯模糊时，相邻像素点的间隔。此值越大相邻像素间隔越远，图像越模糊。但过大的值会导致失真。")]
     public float blurSpreadRate = 3.0f;
@@ -67,9 +67,8 @@ public class BlurEffect : MonoBehaviour
         }
     }
 
-    RenderTexture mRenderTexture;
+    RenderTexture renderBuffer;
 
-    public RenderTexture currentTexture { get { return mRenderTexture; } }
 
     void OnRenderImage(RenderTexture sourceTexture, RenderTexture destTexture)
     {
@@ -89,7 +88,10 @@ public class BlurEffect : MonoBehaviour
 
             // 【1】处理Shader的通道0，用于降采样 ||Pass 0,for down sample
             //准备一个缓存renderBuffer，用于准备存放最终数据
-            RenderTexture renderBuffer = RenderTexture.GetTemporary(renderWidth, renderHeight, 0, sourceTexture.format);
+            if (renderBuffer == null)
+            {
+                renderBuffer = RenderTexture.GetTemporary(renderWidth, renderHeight, 0, sourceTexture.format);
+            }
             //设置渲染模式：双线性
             renderBuffer.filterMode = FilterMode.Bilinear;
             //拷贝sourceTexture中的渲染数据到renderBuffer,并仅绘制指定的pass0的纹理数据
@@ -129,19 +131,9 @@ public class BlurEffect : MonoBehaviour
 
             //拷贝最终的renderBuffer到目标纹理，并绘制所有通道的纹理到屏幕
             Graphics.Blit(renderBuffer, destTexture);
-            if(mRenderTexture==null)
-            {
-                mRenderTexture = RenderTexture.GetTemporary(renderBuffer.width, renderBuffer.height, 0, renderBuffer.format);
-            }
-            Graphics.Blit(renderBuffer, mRenderTexture);
-
+        
             //清空renderBuffer
-            RenderTexture.ReleaseTemporary(renderBuffer);
-
-            if(OnRenderFinish!=null)
-            {
-                OnRenderFinish();
-            }
+            //RenderTexture.ReleaseTemporary(renderBuffer);
         }
 
         //着色器实例为空，直接拷贝屏幕上的效果。此情况下是没有实现屏幕特效的
@@ -188,9 +180,9 @@ public class BlurEffect : MonoBehaviour
             DestroyImmediate(mMaterial);
         }
 
-        if(mRenderTexture)
+        if(renderBuffer)
         {
-            RenderTexture.ReleaseTemporary(mRenderTexture);
+            RenderTexture.ReleaseTemporary(renderBuffer);
         }
     }
 
@@ -204,9 +196,9 @@ public class BlurEffect : MonoBehaviour
 
     private void OnDisable()
     {
-        if (mRenderTexture)
+        if (renderBuffer)
         {
-            RenderTexture.ReleaseTemporary(mRenderTexture);
+            RenderTexture.ReleaseTemporary(renderBuffer);
         }
     }
 }

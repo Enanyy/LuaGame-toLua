@@ -165,11 +165,11 @@ public static class CustomSettings
         _GT(typeof(RenderTexture)),
         _GT(typeof(Resources)),     
         _GT(typeof(LuaProfiler)),
+        
 
         //LuaGame
         _GT(typeof(LuaGame)),
         _GT(typeof(LuaBehaviour)),
-        _GT(typeof(SmoothFollow)),
 
         //Effect    
         _GT(typeof(BlurEffect)),
