@@ -22,6 +22,12 @@ function PlayerInput:Update()
 
         if Input.GetMouseButtonDown (0) then
            
+            --点击了UI
+            if UICamera.Raycast(Input.mousePosition) == true then
+            
+                return
+            end
+
             local tmpRay = self.mCamera:ScreenPointToRay (Input.mousePosition)
             local tmpLayer = 2 ^ LayerMask.NameToLayer("Default")                
 

@@ -1,5 +1,6 @@
 require("Class")
 require("BehaviourBase")
+require("WindowType")
 
 local GameObject = UnityEngine.GameObject
 local BoxCollider = UnityEngine.BoxCollider
@@ -14,42 +15,46 @@ function BaseWindow:ctor(behaviour, path, wondowType)
 
    self.path = path
    --window类型
-   --0、一直处于栈底的 只能有唯一的，比如游戏主界面
-   --1、一般的,会隐藏上一个窗口
-   --2、弹出框，不隐藏上一个窗口
+  
    self.wondowType = wondowType  
    self.isPause = false
-
+   self.useMask = true
 end 
 
 function BaseWindow:OnEnter()
 
-        local go = GameObject("Mask")
-        go.transform:SetParent(self.transform)
-        go.transform:SetAsFirstSibling()
-        go.transform.localPosition = Vector3.zero
-        go.transform.localScale = Vector3.one
-        go.transform.localRotation = Quaternion.identity
+    if self.useMask then
+        self:CreateMask()
+    end
+       
+end
 
-        self.mask = go
+function BaseWindow:CreateMask()
 
-        local box = go:AddComponent(typeof(BoxCollider))
-        box.center = Vector3.zero
+    local go = GameObject("Mask")
+    go.transform:SetParent(self.transform)
+    go.transform:SetAsFirstSibling()
+    go.transform.localPosition = Vector3.zero
+    go.transform.localScale = Vector3.one
+    go.transform.localRotation = Quaternion.identity
 
-        local widget = go:AddComponent(typeof(UIWidget))
-        widget.depth = -1
+    self.mask = go
 
-        local root = WindowManager.uiRoot
+    local box = go:AddComponent(typeof(BoxCollider))
+    box.center = Vector3.zero
 
-        widget.width = root.manualWidth
-        widget.height = root.manualHeight
-        widget.autoResizeBoxCollider = true
-        widget:SetAnchor(gameObject,0,0,0,0)
-      
-        widget:ResizeCollider()
+    local widget = go:AddComponent(typeof(UIWidget))
+    widget.depth = -1
 
-        
+    local root = WindowManager.uiRoot
+
+    widget.width = root.manualWidth
+    widget.height = root.manualHeight
+    widget.autoResizeBoxCollider = true
+    widget:SetAnchor(gameObject,0,0,0,0)
   
+    widget:ResizeCollider()
+
 end
 
 function BaseWindow:OnPause()

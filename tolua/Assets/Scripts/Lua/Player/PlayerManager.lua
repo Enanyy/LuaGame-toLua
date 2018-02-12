@@ -38,8 +38,11 @@ function  PlayerManager:Initialize()
 end
 
 function  PlayerManager:CreatePlayerCharacter(varGuid,  varPlayerInfo, varCallback)
-	
+    
+        local layer = LayerMask.NameToLayer("Default")
+    
 		local go =  GameObject (tostring(varGuid))
+        NGUITools.SetLayer(go, layer)
 
 		go.transform:SetParent (self.transform)
 		go.transform.localScale = Vector3.one
@@ -57,12 +60,16 @@ function  PlayerManager:CreatePlayerCharacter(varGuid,  varPlayerInfo, varCallba
             if varGuid == 0 then
                 local camera = GameObject("MainCamera")
                 GameObject.DontDestroyOnLoad(camera)
+                camera.tag = "MainCamera"
                 self.mCamera = camera:AddComponent(typeof(Camera))
                 self.mSmoothFollow = camera:AddComponent(typeof(SmoothFollow))
                 self.mSmoothFollow.target = tmpPlayerCharacter.transform
                 self.mSmoothFollow.followBehind = false
                 self.mSmoothFollow.distance =3
                 self.mSmoothFollow.height = 8
+
+                NGUITools.MakeMask(self.mCamera, layer)
+                NGUITools.SetLayer(camera, layer)
 
                 self.mPlayerCharacterSelf = tmpPlayerCharacter
                 --输入控制

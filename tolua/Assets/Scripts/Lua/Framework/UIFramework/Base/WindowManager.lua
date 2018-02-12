@@ -38,7 +38,8 @@ function  WindowManager:Initialize()
         camera.clearFlags = CameraClearFlags.Depth
         NGUITools.MakeMask(camera, self.uiLayer)
         NGUITools.SetLayer(self.uiCamera.gameObject, self.uiLayer)
-        self.uiCamera:GetComponent( typeof(Camera)).depth = 1
+        camera.depth = 1
+
 
         self.uiRoot = p:GetComponent(typeof(UIRoot))
         self.uiRoot.scalingStyle = UIRoot.Scaling.Constrained
@@ -165,7 +166,7 @@ function WindowManager:Open(class, name, callback)
 
                     behaviour:Init(t)
 
-                    if  t.windowType == 0 then
+                    if  t.windowType == WindowType.Root then
                     
                         --查找看看是否已经有 root window
                         local window = self:Find(0)
@@ -206,7 +207,7 @@ function WindowManager:Push(t, callback)
         if self.mWindowStack.Count > 0 then
 
                 --打开Root 关闭其他的
-                if  t.windowType == 0 then
+                if  t.windowType == WindowType.Root then
                 
                     while (self.mWindowStack.Count > 0)
                     do
@@ -221,7 +222,7 @@ function WindowManager:Push(t, callback)
                         end
                     end
                 
-                elseif t.windowType == 2 then
+                elseif t.windowType == WindowType.Pop then
                 
                     --Pop类型的不需要暂停上一个窗口
                 
@@ -318,7 +319,7 @@ function WindowManager:Close()
         local window = self.mWindowStack:Pop()
 
         --主界面不关闭
-        if window and window.windowType ~= 0 then 
+        if window and window.windowType ~= WindowType.Root then 
             window:OnExit()
         end 
 
@@ -363,14 +364,14 @@ function WindowManager:Show()
 
            
             --弹出类型
-            if window.windowType == 2 then
+            if window.windowType == WindowType.Pop then
 
                 self.mTmpWindowStack:Clear()
 
                 while ( self.mWindowStack.Count > 0)
                 do
                     local w = self.mWindowStack:Peek()
-                    if w.windowType ~= 2 then
+                    if w.windowType ~= WindowType.Pop then
                         w:OnResume()
                         break
                     else
@@ -436,4 +437,11 @@ function WindowManager:SetBlur()
         self.mWindowStack:Push(w)
     end
     self.blurEffect.enabled = self.mWindowStack.Count > 1
+    
+    if Camera.main then 
+        local blurEffect = Camera.main:GetComponent(typeof(BlurEffect))
+        if blurEffect == nil then blurEffect = Camera.main.gameObject:AddComponent(typeof(BlurEffect)) end
+
+        blurEffect.enabled = self.blurEffect.enabled
+    end
 end

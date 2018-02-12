@@ -7,8 +7,9 @@ local this = UI_Main
 
 function this:ctor(behaviour, path)
     self.path  = path
-    self.windowType = 0 --主界面
-
+    self.windowType = WindowType.Root --主界面
+    self.useMask = false 
+    
     --不用重写基类的函数，就不需要保存基类的base对象了
     --self.base = BaseWindow.new(behaviour, self.path, self.windowType)
 end

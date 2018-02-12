@@ -7,7 +7,7 @@ local this = UI_Dialog
 
 function this:ctor(behaviour, path)
     self.path  = path
-    self.windowType = 2 --弹出行界面
+    self.windowType = WindowType.Pop --弹出行界面
 
     self.base = BaseWindow.new(behaviour, self.path, self.windowType)
 

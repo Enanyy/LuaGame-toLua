@@ -25,7 +25,8 @@ function FashionBody:Start()
 
             local go = GameObject.Instantiate(varObject)
 			go:SetActive(true)
-			go.transform:SetParent(self.transform)
+            go.transform:SetParent(self.transform)
+            NGUITools.SetLayer(go, self.gameObject.layer)
 			go.transform.localPosition = Vector3.zero
 			go.transform.localRotation = Quaternion.identity
 			go.transform.localScale = Vector3.one

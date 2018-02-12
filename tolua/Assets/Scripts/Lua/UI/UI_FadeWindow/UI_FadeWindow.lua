@@ -8,7 +8,7 @@ local this = UI_FadeWindow
 
 function this:ctor(behaviour, path)
     self.path  = path
-    self.windowType = 1 --普通界面
+    self.windowType = WindowType.Normal --普通界面
 
     --因为要重写基类的OnPause、OnResume和OnExit方法做一些动画
     --所以要保存一份基类的对象，以调用基类的方法，因为重写后基类的方法被覆盖了
