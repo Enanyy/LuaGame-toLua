@@ -17,13 +17,13 @@ public class BlurEffect : MonoBehaviour
 
     //降采样次数
     [Range(0, 6), Tooltip("[降采样次数]向下采样的次数。此值越大,则采样间隔越大,需要处理的像素点越少,运行速度越快。")]
-    public int downSample = 2;
+    public int downSample = 5;
     //模糊扩散度
     [Range(0.0f, 20.0f), Tooltip("[模糊扩散度]进行高斯模糊时，相邻像素点的间隔。此值越大相邻像素间隔越远，图像越模糊。但过大的值会导致失真。")]
     public float blurSpreadRate = 3.0f;
     //迭代次数
     [Range(0, 8), Tooltip("[迭代次数]此值越大,则模糊操作的迭代次数越多，模糊效果越好，但消耗越大。")]
-    public int blurIterations = 3;
+    public int blurIterations = 2;
 
     Shader shader
     {

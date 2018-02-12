@@ -82,7 +82,10 @@ function Main:OnLevelWasLoaded(level)
 
 	local tmpPlayerInfo = PlayerInfo.new(1)
 	tmpPlayerInfo.guid = 0
-	
+	tmpPlayerInfo.baseSpeed = 6
+	tmpPlayerInfo.moveSpeedAddition = 0.3
+	tmpPlayerInfo.character = "Ahri"
+	tmpPlayerInfo.skin = "Ahri"
 
 	local t = {}
 	t[0] = "1111"

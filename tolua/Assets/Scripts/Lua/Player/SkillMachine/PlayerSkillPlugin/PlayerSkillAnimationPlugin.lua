@@ -22,8 +22,8 @@ function PlayerSkillAnimationPlugin:Init(configure)
 
     local tmpPlayerCharacter = self.machine.mPlayerCharacter
 
-    if tmpPlayerCharacter.mBody then
-        self.mAnimation = tmpPlayerCharacter.mBody.transform:GetComponentInChildren(typeof(Animation))
+    if tmpPlayerCharacter.mFashionBody then
+        self.mAnimation = tmpPlayerCharacter.mFashionBody.transform:GetComponentInChildren(typeof(Animation))
 
     end
 

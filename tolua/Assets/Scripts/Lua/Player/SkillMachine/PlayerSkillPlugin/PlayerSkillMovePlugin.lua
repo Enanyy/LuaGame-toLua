@@ -4,6 +4,8 @@ require("PlayerSkillPlugin")
 --local NavMeshPathStatus = UnityEngine.AI.NavMeshPathStatus  --Unity5.6
 local NavMeshAgent =  UnityEngine.NavMeshAgent
 local NavMeshPathStatus = UnityEngine.NavMeshPathStatus
+local Time = UnityEngine.Time
+
 
 PlayerSkillMovePlugin = Class(PlayerSkillPlugin)
 
@@ -14,6 +16,8 @@ function PlayerSkillMovePlugin:ctor(name)
 
     self.mBeginMove =false
     self.mFindPath =false
+
+    self.mPathPendingTime = 0  --mNavMeshAgent计算路径的时长，超过1s寻路失败
 end 
 
 function PlayerSkillMovePlugin:Init(configure)
@@ -44,10 +48,9 @@ function PlayerSkillMovePlugin:OnEnter ()
     self.mRemainingDistance = 0
     self.mBeginMove = false
     self.mFindPath = false
-    
-  
+     
     self.mNavMeshAgent.enabled = true
-
+    self.mPathPendingTime = 0
 
 end
 
@@ -89,10 +92,18 @@ function PlayerSkillMovePlugin:OnExecute ()
 
     if self.mBeginMove == false then
         if self.mFindPath then
+            
             if self.mNavMeshAgent.pathPending then
-                --是在计算过程中的路径，但尚未准备好
-                return
+            
+                self.mPathPendingTime = self.mPathPendingTime + Time.deltaTime
+                if self.mPathPendingTime < 1 then
+                    --是在计算过程中的路径，但尚未准备好
+                    return
+                end
             end
+
+            self.mPathPendingTime = 0
+
 
             if self.mNavMeshAgent.hasPath and self.mNavMeshAgent.pathStatus == NavMeshPathStatus.PathComplete then
 
@@ -112,11 +123,12 @@ function PlayerSkillMovePlugin:OnExecute ()
             end
         else 
 
+            
             local tmpTargetPosition = tmpPlayerCharacter.mTargetPosition
             tmpTargetPosition.y = tmpPlayerCharacter.transform.position.y
             local tmpRemainingDistance = Vector3.Distance (tmpPlayerCharacter.transform.position, tmpTargetPosition)
 
-            if tmpRemainingDistance <= self.mStopDistance or (self.mRemainingDistance == tmpRemainingDistance and self.mNavMeshAgent.velocity == Vector3.zero) then
+            if tmpRemainingDistance <= self.mStopDistance or ( (tmpRemainingDistance - self.mRemainingDistance)  < self.STOPING_DISTANCE and self.mNavMeshAgent.velocity == Vector3.zero) then
 
                 tmpPlayerCharacter:PlaySkill(PlayerSkillType.Idle)
 
@@ -146,14 +158,14 @@ function PlayerSkillMovePlugin:OnExecute ()
         if tmpRemainingDistance <= self.mStopDistance
             or self.mNavMeshAgent.remainingDistance <= self.mStopDistance
             or tmpPlayerCharacter.targetPosition == Vector3.zero
-            or (self.mRemainingDistance == tmpRemainingDistance and self.mNavMeshAgent.velocity == Vector3.zero)
+            or ((tmpRemainingDistance - self.mRemainingDistance)  < self.STOPING_DISTANCE and self.mNavMeshAgent.velocity == Vector3.zero)
         then
 
                 self.mBeginMove = false
                 self.mFindPath = false
                 self.mStopDistance = self.STOPING_DISTANCE
 
-            if self.mRemainingDistance == tmpRemainingDistance then
+            if (tmpRemainingDistance - self.mRemainingDistance)  < self.STOPING_DISTANCE then
                
                   print (self.mRemainingDistance .. "==" .. tmpRemainingDistance)
             end

@@ -1,12 +1,11 @@
 require("Class")
 require("BehaviourBase")
 local GameObject = UnityEngine.GameObject
-local Quaternion = UnityEngine.Quaternion
 
 FashionBody = Class(BehaviourBase)
 
 function FashionBody:ctor()
-
+    self.mBody  = nil 
 end
 
 function FashionBody:SetData(varPlayerCharacter, varCallback)
@@ -18,7 +17,9 @@ end
 function FashionBody:Start()
 
     print("FashionBody:Start")
-    local tmpPath = "Assets/R/Character/Ahri/Prefabs/Ahri.prefab"
+    local tmpPlayerInfo = self.mPlayerCharacter.mPlayerInfo
+    if tmpPlayerInfo == nil then return end 
+    local tmpPath = string.format("Assets/R/Character/%s/Prefabs/%s.prefab",tmpPlayerInfo.character, tmpPlayerInfo.skin) 
     AssetManager:Load ("assetbundle.unity3d", tmpPath, function(varObject) 
     
         if varObject then

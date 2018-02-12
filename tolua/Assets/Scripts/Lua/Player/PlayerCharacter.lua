@@ -11,6 +11,7 @@ PlayerCharacter = Class(BehaviourBase)
 function PlayerCharacter:ctor()
 
     self.mTargetPosition = Vector3.zero
+    self.mFashionBody = nil
 
 end
 
@@ -28,12 +29,12 @@ function PlayerCharacter:CreatePlayerCharacter( varGuid, varPlayerInfo, varCallb
 	tmpBody.transform.localScale = Vector3.one
 	tmpBody.transform.transform.localRotation = Quaternion.identity
 
-    self.mBody = FashionBody.new()
+    self.mFashionBody = FashionBody.new()
     local behaviour = tmpBody:AddComponent (typeof(LuaBehaviour))
-    behaviour:Init(self.mBody)
-    self.mBody:Init(behaviour)
+    behaviour:Init(self.mFashionBody)
+    self.mFashionBody:Init(behaviour)
 
-	self.mBody:SetData (self, function (varBody)
+	self.mFashionBody:SetData (self, function (varBody)
 		
 			self:InitWithConfigure()
 		
