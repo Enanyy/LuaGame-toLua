@@ -28,7 +28,7 @@ function  WindowManager:Initialize()
 
         local behaviour = go:AddComponent(typeof(LuaBehaviour))  
         behaviour:Init(self)
-
+        self:Init(behaviour)
         
         local p = NGUITools.CreateUI(false)
         p.transform:SetParent(behaviour.transform)

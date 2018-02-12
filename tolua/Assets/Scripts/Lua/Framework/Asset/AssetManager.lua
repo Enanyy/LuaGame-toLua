@@ -32,6 +32,7 @@ function AssetManager:Initialize()
 
         local behaviour = go:AddComponent(typeof(LuaBehaviour))  
         behaviour:Init(self)
+        self:Init(self)
     end
 
     return self

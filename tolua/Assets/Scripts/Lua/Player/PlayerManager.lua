@@ -1,12 +1,12 @@
 require("Class")
 require("PlayerInfo")
 require("PlayerCharacter")
+require("PlayerInput")
 
 local GameObject = UnityEngine.GameObject
 local Quaternion = UnityEngine.Quaternion
 local Camera = UnityEngine.Camera
-local Input = UnityEngine.Input
-local Physics = UnityEngine.Physics
+
 --local NavMesh = UnityEngine.AI.NavMesh    -- Unity5.6
 --local NavMeshHit = UnityEngine.AI.NavMeshHit --Unity5.6
 local NavMesh = UnityEngine.NavMesh    
@@ -65,6 +65,8 @@ function  PlayerManager:CreatePlayerCharacter(varGuid,  varPlayerInfo, varCallba
                 self.mSmoothFollow.height = 8
 
                 self.mPlayerCharacterSelf = tmpPlayerCharacter
+                --输入控制
+                self.mPlayerInput = PlayerInput.new(tmpPlayerCharacter,self.mCamera)
             end
 		
 
@@ -96,24 +98,7 @@ function PlayerManager:Update()
 
     end
 
-    if self.mCamera then
-
-        if Input.GetMouseButtonDown (0) then
-           
-            local tmpRay = self.mCamera:ScreenPointToRay (Input.mousePosition)
-            local tmpLayer = 2 ^ LayerMask.NameToLayer("Default")                
-
-            local tmpFlag, tmpHit = Physics.Raycast(tmpRay,nil, 5000, tmpLayer)
-         
-
-            if tmpFlag then
-                if self.mPlayerCharacterSelf then
-                    self.mPlayerCharacterSelf:MoveToPoint(tmpHit.point)
-                end
-            end
-
-        end
-
+    if self.mPlayerInput then
+        self.mPlayerInput:Update()
     end
-
 end

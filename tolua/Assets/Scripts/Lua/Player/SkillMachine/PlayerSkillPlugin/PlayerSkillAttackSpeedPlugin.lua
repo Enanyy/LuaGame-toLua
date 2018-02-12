@@ -1,19 +1,17 @@
 require("PlayerSkillPlugin")
 
-PlayerSkillMoveSpeedPlugin = Class(PlayerSkillPlugin)
+PlayerSkillAttackSpeedPlugin = Class(PlayerSkillPlugin)
 
-function PlayerSkillMoveSpeedPlugin:ctor(name)
+function PlayerSkillAttackSpeedPlugin:ctor(name)
 
     self.mBeginAt = -1
-
 end
 
-function PlayerSkillMoveSpeedPlugin:OnExecute()
+
+function PlayerSkillAttackSpeedPlugin:OnExecute()
 
     if self.mPlayerSkillState.mChanging then
-    
         return
-
     end
 
     local tmpPlayerCharacter = self.machine.mPlayerCharacter
@@ -39,8 +37,6 @@ function PlayerSkillMoveSpeedPlugin:OnExecute()
 
     if self.mPlayerSkillState.mRunTime > self.mBeginAt then
     
-        self.mPlayerSkillState.mSpeed = 1 + tmpPlayerCharacter.mPlayerInfo.moveSpeedAddition
-        tmpPlayerCharacter.moveSpeed = tmpPlayerCharacter.mPlayerInfo.baseSpeed * self.mPlayerSkillState.mSpeed
+        self.mPlayerSkillState.mSpeed = 1 + tmpPlayerCharacter.mPlayerInfo.attackSpeedAddition
     end
-
 end

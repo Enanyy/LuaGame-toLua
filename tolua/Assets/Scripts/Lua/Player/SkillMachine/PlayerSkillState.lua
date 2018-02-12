@@ -1,10 +1,8 @@
 require("Class")
 require("State")
+--包含所有配置和插件
+require("Configures")
 
---包含所有插件
-require("PlayerSkillAnimationPlugin")
-require("PlayerSkillMovePlugin")
-require("PlayerSkillMoveSpeedPlugin")
 
 --引用UnityEngine.Time
 local Time = UnityEngine.Time

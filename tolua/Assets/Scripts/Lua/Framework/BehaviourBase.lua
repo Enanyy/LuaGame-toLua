@@ -5,15 +5,23 @@
 BehaviourBase = Class()
 
 ---构造函数 Class函数构造调用
-function BehaviourBase:ctor()
-    self.behaviour = nil  ---保存C# LuaBehaviour类的对象
-    self.gameObject = nil ---对应的gameObject
-    self.transform = nil  ---对应的transform组件
+function BehaviourBase:ctor(behaviour)
+    self.behaviour = behaviour or nil                     ---保存C# LuaBehaviour类的对象
+    if self.behaviour then 
+        self.gameObject = self.behaviour.gameObject 
+        self.transform = self.behaviour.transform
+    end
+    
+
 end
 
 ---初始化函数，LuaBehaviour.cs中调用
 function BehaviourBase:Init(behaviour)
-    self.behaviour = behaviour
-    self.gameObject = behaviour.gameObject
-    self.transform = behaviour.transform
+    self.behaviour = behaviour or nil
+    if self.behaviour then 
+        self.gameObject = self.behaviour.gameObject 
+        self.transform = self.behaviour.transform
+    else
+        error("BehaviourBase:Init behaviour nil")
+    end
 end

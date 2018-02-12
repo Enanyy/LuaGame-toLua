@@ -2,7 +2,7 @@ require("StateMachine")
 require("PlayerSkillState")
 require("PlayerSkillType")
 --包含所有配置
-require("Ahri")
+require("Configures")
 
 
 PlayerSKillMachine = Class(StateMachine)
