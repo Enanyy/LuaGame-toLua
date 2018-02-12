@@ -8,6 +8,8 @@ function PlayerInfo:ctor(profession)
 
 	self.profession = profession
 
+	self.position = Vector3.zero
+
 	self.baseSpeed = 5 --//基础移速
 
 	self.baseAttack = 1 --基础攻速
@@ -17,6 +19,7 @@ function PlayerInfo:ctor(profession)
 	self.moveSpeedAddition = 0.0 --移速加成
 
 	self.character = "Ahri"  --角色
+
 	self.skin = "Ahri"		 --皮肤
 
 end

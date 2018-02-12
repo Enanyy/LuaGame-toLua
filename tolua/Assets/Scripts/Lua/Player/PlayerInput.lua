@@ -78,4 +78,43 @@ function PlayerInput:Update()
         self.mPlayerCharacter:PlaySkill (PlayerSkillType.Idle)
     end
 
+    --移除一个人物
+    if  Input.GetKeyDown (KeyCode.V) then 
+        PlayerManager:RemovePlayerCharacter(2)
+    end
+
+    ---切换控制目标
+    if  Input.GetKeyDown (KeyCode.LeftShift) then 
+        
+        if self.mLastGuid == nil then
+            self.mLastGuid = self.mPlayerCharacter.mGuid
+        end
+
+        local tmpLastPlayerCharacter
+
+        PlayerManager:Foreach(function (varPlayerCharacter) 
+            
+            if varPlayerCharacter and varPlayerCharacter.mGuid ~= self.mPlayerCharacter.mGuid then
+
+                tmpLastPlayerCharacter = varPlayerCharacter
+                if tmpLastPlayerCharacter.mGuid ~= self.mLastGuid then
+                    return true
+                end
+              
+            end
+
+        end)
+
+        if tmpLastPlayerCharacter then
+            self.mLastGuid = self.mPlayerCharacter.mGuid
+
+            self.mPlayerCharacter = tmpLastPlayerCharacter 
+
+            local tmpSmoothFollow = PlayerManager.mSmoothFollow
+            if tmpSmoothFollow then
+                tmpSmoothFollow.target = self.mPlayerCharacter.transform
+            end
+        end
+    end
+
 end

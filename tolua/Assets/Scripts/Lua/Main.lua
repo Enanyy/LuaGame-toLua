@@ -54,18 +54,9 @@ function Main:Start()
 	else
 		print("a != b")		
 	end
-	--]]
+	
 	--self:TestOverWrite()
-	
-	--[[ 
-	
-	AssetManager:Load("assetbundle.unity3d", "Assets/R/UI/UI_Main/UI_Main.prefab", function (varObject) 
-		if varObject then
-			local go = GameObject.Instantiate(varObject)
-		end
-	end)
-	--local dataPath = AssetManager.GetAssetBundlePath()
-	--print(dataPath)
+		
 	--]]
 	WindowManager:Open(UI_Main, "UI_Main")
 	
@@ -77,20 +68,44 @@ end
 function Main:OnLevelWasLoaded(level)
 	collectgarbage("collect")
 
-	print("Main:OnLevelWasLoaded")
 	Time.timeSinceLevelLoad = 0
 
 	local tmpPlayerInfo = PlayerInfo.new(1)
 	tmpPlayerInfo.guid = 0
+	tmpPlayerInfo.position = Vector3.New(4,0, 8)
 	tmpPlayerInfo.baseSpeed = 6
 	tmpPlayerInfo.moveSpeedAddition = 0.3
 	tmpPlayerInfo.character = "Ahri"
 	tmpPlayerInfo.skin = "Ahri_shadowfox"
 
-	local t = {}
-	t[0] = "1111"
 
-	PlayerManager:CreatePlayerCharacter(0, tmpPlayerInfo, function (varPlayerCharacter) 
+	PlayerManager:CreatePlayerCharacter(tmpPlayerInfo.guid, tmpPlayerInfo, function (varPlayerCharacter) 
+	
+	
+	end)
+
+	local tmpPlayerInfo1 = PlayerInfo.new(1)
+	tmpPlayerInfo1.guid = 1
+	tmpPlayerInfo1.position = Vector3.New(5,0, 6)
+	tmpPlayerInfo1.baseSpeed = 6
+	tmpPlayerInfo1.moveSpeedAddition = 0.3
+	tmpPlayerInfo1.character = "Ahri"
+	tmpPlayerInfo1.skin = "Ahri"
+
+	PlayerManager:CreatePlayerCharacter(tmpPlayerInfo1.guid, tmpPlayerInfo1, function (varPlayerCharacter) 
+	
+	
+	end)
+
+	local tmpPlayerInfo2 = PlayerInfo.new(1)
+	tmpPlayerInfo2.guid = 2
+	tmpPlayerInfo2.position = Vector3.New(5,0, 8)
+	tmpPlayerInfo2.baseSpeed = 6
+	tmpPlayerInfo2.moveSpeedAddition = 0.3
+	tmpPlayerInfo2.character = "Ahri"
+	tmpPlayerInfo2.skin = "Ahri_hanbok"
+
+	PlayerManager:CreatePlayerCharacter(tmpPlayerInfo2.guid, tmpPlayerInfo2, function (varPlayerCharacter) 
 	
 	
 	end)

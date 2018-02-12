@@ -91,7 +91,7 @@ function  PlayerManager:CreatePlayerCharacter(varGuid,  varPlayerInfo, varCallba
             end
         end)
 
-        local tmpFlag, tmpHit = NavMesh.SamplePosition(Vector3.zero, nil, 10, NavMesh.AllAreas)
+        local tmpFlag, tmpHit = NavMesh.SamplePosition(varPlayerInfo.position, nil, 10, NavMesh.AllAreas)
         if tmpFlag then
             tmpPlayerCharacter.transform.position = tmpHit.position
         end
@@ -114,5 +114,48 @@ function PlayerManager:Update()
 
     if self.mPlayerInput then
         self.mPlayerInput:Update()
+    end
+end
+
+function PlayerManager:GetPlayerCharacter(varGuid)
+
+    if self.mPlayerCharacterDic then
+
+        for k,v in pairs(self.mPlayerCharacterDic) do
+            if v.mGuid == varGuid then
+                return v
+            end
+        end
+    end
+
+    return nil
+end
+
+function PlayerManager:RemovePlayerCharacter(varGuid)
+    
+    if self.mPlayerCharacterDic then
+        local tmpPlayerCharacter = self.mPlayerCharacterDic[varGuid]
+        table.remove( self.mPlayerCharacterDic, varGuid)
+
+        if tmpPlayerCharacter then
+           GameObject.Destroy(tmpPlayerCharacter.gameObject) 
+        end
+        tmpPlayerCharacter = nil
+        
+    end
+end
+
+--遍历mPlayerCharacterDic, func返回true跳出遍历
+function PlayerManager:Foreach(func)
+
+    if func == nil then return end
+
+    if self.mPlayerCharacterDic then
+        for k,v in pairs(self.mPlayerCharacterDic) do
+           
+            if func(v) then
+                return 
+            end
+        end
     end
 end
