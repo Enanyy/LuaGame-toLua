@@ -94,9 +94,10 @@ function PlayerSkillMovePlugin:OnExecute ()
         if self.mFindPath then
             
             if self.mNavMeshAgent.pathPending then
-            
+
                 self.mPathPendingTime = self.mPathPendingTime + Time.deltaTime
-                if self.mPathPendingTime < 1 then
+                --1s内都没计算出来就寻路失败吧
+                if self.mPathPendingTime < 0.5 then
                     --是在计算过程中的路径，但尚未准备好
                     return
                 end
@@ -104,15 +105,14 @@ function PlayerSkillMovePlugin:OnExecute ()
 
             self.mPathPendingTime = 0
 
-
             if self.mNavMeshAgent.hasPath and self.mNavMeshAgent.pathStatus == NavMeshPathStatus.PathComplete then
-
 
                 self.mBeginMove = true
 
-             elseif self.mNavMeshAgent.pathStatus == NavMeshPathStatus.PathInvalid
-                    or self.mNavMeshAgent.pathStatus == NavMeshPathStatus.PathPartial 
-             then
+            elseif 
+                self.mNavMeshAgent.hasPath == false
+                or self.mNavMeshAgent.pathStatus ~= NavMeshPathStatus.PathComplete
+            then
                         
                 self.mFindPath = false
                 tmpPlayerCharacter.mTargetPosition = tmpPlayerCharacter.transform.position
