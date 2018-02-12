@@ -38,7 +38,7 @@ function  WindowManager:Initialize()
         camera.clearFlags = CameraClearFlags.Depth
         NGUITools.MakeMask(camera, self.uiLayer)
         NGUITools.SetLayer(self.uiCamera.gameObject, self.uiLayer)
-        camera.depth = 1
+        camera.depth = 2
 
 
         self.uiRoot = p:GetComponent(typeof(UIRoot))
@@ -74,7 +74,7 @@ function  WindowManager:Initialize()
         camera.clearFlags = CameraClearFlags.Depth        
         NGUITools.MakeMask(camera,  self.blurLayer)
         NGUITools.SetLayer(blurGo,  self.blurLayer)
-        camera.depth = 0
+        camera.depth = 1
         self.blurCamera.enabled = false
 
         self.blurEffect = blurGo:AddComponent(typeof(BlurEffect))        

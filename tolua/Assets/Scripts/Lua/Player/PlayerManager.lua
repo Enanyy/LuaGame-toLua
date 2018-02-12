@@ -62,6 +62,7 @@ function  PlayerManager:CreatePlayerCharacter(varGuid,  varPlayerInfo, varCallba
                 GameObject.DontDestroyOnLoad(camera)
                 camera.tag = "MainCamera"
                 self.mCamera = camera:AddComponent(typeof(Camera))
+                self.mCamera.depth = 0
                 self.mSmoothFollow = camera:AddComponent(typeof(SmoothFollow))
                 self.mSmoothFollow.target = tmpPlayerCharacter.transform
                 self.mSmoothFollow.followBehind = false
