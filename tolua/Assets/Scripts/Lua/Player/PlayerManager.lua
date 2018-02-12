@@ -1,6 +1,7 @@
 require("Class")
 require("PlayerInfo")
 require("PlayerCharacter")
+require("SmoothFollow")
 require("PlayerInput")
 
 local GameObject = UnityEngine.GameObject
@@ -63,11 +64,16 @@ function  PlayerManager:CreatePlayerCharacter(varGuid,  varPlayerInfo, varCallba
                 camera.tag = "MainCamera"
                 self.mCamera = camera:AddComponent(typeof(Camera))
                 self.mCamera.depth = 0
-                self.mSmoothFollow = camera:AddComponent(typeof(SmoothFollow))
+
+                self.mSmoothFollow = SmoothFollow.new()
                 self.mSmoothFollow.target = tmpPlayerCharacter.transform
                 self.mSmoothFollow.followBehind = false
                 self.mSmoothFollow.distance =3
                 self.mSmoothFollow.height = 8
+
+                local behaviour = camera:AddComponent(typeof(LuaBehaviour))
+                behaviour:Init(self.mSmoothFollow)
+                self.mSmoothFollow:Init(behaviour)
 
                 NGUITools.MakeMask(self.mCamera, layer)
                 NGUITools.SetLayer(camera, layer)
