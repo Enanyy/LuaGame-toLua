@@ -144,10 +144,20 @@ public static class CustomSettings
         _GT(typeof(PlayMode)),
         _GT(typeof(WrapMode)),
 
-
+#if UNITY_5_6_OR_NEWER
         _GT(typeof(UnityEngine.AI.NavMeshAgent)),
         _GT(typeof(UnityEngine.AI.NavMeshPathStatus)),
-        
+        _GT(typeof(UnityEngine.AI.NavMesh)),
+        _GT(typeof(UnityEngine.AI.NavMeshHit)),
+#elif UNITY_5_3_OR_NEWER && !UNITY_5_6_OR_NEWER
+        _GT(typeof(UnityEngine.NavMeshAgent)),
+        _GT(typeof(UnityEngine.NavMeshPathStatus)),
+        _GT(typeof(UnityEngine.NavMesh)),
+        _GT(typeof(UnityEngine.NavMeshHit)),
+#endif
+
+        _GT(typeof(UnityEngine.PlayerPrefs)),
+
 
         _GT(typeof(QualitySettings)),
         _GT(typeof(RenderSettings)),                                                   
@@ -159,6 +169,7 @@ public static class CustomSettings
         //LuaGame
         _GT(typeof(LuaGame)),
         _GT(typeof(LuaBehaviour)),
+        _GT(typeof(SmoothFollow)),
 
         //Effect    
         _GT(typeof(BlurEffect)),
