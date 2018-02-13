@@ -145,33 +145,32 @@ end
 
 function PlayerSkillState:OnEnter()
 
-    print("PlayerSkillState:OnEnter "..self.name .." mSpeed="..self.mSpeed)
+    --print("PlayerSkillState:OnEnter "..self.name .." mSpeed="..self.mSpeed .. " mRunTime ="..self.mRunTime)
 
-    if self.mSkillPluginList == nil then return end
+    if self.mSkillPluginList ~= nil then
 
-    for i,v in ipairs(self.mSkillPluginList) do
-        v:OnEnter()
+        for i,v in ipairs(self.mSkillPluginList) do
+            v:OnEnter()
       
-    end
-    
+        end
+     end
 end
 
 function PlayerSkillState:OnExit()
 
+    if self.mSkillPluginList ~= nil then 
+
+        for i,v in ipairs(self.mSkillPluginList) do
+            v:OnExit()
+        end
+    end
+    --print("PlayerSkillState:OnExit "..self.name.." mSpeed="..self.mSpeed)
     self.mCacheSkillState = nil
     self.mSpeed = 1
     self.mChangeAt = 0
     self.mFadeLength = 0
     self.mChanging = false 
     self.mRunTime = 0
-
-    if self.mSkillPluginList == nil then return end
-
-    for i,v in ipairs(self.mSkillPluginList) do
-        v:OnExit()
-    end
-    print("PlayerSkillState:OnExit "..self.name.." mSpeed="..self.mSpeed)
-
 end
 
 function PlayerSkillState:OnExecute()
@@ -266,7 +265,7 @@ function PlayerSkillState:OnExecute()
                             
                             else
                             
-                                self.mChanging = true;
+                                self.mChanging = true
                                 self.mCacheSkillState.mRunTime = tmpChange.mBeginAt
                                 self.mCacheSkillState.mFadeLength = tmpChange.mFadeLength
                                 self.mCacheSkillState.mChanging = true
@@ -304,7 +303,7 @@ function PlayerSkillState:GetSkillChange(varSkillType)
     for i,v in ipairs(self.mChangeList) do
           
         if v.mSkillType == varSkillType then
-            return v;
+            return v
         end
 
     end
@@ -314,12 +313,12 @@ end
 
 function PlayerSkillState:GetSkillCancel(varSkillType)
 
-    if self.mChangeList == nil then return nil end
+    if self.mCancelList == nil then return nil end
 
     for i,v in ipairs(self.mCancelList) do
           
         if v.mSkillType == varSkillType then
-            return v;
+            return v
         end
 
     end

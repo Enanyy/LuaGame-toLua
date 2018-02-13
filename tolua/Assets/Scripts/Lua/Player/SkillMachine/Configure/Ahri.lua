@@ -99,8 +99,8 @@ Role_Configure_Ahri = {
             weight = 1,
             ChangeList = {
                 {enum = "Idle",endAt= 1.250, beginAt= 0, speed = 1, fadeLength = 0 },
-                {enum = "Run",endAt=1.250, beginAt= 0, speed = 1, fadeLength = 0.2 },                
-                {enum = "Attack_2",endAt=0.4, beginAt= 0.6, speed = 1.8, fadeLength = 0.2 },
+                {enum = "Run",endAt=1, beginAt= 0, speed = 1, fadeLength = 0.2 },                
+                {enum = "Attack_2",endAt=0.68, beginAt= 0.4, speed = 1.8, fadeLength = 0.2 },
                 {enum = "Skill_1",endAt=1, beginAt= 0, speed = 1, fadeLength = 0 },
                 {enum = "Skill_2",endAt=1, beginAt= 0, speed = 1, fadeLength = 0 },
                 {enum = "Skill_3",endAt=1, beginAt= 0, speed = 1, fadeLength = 0 },
@@ -126,8 +126,8 @@ Role_Configure_Ahri = {
             weight = 1,
             ChangeList = {
                 {enum = "Idle",endAt= 1.250, beginAt= 0, speed = 1, fadeLength = 0 },
-                {enum = "Run",endAt=1.250, beginAt= 0, speed = 1, fadeLength = 0.2 },                
-                {enum = "Attack_3",endAt= 0.4, beginAt= 0.6, speed = 1.8, fadeLength = 0.2 },
+                {enum = "Run",endAt=1, beginAt= 0, speed = 1, fadeLength = 0.2 },                
+                {enum = "Attack_3",endAt= 0.68, beginAt= 0.4, speed = 1.8, fadeLength = 0.2 },
                 {enum = "Skill_1",endAt=1, beginAt= 0, speed = 1, fadeLength = 0 },
                 {enum = "Skill_2",endAt=1, beginAt= 0, speed = 1, fadeLength = 0 },
                 {enum = "Skill_3",endAt=1, beginAt= 0, speed = 1, fadeLength = 0 },
@@ -154,8 +154,7 @@ Role_Configure_Ahri = {
             weight = 1,
             ChangeList = {
                 {enum = "Idle",endAt= 1.250, beginAt= 0, speed = 1, fadeLength = 0 },
-                {enum = "Run",endAt=1.250, beginAt= 0, speed = 1, fadeLength = 0.2 },                
-                {enum = "Attack_1",endAt= 0.4, beginAt= 0.6, speed = 1.8, fadeLength = 0.2 },
+                {enum = "Run",endAt=0.8, beginAt= 0, speed = 1, fadeLength = 0.2 },                
                 {enum = "Skill_1",endAt=1, beginAt= 0, speed = 1, fadeLength = 0 },
                 {enum = "Skill_2",endAt=1, beginAt= 0, speed = 1, fadeLength = 0 },
                 {enum = "Skill_3",endAt=1, beginAt= 0, speed = 1, fadeLength = 0 },
@@ -167,7 +166,7 @@ Role_Configure_Ahri = {
             },
 
             PluginList = {
-                { name = "PlayerSkillAnimationPlugin", class = PlayerSkillAnimationPlugin,  animationClip ="Ahri_Attack2",loop = false },
+                { name = "PlayerSkillAnimationPlugin", class = PlayerSkillAnimationPlugin,  animationClip ="Ahri_Attack1",loop = false },
                 { name = "PlayerSkillAttackSpeedPlugin", class = PlayerSkillAttackSpeedPlugin },
               
             }

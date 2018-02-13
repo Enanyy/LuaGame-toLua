@@ -1,14 +1,11 @@
 require("Class")
+require("UnityClass")
 require("AssetManager")
 require("WindowManager")
 require("PlayerManager")
 ----
 ----Lua表不要与C#中需要Wrap的类同名，会引起混乱
 ----
-
-local GameObject = UnityEngine.GameObject
-local Stack = System.Collections.Stack
-local Time = UnityEngine.Time
 
 --主入口函数。从这里开始lua逻辑
 --LuaGame.cs会调用Main.lua执行Lua逻辑
@@ -19,6 +16,7 @@ function Main:DebugMode()
 	return true
 end
 
+--资源读取方式
 function Main:AssetMode()
 	local assetmode = UnityEngine.PlayerPrefs.GetInt("assetmode")
 	return assetmode
@@ -60,6 +58,7 @@ function Main:Start()
 	--]]
 	WindowManager:Open(UI_Main, "UI_Main")
 	
+	SceneManager.LoadScene("FrameScene")
 end
 
 
@@ -102,7 +101,7 @@ function Main:OnLevelWasLoaded(level)
 	local tmpPlayerInfo2 = PlayerInfo.new(1)
 	tmpPlayerInfo2.guid = 2
 	tmpPlayerInfo2.position = Vector3.New(5,0, 8)
-	tmpPlayerInfo1.direction = Vector3.New(0, 40, 0)
+	tmpPlayerInfo2.direction = Vector3.New(0, 40, 0)
 	tmpPlayerInfo2.baseSpeed = 6
 	tmpPlayerInfo2.moveSpeedAddition = 0.3
 	tmpPlayerInfo2.character = "Ahri"

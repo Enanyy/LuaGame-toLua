@@ -5,6 +5,8 @@ Camera = UnityEngine.Camera
 CameraClearFlags = UnityEngine.CameraClearFlags
 AudioListener = UnityEngine.AudioListener
 
+SceneManager = UnityEngine.SceneManagement.SceneManager
+
 NavMesh = UnityEngine.AI.NavMesh    -- Unity5.6
 NavMeshHit = UnityEngine.AI.NavMeshHit --Unity5.6
 NavMeshAgent = UnityEngine.AI.NavMeshAgent  -- Unity5.6

@@ -170,8 +170,6 @@ public class LuaGame : MonoBehaviour {
 
         //LuaHelper.CallFunction("Main", "Test1",array);
 
-        SceneManager.LoadScene("FrameScene");
-
     }
 
     public static bool  DebugMode()
