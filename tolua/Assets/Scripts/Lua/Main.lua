@@ -77,6 +77,7 @@ function Main:OnLevelWasLoaded(level)
 	tmpPlayerInfo.moveSpeedAddition = 0.3
 	tmpPlayerInfo.character = "Ahri"
 	tmpPlayerInfo.skin = "Ahri_shadowfox"
+	tmpPlayerInfo.configure = Role_Configure_Ahri
 
 
 	PlayerManager:CreatePlayerCharacter(tmpPlayerInfo.guid, tmpPlayerInfo, function (varPlayerCharacter) 
@@ -92,6 +93,7 @@ function Main:OnLevelWasLoaded(level)
 	tmpPlayerInfo1.moveSpeedAddition = 0.3
 	tmpPlayerInfo1.character = "Ahri"
 	tmpPlayerInfo1.skin = "Ahri"
+	tmpPlayerInfo1.configure = Role_Configure_Ahri
 
 	PlayerManager:CreatePlayerCharacter(tmpPlayerInfo1.guid, tmpPlayerInfo1, function (varPlayerCharacter) 
 	
@@ -106,6 +108,7 @@ function Main:OnLevelWasLoaded(level)
 	tmpPlayerInfo2.moveSpeedAddition = 0.3
 	tmpPlayerInfo2.character = "Ahri"
 	tmpPlayerInfo2.skin = "Ahri_hanbok"
+	tmpPlayerInfo2.configure = Role_Configure_Ahri
 
 	PlayerManager:CreatePlayerCharacter(tmpPlayerInfo2.guid, tmpPlayerInfo2, function (varPlayerCharacter) 
 	

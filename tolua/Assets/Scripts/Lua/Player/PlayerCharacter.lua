@@ -48,7 +48,7 @@ end
 
 function PlayerCharacter:InitWithConfigure()
     self.mSkillMachine = PlayerSKillMachine.new(self)
-    self.mSkillMachine:Init(Role_Configure_Ahri)
+    self.mSkillMachine:Init(self.mPlayerInfo.configure)
 end
 
 function PlayerCharacter:Update()

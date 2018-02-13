@@ -1,4 +1,5 @@
 require("Class")
+require("Configures")
 
 PlayerInfo = Class()
 
@@ -23,5 +24,7 @@ function PlayerInfo:ctor(profession)
 	self.character = "Ahri"  --角色
 
 	self.skin = "Ahri"		 --皮肤
+
+	self.configure = Role_Configure_Ahri --配置文件
 
 end
