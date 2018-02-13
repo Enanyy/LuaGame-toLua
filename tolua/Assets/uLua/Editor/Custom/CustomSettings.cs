@@ -6,6 +6,7 @@ using UnityEditor;
 
 using BindType = ToLuaMenu.BindType;
 using System.Reflection;
+using UnityEngine.SceneManagement;
 
 public static class CustomSettings
 {
@@ -166,6 +167,8 @@ public static class CustomSettings
         _GT(typeof(RenderTexture)),
         _GT(typeof(Resources)),     
         _GT(typeof(LuaProfiler)),
+        _GT(typeof(SceneManager)),
+        
         
 
         //LuaGame
