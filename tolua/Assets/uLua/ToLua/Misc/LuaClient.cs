@@ -157,12 +157,14 @@ public class LuaClient : MonoBehaviour
     }
 
     protected void Init()
-    {        
+    {
         InitLoader();
         luaState = new LuaState();
         OpenLibs();
         luaState.LuaSetTop(0);
-        Bind();        
+        Bind();
+        InitLuaPath();
+
         LoadLuaFiles();        
     }
 
@@ -175,7 +177,28 @@ public class LuaClient : MonoBehaviour
         SceneManager.sceneLoaded += OnSceneLoaded;
 #endif        
     }
+    /// <summary>
+    /// 初始化Lua代码加载路径
+    /// </summary>
+    void InitLuaPath()
+    {
+        AddSearchPath(LuaConst.luaDir);
+        AddSearchPath(LuaConst.toluaDir);
+    }
 
+    /// <summary>
+    /// 添加搜索目录，包括所有子目录
+    /// </summary>
+    /// <param name="path"></param>
+    void AddSearchPath(string path)
+    {
+        luaState.AddSearchPath(path);
+        string[] paths = Directory.GetDirectories(path, "*.*", SearchOption.AllDirectories);
+        for (int i = 0; i < paths.Length; ++i)
+        {
+            luaState.AddSearchPath(paths[i].Replace("\\", "/"));
+        }
+    }
     protected virtual void OnLoadFinished()
     {
         luaState.Start();

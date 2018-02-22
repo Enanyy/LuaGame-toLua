@@ -68,8 +68,8 @@ function PlayerSkillMovePlugin:OnExecute ()
 
             if  tmpDistance > 0.5 then 
             
-                self.mNavMeshAgent.isStopped = false  --Unity 5.6 Hither
-                --self.mNavMeshAgent:Resume ()
+                --self.mNavMeshAgent.isStopped = false  --Unity 5.6 Hither
+                self.mNavMeshAgent:Resume ()
                 
                 if self.mNavMeshAgent:SetDestination (tmpPlayerCharacter.mTargetPosition) then
                     self.mFindPath = true
@@ -194,8 +194,8 @@ end
 function PlayerSkillMovePlugin:StopMove()
 
     self.mNavMeshAgent:ResetPath()
-    self.mNavMeshAgent.isStopped = true --Unity5.6 Hither
-    --self.mNavMeshAgent:Stop()
+    --self.mNavMeshAgent.isStopped = true --Unity5.6 Hither
+    self.mNavMeshAgent:Stop()
     self.mBeginMove = false
     self.mFindPath = false
 end

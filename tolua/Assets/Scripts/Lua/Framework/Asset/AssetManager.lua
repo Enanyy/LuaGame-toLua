@@ -84,7 +84,7 @@ function AssetManager:Update()
 
             if self.mAssetBundleDic[tmpAssetName] ~=nil then
             
-                tmpLoadTask.mState = 2;                     --已经加载完成
+                tmpLoadTask.mState = LoadTaskState.Success                     --已经加载完成
 
                 self.mLoadingAssetQueue:Dequeue ()
                 tmpLoadTask = nil
@@ -92,14 +92,14 @@ function AssetManager:Update()
                 return
             end
 
-            if tmpLoadTask.mState == 5 then                 --已经取消加载
+            if tmpLoadTask.mState == LoadTaskState.Cancel then                 --已经取消加载
             
                 self.mLoadingAssetQueue:Dequeue ()
                 tmpLoadTask = nil
 
                 return
            
-            elseif tmpLoadTask.mState == 0 then            --等待加载
+            elseif tmpLoadTask.mState == LoadTaskState.Waiting then            --等待加载
             
                 --同步加载
                 tmpLoadTask:Load()
@@ -111,16 +111,16 @@ function AssetManager:Update()
 
                 return
             
-            elseif tmpLoadTask.mState == 1 then            --加载中
+            elseif tmpLoadTask.mState == LoadTaskState.Loading then            --加载中
             
                 return
             
-            elseif tmpLoadTask.mState == 2 then            --加载完成   
+            elseif tmpLoadTask.mState == LoadTaskState.Success then            --加载完成   
             
                 self.mLoadingAssetQueue:Dequeue ()			
                 tmpLoadTask = nil
             
-            elseif tmpLoadTask.mState == 4 then            --加载失败
+            elseif tmpLoadTask.mState == LoadTaskState.Fail then            --加载失败
                           
                 self.mLoadingAssetQueue:Dequeue()
                 tmpLoadTask = nil
@@ -145,7 +145,7 @@ function AssetManager:Load(varAssetBundleName, varAssetName, varCallback)
             varCallback(o)
         end
         tmpLoadTask = LoadTask.new(varAssetBundleName, varAssetName,nil)
-        tmpLoadTask.state = 2
+        tmpLoadTask.state = LoadTaskState.Success
         
         return tmpLoadTask
     end
@@ -155,7 +155,7 @@ function AssetManager:Load(varAssetBundleName, varAssetName, varCallback)
     if self:LoadAsset (tmpAssetBundleName, varAssetName, varCallback) then
 
         tmpLoadTask = LoadTask.new(varAssetBundleName);
-        tmpLoadTask.mState = 2
+        tmpLoadTask.mState = LoadTaskState.Success
 
         return tmpLoadTask
     end

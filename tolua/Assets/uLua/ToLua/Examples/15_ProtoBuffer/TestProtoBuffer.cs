@@ -46,10 +46,10 @@ public class TestProtoBuffer : LuaClient
     private string script = @"      
         local common_pb = require 'Protol.common_pb'
         local person_pb = require 'Protol.person_pb'
-       
+        local pb_buffer
         function Decoder()  
             local msg = person_pb.Person()
-            msg:ParseFromString(TestProtol.data)
+            msg:ParseFromString(pb_buffer)
             --tostring 不会打印默认值
             print('person_pb decoder: '..tostring(msg)..'age: '..msg.age..'\nemail: '..msg.email)
         end
@@ -68,7 +68,7 @@ public class TestProtoBuffer : LuaClient
             phone.num = '13788888888'      
             phone.type = person_pb.Phone.MOBILE      
             local pb_data = msg:SerializeToString()                   
-            TestProtol.data = pb_data
+            pb_buffer = pb_data
         end
         ";
 
