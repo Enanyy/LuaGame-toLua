@@ -77,7 +77,9 @@ function PlayerCharacter:MoveToPoint(varTargetPosition, varSuccessAction,varFail
     if tmpDistance > 0.1 then
 
 
-        self.mTargetPosition = varTargetPosition
+        self.mMoveSuccessAction = varSuccessAction
+        self.mMoveFailAction    = varFailAction
+        self.mTargetPosition    = varTargetPosition
 
         self:PlaySkill (PlayerSkillType.Run)
     end
@@ -97,8 +99,18 @@ end
 
 function PlayerCharacter:OnMoveToPointSuccess()
     print("移动成功")
+
+    if self.mMoveSuccessAction then
+        self.mMoveSuccessAction()
+        self.mMoveSuccessAction = nil
+    end
 end
 
 function PlayerCharacter:OnMoveToPointFail()
     print("移动失败")
+
+    if self.mMoveFailAction then
+        self.mMoveFailAction()
+        self.mMoveFailAction = nil
+    end
 end

@@ -24,7 +24,6 @@ end
 
 function Main:Start()					
 	print("Main start")
-	
 	--初始化资源管理器
 	AssetManager:Initialize()
 	--初始化窗口管理器
@@ -74,7 +73,7 @@ function Main:OnLevelWasLoaded(level)
 	tmpPlayerInfo.position = Vector3.New(4,0, 8)
 	tmpPlayerInfo.direction = Vector3.New(0, -120, 0)
 	tmpPlayerInfo.baseSpeed = 6
-	tmpPlayerInfo.moveSpeedAddition = 0.3
+	tmpPlayerInfo.moveSpeedAddition = 0.5
 	tmpPlayerInfo.character = "Ahri"
 	tmpPlayerInfo.skin = "Ahri_shadowfox"
 	tmpPlayerInfo.configure = Role_Configure_Ahri
