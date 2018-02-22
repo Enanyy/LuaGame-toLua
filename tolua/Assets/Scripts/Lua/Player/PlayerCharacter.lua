@@ -97,6 +97,28 @@ function PlayerCharacter:PlaySkill(varSkillType)
 	return	self.mSkillMachine:Cache (varSkillType)
 end
 
+function PlayerCharacter:Pause()
+    if self.mSkillMachine then
+        self.mSkillMachine:Pause()
+    end
+end
+
+function PlayerCharacter:Resume()
+
+    if self.mSkillMachine then
+        self.mSkillMachine:Resume()
+    end
+end
+
+function PlayerCharacter:isPause()
+
+    if self.mSkillMachine then
+        return self.mSkillMachine:isPause()
+    end 
+
+    return false
+end
+
 function PlayerCharacter:OnMoveToPointSuccess()
     print("移动成功")
 

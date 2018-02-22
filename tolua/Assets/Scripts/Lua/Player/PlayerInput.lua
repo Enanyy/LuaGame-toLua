@@ -71,6 +71,14 @@ function PlayerInput:Update()
         self.mPlayerCharacter:PlaySkill (PlayerSkillType.Skill_4)
     end
 
+    if  Input.GetKeyDown (KeyCode.P) then 
+        if self.mPlayerCharacter:isPause() then
+            self.mPlayerCharacter:Resume()
+        else
+            self.mPlayerCharacter:Pause()
+        end
+    end
+
     if  Input.GetKeyDown (KeyCode.Space) then 
         self.mPlayerCharacter:PlaySkill (PlayerSkillType.Idle)
     end
