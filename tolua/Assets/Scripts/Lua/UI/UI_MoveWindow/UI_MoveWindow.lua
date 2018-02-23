@@ -15,7 +15,7 @@ function this:ctor(behaviour, path)
     self.base = BaseWindow.new(behaviour, self.path, self.windowType)
 
     --从哪个方向移动进来，详看WindowMove，当然也可以自定义位置
-    self.pos = WindowMove.GetPivot("Top")
+    self.pos = WindowMove.GetPivot(WindowPivot.Top)
 
 end
 

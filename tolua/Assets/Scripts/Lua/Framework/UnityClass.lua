@@ -15,12 +15,10 @@ function UnityVersionNewer(v)
     local mainVersion1 = string.sub (v, 1, 1)
     local childVersion1 = string.sub(v, 3, 3)
 
-    if tonumber(mainVersion) > tonumber(mainVersion1) then
+    if tonumber(mainVersion) > tonumber(mainVersion1)
+        or (tonumber(mainVersion) == tonumber(mainVersion1) and tonumber(childVersion) >= tonumber(childVersion1) )
+    then
         return true
-    elseif tonumber(mainVersion) == tonumber(mainVersion1) then
-        
-        return tonumber(childVersion) > tonumber(childVersion1)
-        
     end
     
     return false

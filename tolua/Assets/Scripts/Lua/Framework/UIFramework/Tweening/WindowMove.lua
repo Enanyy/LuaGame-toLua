@@ -50,33 +50,44 @@ function WindowMove.Begin(window, pos, duration, active, callback)
     tween:PlayForward()
 end
 
+WindowPivot = {
+    Top         = 1,
+    Bottom      = 2,
+    Left        = 3,
+    Right       = 4,
+    TopLeft     = 5,
+    TopRight    = 6,
+    BottomLeft  = 7,
+    BottomRight = 8,
+}
+
 function WindowMove.GetPivot(pivot)
     
     local pos = Vector3.New()
 
     local root = WindowManager.uiRoot
  
-    if pivot == "Top" then
+    if pivot == WindowPivot.Top then
         pos.y = root.manualHeight 
-    elseif pivot == "Bottom" then
+    elseif pivot == WindowPivot.Bottom then
         pos.y = -root.manualHeight
-    elseif pivot == "Left" then
+    elseif pivot == WindowPivot.Left then
         pos.x = -root.manualWidth
-    elseif pivot == "Right" then
+    elseif pivot == WindowPivot.Right then
         pos.x = root.manualWidth
-    elseif pivot == "TopLeft" then
+    elseif pivot == WindowPivot.TopLeft then
         pos.x = -root.manualWidth
         pos.y = root.manualHeight
-    elseif pivot == "TopRight" then
+    elseif pivot == WindowPivot.TopRight then
         pos.x = root.manualWidth
         pos.y = root.manualHeight
-    elseif pivot == "BottomLeft" then
+    elseif pivot == WindowPivot.BottomLeft then
         pos.x = -root.manualWidth
         pos.y = -root.manualHeight
-    elseif pivot == "BottomRight" then
+    elseif pivot == WindowPivot.BottomRight then
         pos.x = root.manualWidth
         pos.y = -root.manualHeight
     end
         
-    return pos;
+    return pos
 end
