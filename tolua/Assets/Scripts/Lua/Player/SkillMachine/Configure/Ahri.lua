@@ -195,6 +195,11 @@ Role_Configure_Ahri = {
             PluginList = {
                 { name = "PlayerSkillAnimationPlugin", class = PlayerSkillAnimationPlugin,  animationClip ="Ahri_spell1",loop = false },
                 { name = "PlayerSkillAttackSpeedPlugin", class = PlayerSkillAttackSpeedPlugin },             
+                { name = "PlayerSkillEffectPlugin", class = PlayerSkillEffectPlugin, beginAt = 0, duration = 2,
+                    EffectPluginList = {
+
+                    },
+                },             
             }
         },
         ---------------------------技能一结束--------------------------------  

@@ -2,6 +2,7 @@ require("Class")
 require("BehaviourBase")
 require("FashionBody")
 require("PlayerSKillMachine")
+require("PlayerEffectMachine")
 
 local GameObject = UnityEngine.GameObject
 local Quaternion = UnityEngine.Quaternion
@@ -49,6 +50,9 @@ end
 function PlayerCharacter:InitWithConfigure()
     self.mSkillMachine = PlayerSKillMachine.new(self)
     self.mSkillMachine:Init(self.mPlayerInfo.configure)
+    
+    self.mEffectMachine = PlayerEffectMachine.new()
+
 end
 
 function PlayerCharacter:Update()
@@ -66,6 +70,11 @@ function PlayerCharacter:Update()
 
     end
 
+    if self.mEffectMachine then
+
+        self.mEffectMachine:OnExecute()
+    
+    end
 
 end
 
