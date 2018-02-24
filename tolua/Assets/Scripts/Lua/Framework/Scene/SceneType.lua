@@ -1,0 +1,5 @@
+
+SceneType = 
+{
+    FrameScene = "FrameScene",
+}

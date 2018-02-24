@@ -3,6 +3,7 @@ require("UnityClass")
 require("AssetManager")
 require("WindowManager")
 require("PlayerManager")
+require("SceneMachine")
 ----
 ----Lua表不要与C#中需要Wrap的类同名，会引起混乱
 ----
@@ -31,6 +32,9 @@ function Main:Start()
 	--初始化人物管理器
 	PlayerManager:Initialize()
 
+	--初始化场景状态机
+	SceneMachine:Initialize()
+
 	--添加Lua逻辑更新
 	UpdateBeat:Add(Main.Update,self)	 		
 	LateUpdateBeat:Add(Main.LateUpate,self)	 		
@@ -57,7 +61,9 @@ function Main:Start()
 	--]]
 	WindowManager:Open(UI_Main, "UI_Main")
 	
-	SceneManager.LoadScene("FrameScene")
+	SceneMachine:ChangeScene(SceneType.FrameScene)
+
+	--SceneManager.LoadScene("FrameScene")
 end
 
 
