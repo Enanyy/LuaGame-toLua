@@ -114,6 +114,7 @@ Role_Configure_Ahri = {
             PluginList = {
                 { name = "PlayerSkillAnimationPlugin", class = PlayerSkillAnimationPlugin,  animationClip ="Ahri_Attack1",loop = false },
                 { name = "PlayerSkillAttackSpeedPlugin", class = PlayerSkillAttackSpeedPlugin }, 
+                { name = "PlayerSkillRotationPlugin", class = PlayerSkillRotationPlugin, duration = 0.2 }, 
                 { name = "PlayerSkillEffectPlugin", class = PlayerSkillEffectPlugin, beginAt = 0.2,
                     EffectPluginList = {
                         {name = "Ahri_PlayerEffectMovePlugin", class = Ahri_PlayerEffectMovePlugin, speed = 12, distance = 5 },
@@ -146,6 +147,7 @@ Role_Configure_Ahri = {
             PluginList = {
                 { name = "PlayerSkillAnimationPlugin", class = PlayerSkillAnimationPlugin,  animationClip ="Ahri_Attack2",loop = false },
                 { name = "PlayerSkillAttackSpeedPlugin", class = PlayerSkillAttackSpeedPlugin },
+                { name = "PlayerSkillRotationPlugin", class = PlayerSkillRotationPlugin, duration = 0.2 },                 
                 { name = "PlayerSkillEffectPlugin", class = PlayerSkillEffectPlugin, beginAt = 0.2,
                     EffectPluginList = {
                         {name = "Ahri_PlayerEffectMovePlugin", class = Ahri_PlayerEffectMovePlugin, speed = 12, distance = 5 },
@@ -177,6 +179,7 @@ Role_Configure_Ahri = {
             PluginList = {
                 { name = "PlayerSkillAnimationPlugin", class = PlayerSkillAnimationPlugin,  animationClip ="Ahri_Attack1",loop = false },
                 { name = "PlayerSkillAttackSpeedPlugin", class = PlayerSkillAttackSpeedPlugin },
+                { name = "PlayerSkillRotationPlugin", class = PlayerSkillRotationPlugin, duration = 0.2 },                 
                 { name = "PlayerSkillEffectPlugin", class = PlayerSkillEffectPlugin, beginAt = 0.2,
                     EffectPluginList = {
                         {name = "Ahri_PlayerEffectMovePlugin", class = Ahri_PlayerEffectMovePlugin, speed = 12, distance = 5 },
@@ -207,7 +210,8 @@ Role_Configure_Ahri = {
 
             PluginList = {
                 { name = "PlayerSkillAnimationPlugin", class = PlayerSkillAnimationPlugin,  animationClip ="Ahri_spell1",loop = false },
-                { name = "PlayerSkillAttackSpeedPlugin", class = PlayerSkillAttackSpeedPlugin },             
+                { name = "PlayerSkillAttackSpeedPlugin", class = PlayerSkillAttackSpeedPlugin },    
+                { name = "PlayerSkillRotationPlugin", class = PlayerSkillRotationPlugin, duration = 0.2 },                          
                 { name = "PlayerSkillEffectPlugin", class = PlayerSkillEffectPlugin, beginAt = 0.2, 
                     EffectPluginList = {
                         {name = "Ahri_PlayerEffectMoveAndBackPlugin", class = Ahri_PlayerEffectMoveAndBackPlugin, speed = 12, distance = 6 },
@@ -239,7 +243,8 @@ Role_Configure_Ahri = {
 
             PluginList = {
                 { name = "PlayerSkillAnimationPlugin", class = PlayerSkillAnimationPlugin,  animationClip ="Ahri_spell2",loop = false },
-                { name = "PlayerSkillAttackSpeedPlugin", class = PlayerSkillAttackSpeedPlugin },             
+                { name = "PlayerSkillAttackSpeedPlugin", class = PlayerSkillAttackSpeedPlugin }, 
+                { name = "PlayerSkillRotationPlugin", class = PlayerSkillRotationPlugin, duration = 0.2 },                             
             }
         },
         ---------------------------技能二结束-------------------------------- 
@@ -265,7 +270,8 @@ Role_Configure_Ahri = {
 
             PluginList = {
                 { name = "PlayerSkillAnimationPlugin", class = PlayerSkillAnimationPlugin,  animationClip ="Ahri_spell3",loop = false },
-                { name = "PlayerSkillAttackSpeedPlugin", class = PlayerSkillAttackSpeedPlugin },             
+                { name = "PlayerSkillAttackSpeedPlugin", class = PlayerSkillAttackSpeedPlugin },     
+                { name = "PlayerSkillRotationPlugin", class = PlayerSkillRotationPlugin, duration = 0.2 },                         
             }
         },
         ---------------------------技能三结束--------------------------------   
@@ -291,7 +297,8 @@ Role_Configure_Ahri = {
 
             PluginList = {
                 { name = "PlayerSkillAnimationPlugin", class = PlayerSkillAnimationPlugin,  animationClip ="Ahri_spell4",loop = false },
-                { name = "PlayerSkillAttackSpeedPlugin", class = PlayerSkillAttackSpeedPlugin },             
+                { name = "PlayerSkillAttackSpeedPlugin", class = PlayerSkillAttackSpeedPlugin }, 
+                { name = "PlayerSkillRotationPlugin", class = PlayerSkillRotationPlugin, duration = 0.2 },                         
             }
         },
         ---------------------------技能四结束--------------------------------

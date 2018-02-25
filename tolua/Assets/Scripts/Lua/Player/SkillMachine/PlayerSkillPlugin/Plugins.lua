@@ -6,6 +6,7 @@ require("PlayerSkillMoveSpeedPlugin")
 require("PlayerSkillAttackSpeedPlugin")
 require("PlayerSkillFlashMovePlugin")
 require("PlayerSkillEffectPlugin")
+require("PlayerSkillRotationPlugin")
 
 
 --包含特效插件
