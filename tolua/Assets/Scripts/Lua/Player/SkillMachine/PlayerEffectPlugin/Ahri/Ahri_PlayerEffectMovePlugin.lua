@@ -30,15 +30,18 @@ function Ahri_PlayerEffectMovePlugin:OnBegin()
     if self.mGo == nil then
 
         self.mGo = self.machine.mPlayerCharacter.mFashionWeapon.mWeapon
-        self.mParent = self.mGo.transform.parent
+      
+    end
+    if self.mParent == nil then
+        self.mParent = self.machine.mPlayerCharacter.mFashionBody.mBody.transform:Find(self.machine.mPlayerCharacter.mPlayerInfo.weaponBone)
 
     end
-
 
     self.mGo.transform:SetParent(nil)
 
 
-    self.mOriginalPosition =self.mGo.transform.position
+    self.mOriginalPosition = self.mParent.position
+    self.mGo.transform.position = self.mOriginalPosition    
     self.mDestination = self.mOriginalPosition + self.machine.mPlayerCharacter.transform.forward * self.mDistance
 
     self.mDuration = self.mDistance * 1.0 / self.mSpeed
