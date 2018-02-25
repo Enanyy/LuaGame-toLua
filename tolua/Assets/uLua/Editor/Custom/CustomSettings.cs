@@ -218,8 +218,9 @@ public static class CustomSettings
          _GT(typeof(NGUITools)),
          _GT(typeof(NGUIText)),
          _GT(typeof(EventDelegate)),
-
-
+         _GT(typeof(UITweener.Method)),
+         _GT(typeof(UITweener.Style)),
+  
     };
 
     public static List<Type> dynamicList = new List<Type>()
