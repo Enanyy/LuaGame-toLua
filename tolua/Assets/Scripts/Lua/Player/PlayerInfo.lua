@@ -27,4 +27,8 @@ function PlayerInfo:ctor(profession)
 
 	self.configure = Role_Configure_Ahri --配置文件
 
+	self.weapon = "Ahri" --武器
+
+	self.weaponBone = "weapon/BUFFBONE_GLB_WEAPON_1" --武器绑定的骨骼
+
 end

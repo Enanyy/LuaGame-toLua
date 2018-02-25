@@ -106,7 +106,7 @@ function PlayerSkillAnimationPlugin:PlayAnimation()
     end
     self.mDone = true
 
-    print("PlayerSkillAnimationPlugin:PlayAnimation FadeLength ="..self.mPlayerSkillState.mFadeLength..","..self.mAnimationClip .." Done")
+    --print("PlayerSkillAnimationPlugin:PlayAnimation FadeLength ="..self.mPlayerSkillState.mFadeLength..","..self.mAnimationClip .." Done")
 
 end
 

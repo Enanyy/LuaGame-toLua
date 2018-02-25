@@ -22,7 +22,7 @@ function PlayerSkillEffectPlugin:Init(configure)
     self.mEffectState:SetPlayerSkillState(self.mPlayerSkillState)
     self.mEffectState:SetStateMachine(self.machine)
     self.mEffectState:Init(configure)
-
+   
 end
 
 function PlayerSkillEffectPlugin:OnEnter()

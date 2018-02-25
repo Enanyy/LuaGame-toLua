@@ -1,11 +1,11 @@
 require("Class")
+require("UnityClass")
 require("BehaviourBase")
 require("FashionBody")
+require("FashionWeapon")
 require("PlayerSKillMachine")
 require("PlayerEffectMachine")
 
-local GameObject = UnityEngine.GameObject
-local Quaternion = UnityEngine.Quaternion
 
 PlayerCharacter = Class(BehaviourBase)
 
@@ -13,6 +13,7 @@ function PlayerCharacter:ctor()
 
     self.mTargetPosition = Vector3.zero
     self.mFashionBody = nil
+    self.mFashionWeapon = nil
 
 end
 
@@ -22,6 +23,14 @@ function PlayerCharacter:CreatePlayerCharacter( varGuid, varPlayerInfo, varCallb
     self.mProfession = varPlayerInfo.profession
     self.mPlayerInfo = varPlayerInfo
     self.mMoveSpeed = 0
+
+    self.mCallback = varCallback
+
+    self:CreateFashionBody()
+
+end
+
+function PlayerCharacter:CreateFashionBody()
 
     local tmpBody = GameObject ("FashionBody")
 	tmpBody.transform:SetParent (self.transform)
@@ -38,11 +47,35 @@ function PlayerCharacter:CreatePlayerCharacter( varGuid, varPlayerInfo, varCallb
 	self.mFashionBody:SetData (self, function (varBody)
 		
 			self:InitWithConfigure()
-		
-			if varCallback ~=nil then
+        
+            self:CreateFashionWeapon()
+            
+			if self.mCallback ~=nil then
 			
-				varCallback()
-			end
+				self.mCallback()
+            end
+            
+            self.mCallback = nil
+	end)
+end
+
+function PlayerCharacter:CreateFashionWeapon()
+
+    local tmpWeapnon = GameObject ("FashionWeapnon")
+	tmpWeapnon.transform:SetParent (self.transform)
+
+	tmpWeapnon.transform.localPosition = Vector3.zero
+	tmpWeapnon.transform.localScale = Vector3.one
+	tmpWeapnon.transform.transform.localRotation = Quaternion.identity
+
+    self.mFashionWeapon = FashionWeapon.new()
+    local behaviour = tmpWeapnon:AddComponent (typeof(LuaBehaviour))
+    behaviour:Init(self.mFashionWeapon)
+    self.mFashionWeapon:Init(behaviour)
+
+	self.mFashionWeapon:SetData (self, function (varWeapon)
+		
+			
 	end)
 
 end
@@ -110,12 +143,19 @@ function PlayerCharacter:Pause()
     if self.mSkillMachine then
         self.mSkillMachine:Pause()
     end
+
+    if self.mEffectMachine then
+        self.mEffectMachine:Pause()
+    end
 end
 
 function PlayerCharacter:Resume()
 
     if self.mSkillMachine then
         self.mSkillMachine:Resume()
+    end
+    if self.mEffectMachine then 
+        self.mEffectMachine:Resume()
     end
 end
 

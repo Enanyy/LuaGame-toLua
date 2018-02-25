@@ -113,7 +113,12 @@ Role_Configure_Ahri = {
 
             PluginList = {
                 { name = "PlayerSkillAnimationPlugin", class = PlayerSkillAnimationPlugin,  animationClip ="Ahri_Attack1",loop = false },
-                { name = "PlayerSkillAttackSpeedPlugin", class = PlayerSkillAttackSpeedPlugin },              
+                { name = "PlayerSkillAttackSpeedPlugin", class = PlayerSkillAttackSpeedPlugin }, 
+                { name = "PlayerSkillEffectPlugin", class = PlayerSkillEffectPlugin, beginAt = 0.2,
+                    EffectPluginList = {
+                        {name = "Ahri_PlayerEffectMovePlugin", class = Ahri_PlayerEffectMovePlugin, speed = 20, distance = 5 },
+                    },
+                },                  
             }
         },
         ---------------------------普攻一段结束--------------------------------     
@@ -141,7 +146,11 @@ Role_Configure_Ahri = {
             PluginList = {
                 { name = "PlayerSkillAnimationPlugin", class = PlayerSkillAnimationPlugin,  animationClip ="Ahri_Attack2",loop = false },
                 { name = "PlayerSkillAttackSpeedPlugin", class = PlayerSkillAttackSpeedPlugin },
-              
+                { name = "PlayerSkillEffectPlugin", class = PlayerSkillEffectPlugin, beginAt = 0.2,
+                    EffectPluginList = {
+                        {name = "Ahri_PlayerEffectMovePlugin", class = Ahri_PlayerEffectMovePlugin, speed = 20, distance = 5 },
+                    },
+                },        
             }
         },
         ---------------------------普攻二段结束--------------------------------  
@@ -168,7 +177,11 @@ Role_Configure_Ahri = {
             PluginList = {
                 { name = "PlayerSkillAnimationPlugin", class = PlayerSkillAnimationPlugin,  animationClip ="Ahri_Attack1",loop = false },
                 { name = "PlayerSkillAttackSpeedPlugin", class = PlayerSkillAttackSpeedPlugin },
-              
+                { name = "PlayerSkillEffectPlugin", class = PlayerSkillEffectPlugin, beginAt = 0.2,
+                    EffectPluginList = {
+                        {name = "Ahri_PlayerEffectMovePlugin", class = Ahri_PlayerEffectMovePlugin, speed = 20, distance = 5 },
+                    },
+                },        
             }
         },
         ---------------------------普攻三段结束--------------------------------  

@@ -79,11 +79,11 @@ function PlayerSkillMovePlugin:OnExecute ()
                  
                 else 
                     
-                    print ("SetDestination Fail: " .. tmpPlayerCharacter.mTargetPosition)
+                   -- print ("SetDestination Fail: " .. tmpPlayerCharacter.mTargetPosition)
                    
                 end
             else 
-                print ("Distance is : " ..tmpDistance .. " less  0.5f")          
+               -- print ("Distance is : " ..tmpDistance .. " less  0.5f")          
             end
         else 
             self:StopMove()	
@@ -167,7 +167,7 @@ function PlayerSkillMovePlugin:OnExecute ()
 
             if (tmpRemainingDistance - self.mRemainingDistance)  < self.STOPING_DISTANCE then
                
-                  print (self.mRemainingDistance .. "==" .. tmpRemainingDistance)
+                  --print (self.mRemainingDistance .. "==" .. tmpRemainingDistance)
             end
 
             tmpPlayerCharacter:OnMoveToPointSuccess()
