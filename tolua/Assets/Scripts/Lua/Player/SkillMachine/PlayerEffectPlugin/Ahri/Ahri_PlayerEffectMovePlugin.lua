@@ -43,20 +43,30 @@ function Ahri_PlayerEffectMovePlugin:OnBegin()
 
     self.mDuration = self.mDistance * 1.0 / self.mSpeed
 
+    local tween = TweenPosition.Begin(self.mGo, self.mDuration,self.mDestination)
+    tween.method = UITweener.Method.EaseOut
+    tween.onFinished:Clear()
+    tween:AddOnFinished(EventDelegate.New(function() 
+        self.mGo:SetActive(false)
+    end))
+    tween:PlayForward()
+
 end
 
 function Ahri_PlayerEffectMovePlugin:OnExecute()
 
+    --[[ 
     if self.mDuration ~= 0 then
 
         local factor = self.mPlayerEffectState.mRunTime * 1.0 / self.mDuration
         self.mGo.transform.position = self.mOriginalPosition * (1 - factor) + self.mDestination * factor
 
-        if factor >= 1 then
+        if factor >= 1.0 then
 
             self.mGo:SetActive(false)
         end
     end
+    --]]
 end
 
 function Ahri_PlayerEffectMovePlugin:OnEnd()
@@ -69,8 +79,6 @@ function Ahri_PlayerEffectMovePlugin:OnEnd()
 end
 
 function Ahri_PlayerEffectMovePlugin:OnExit()
-  
-    self.mGo:SetActive(true)
     
     self.mPlayerEffectState.isPlaying = false    
 

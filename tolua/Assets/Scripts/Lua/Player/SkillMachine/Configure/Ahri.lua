@@ -116,7 +116,7 @@ Role_Configure_Ahri = {
                 { name = "PlayerSkillAttackSpeedPlugin", class = PlayerSkillAttackSpeedPlugin }, 
                 { name = "PlayerSkillEffectPlugin", class = PlayerSkillEffectPlugin, beginAt = 0.2,
                     EffectPluginList = {
-                        {name = "Ahri_PlayerEffectMovePlugin", class = Ahri_PlayerEffectMovePlugin, speed = 20, distance = 5 },
+                        {name = "Ahri_PlayerEffectMovePlugin", class = Ahri_PlayerEffectMovePlugin, speed = 15, distance = 5 },
                     },
                 },                  
             }
@@ -148,7 +148,7 @@ Role_Configure_Ahri = {
                 { name = "PlayerSkillAttackSpeedPlugin", class = PlayerSkillAttackSpeedPlugin },
                 { name = "PlayerSkillEffectPlugin", class = PlayerSkillEffectPlugin, beginAt = 0.2,
                     EffectPluginList = {
-                        {name = "Ahri_PlayerEffectMovePlugin", class = Ahri_PlayerEffectMovePlugin, speed = 20, distance = 5 },
+                        {name = "Ahri_PlayerEffectMovePlugin", class = Ahri_PlayerEffectMovePlugin, speed = 15, distance = 5 },
                     },
                 },        
             }
@@ -179,7 +179,7 @@ Role_Configure_Ahri = {
                 { name = "PlayerSkillAttackSpeedPlugin", class = PlayerSkillAttackSpeedPlugin },
                 { name = "PlayerSkillEffectPlugin", class = PlayerSkillEffectPlugin, beginAt = 0.2,
                     EffectPluginList = {
-                        {name = "Ahri_PlayerEffectMovePlugin", class = Ahri_PlayerEffectMovePlugin, speed = 20, distance = 5 },
+                        {name = "Ahri_PlayerEffectMovePlugin", class = Ahri_PlayerEffectMovePlugin, speed = 15, distance = 5 },
                     },
                 },        
             }
