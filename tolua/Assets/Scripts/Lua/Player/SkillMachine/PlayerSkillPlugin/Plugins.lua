@@ -10,3 +10,4 @@ require("PlayerSkillEffectPlugin")
 
 --包含特效插件
 require("Ahri_PlayerEffectMovePlugin")
+require("Ahri_PlayerEffectMoveAndBackPlugin")
