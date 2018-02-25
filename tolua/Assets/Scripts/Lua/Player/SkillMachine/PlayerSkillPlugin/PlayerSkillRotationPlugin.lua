@@ -5,9 +5,11 @@ PlayerSkillRotationPlugin = Class(PlayerSkillPlugin)
 
 function PlayerSkillRotationPlugin:ctor(name)
 
-    self.mDuration = 0.1
+    self.mDuration = 0.2
 
     self.mTargetPosition = Vector3.zero
+
+    self.mImmediately = false
 
 end
 
@@ -16,7 +18,8 @@ function PlayerSkillRotationPlugin:Init(configure)
 
     if configure == nil then return end
 
-    self.mDuration = configure.duration
+    self.mDuration = configure.duration or 0.2
+    self.mImmediately = configure.immediately or false
 
 end
 
@@ -43,7 +46,7 @@ function PlayerSkillRotationPlugin:OnExecute()
     if self.mTargetPosition ~= Vector3.zero then
 
 
-        if self.mPlayerSkillState.mRunTime <= self.mDuration then
+        if self.mPlayerSkillState.mRunTime <= self.mDuration and self.mImmediately == false then
             
             local factor = self.mPlayerSkillState.mRunTime / self.mDuration
 
