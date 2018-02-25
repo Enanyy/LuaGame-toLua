@@ -38,10 +38,11 @@ function Ahri_PlayerEffectMovePlugin:OnBegin()
     end
 
     self.mGo.transform:SetParent(nil)
-
+ 
+   
 
     self.mOriginalPosition = self.mParent.position
-    self.mGo.transform.position = self.mOriginalPosition    
+  
     self.mDestination = self.mOriginalPosition + self.machine.mPlayerCharacter.transform.forward * self.mDistance
 
     self.mDuration = self.mDistance * 1.0 / self.mSpeed
@@ -84,18 +85,18 @@ function Ahri_PlayerEffectMovePlugin:OnEnd()
         self.mGo.transform.localPosition = Vector3.zero
 
     end
+    if self.mTween then
 
+        self.mTween.onFinished:Clear()
+        self.mTween.enabled = false
+  
+    end
    
 end
 
 function Ahri_PlayerEffectMovePlugin:OnExit()
 
-    if self.mTween then
-
-        self.mTween.onFinished:Clear()
-        self.mTween.enabled = false
-
-    end
+    
 
     self.mPlayerEffectState.isPlaying = false    
 
