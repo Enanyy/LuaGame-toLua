@@ -25,7 +25,7 @@ function Ahri_PlayerEffectMovePlugin:Init(configure)
 end
 
 
-function Ahri_PlayerEffectMovePlugin:OnEnter()
+function Ahri_PlayerEffectMovePlugin:OnBegin()
    
     if self.mGo == nil then
 
@@ -54,17 +54,25 @@ function Ahri_PlayerEffectMovePlugin:OnExecute()
 
         if factor >= 1 then
 
-            self.mPlayerEffectState.isPlaying = false
-
+            self.mGo:SetActive(false)
         end
     end
 end
 
-function Ahri_PlayerEffectMovePlugin:OnExit()
+function Ahri_PlayerEffectMovePlugin:OnEnd()
 
-    
+    self.mGo:SetActive(true)
+
     self.mGo.transform:SetParent(self.mParent)
     self.mGo.transform.localPosition = Vector3.zero
+
+end
+
+function Ahri_PlayerEffectMovePlugin:OnExit()
+  
+    self.mGo:SetActive(true)
+    
+    self.mPlayerEffectState.isPlaying = false    
 
 end
 

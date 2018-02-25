@@ -29,6 +29,8 @@ function PlayerSkillEffectPlugin:OnEnter()
 
     self.mDone = false
 
+    self.mEffectState:OnEnter()
+
 end
 
 
@@ -42,6 +44,12 @@ function PlayerSkillEffectPlugin:OnExecute()
 
         self.machine.mPlayerCharacter.mEffectMachine:Play(self.mEffectState)
     end
+
+end
+
+function PlayerSkillEffectPlugin:OnExit()
+
+    self.mEffectState:OnExit()
 
 end
 

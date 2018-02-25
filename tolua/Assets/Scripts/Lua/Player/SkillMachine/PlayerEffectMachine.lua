@@ -60,7 +60,7 @@ function PlayerEffectMachine:Play(effectState)
     
     if effectState == nil then return end
 
-    effectState:OnEnter()
+    effectState:OnBegin()
 
     table.insert(self.mEffectStateList,effectState)
 
@@ -71,7 +71,7 @@ function PlayerEffectMachine:Remove(effectState)
 
     if effectState == nil then return end
 
-    effectState:OnExit()
+    effectState:OnEnd()
 
     for i,v in ipairs(self.mEffectStateList) do
       

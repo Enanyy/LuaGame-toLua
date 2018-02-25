@@ -39,9 +39,6 @@ end
 
 function PlayerEffectState:OnEnter()
 
-    self.mRunTime = 0
-    self.isPlaying = true
-
     for i,v in ipairs(self.mEffectPluginList) do
        
         v:OnEnter()
@@ -71,3 +68,24 @@ function PlayerEffectState:OnExit()
     
 end
 
+
+function PlayerEffectState:OnBegin()
+
+    self.mRunTime = 0
+    self.isPlaying = true
+
+    for i,v in ipairs(self.mEffectPluginList) do
+       
+        v:OnBegin()
+  
+    end
+end
+
+function PlayerEffectState:OnEnd()
+
+    for i,v in ipairs(self.mEffectPluginList) do
+       
+        v:OnEnd()
+  
+    end
+end
