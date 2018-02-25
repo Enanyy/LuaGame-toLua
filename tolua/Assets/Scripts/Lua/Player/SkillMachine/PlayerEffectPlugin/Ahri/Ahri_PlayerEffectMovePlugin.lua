@@ -43,13 +43,15 @@ function Ahri_PlayerEffectMovePlugin:OnBegin()
 
     self.mDuration = self.mDistance * 1.0 / self.mSpeed
 
-    local tween = TweenPosition.Begin(self.mGo, self.mDuration,self.mDestination)
-    tween.method = UITweener.Method.EaseOut
-    tween.onFinished:Clear()
-    tween:AddOnFinished(EventDelegate.New(function() 
+    self.mTween = TweenPosition.Begin(self.mGo, self.mDuration,self.mDestination)
+    self.mTween.enabled = true    
+    self.mTween.method = UITweener.Method.EaseOut
+    self.mTween.onFinished:Clear()
+    self.mTween:AddOnFinished(EventDelegate.New(function() 
         self.mGo:SetActive(false)
     end))
-    tween:PlayForward()
+    self.mTween:ResetToBeginning()
+    self.mTween:PlayForward()
 
 end
 
@@ -71,15 +73,27 @@ end
 
 function Ahri_PlayerEffectMovePlugin:OnEnd()
 
-    self.mGo:SetActive(true)
+    if self.mGo then
+        
+        self.mGo:SetActive(true)
 
-    self.mGo.transform:SetParent(self.mParent)
-    self.mGo.transform.localPosition = Vector3.zero
+        self.mGo.transform:SetParent(self.mParent)
+        self.mGo.transform.localPosition = Vector3.zero
 
+    end
+
+   
 end
 
 function Ahri_PlayerEffectMovePlugin:OnExit()
-    
+
+    if self.mTween then
+
+        self.mTween.onFinished:Clear()
+        self.mTween.enabled = false
+
+    end
+
     self.mPlayerEffectState.isPlaying = false    
 
 end
