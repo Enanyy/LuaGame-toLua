@@ -26,6 +26,9 @@ end
 
 function Ahri_PlayerEffectMoveAndBackPlugin:OnBegin()
    
+    --先退出其他控制法球的特效状态
+    self:ClearEffectState()
+
     if self.mGo == nil then
 
         self.mGo = self.machine.mPlayerCharacter.mFashionWeapon.mWeapon
@@ -38,7 +41,7 @@ function Ahri_PlayerEffectMoveAndBackPlugin:OnBegin()
 
     self.mMoveBack = false
     self.mDone = false 
-
+    
     self.mGo.transform:SetParent(nil)
 
 
@@ -49,6 +52,7 @@ function Ahri_PlayerEffectMoveAndBackPlugin:OnBegin()
     self.mDuration = self.mDistance * 1.0 / self.mSpeed
 
     self.mTween = TweenPosition.Begin(self.mGo, self.mDuration,self.mDestination)
+   
     self.mTween.enabled = true    
     self.mTween.method = UITweener.Method.EaseOut
     self.mTween.onFinished:Clear()
@@ -68,7 +72,7 @@ function Ahri_PlayerEffectMoveAndBackPlugin:OnExecute()
 
         local direction = self.mParent.position - self.mGo.transform.position
 
-        if direction.magnitude > 0.1 then
+        if direction.magnitude > 0.2 then
 
             self.mGo.transform.position = self.mGo.transform.position + direction.normalized * self.mSpeed * Time.deltaTime
         else
@@ -85,7 +89,12 @@ end
 function Ahri_PlayerEffectMoveAndBackPlugin:OnEnd()
 
     self.mMoveBack = false
-    
+    if self.mTween then
+
+        self.mTween.onFinished:Clear()
+        self.mTween:ResetToBeginning()        
+        self.mTween.enabled = false
+    end
     if self.mGo then
         
         self.mGo:SetActive(true)
@@ -94,18 +103,13 @@ function Ahri_PlayerEffectMoveAndBackPlugin:OnEnd()
         self.mGo.transform.localPosition = Vector3.zero
 
     end
-    if self.mTween then
-
-        self.mTween.onFinished:Clear()
-        self.mTween.enabled = false
-
-    
-    end
+   
    
 end
 
 function Ahri_PlayerEffectMoveAndBackPlugin:OnExit()
 
+   -- self:OnEnd()
     
 end
 
@@ -118,5 +122,29 @@ end
 function Ahri_PlayerEffectMoveAndBackPlugin:OnResume()
 
 
+
+end
+
+---因为要控制阿狸的法球，所以要退出其他控制法球的特效状态
+function Ahri_PlayerEffectMoveAndBackPlugin:ClearEffectState()
+
+    local list = {}
+
+    for i,v in ipairs(self.machine.mPlayerCharacter.mEffectMachine.mEffectStateList) do
+     
+        if  v.mPlayerSkillState.mPlayerSkillType == PlayerSkillType.Attack_1 or
+            v.mPlayerSkillState.mPlayerSkillType == PlayerSkillType.Attack_2 or
+            v.mPlayerSkillState.mPlayerSkillType == PlayerSkillType.Attack_3 or
+            v.mPlayerSkillState.mPlayerSkillType == PlayerSkillType.Skill_1  or
+            v.mPlayerSkillState.mPlayerSkillType == PlayerSkillType.Skill_2 then
+        
+            table.insert( list, v )
+        end
+
+    end
+
+    for i,v in ipairs(list) do
+        self.machine.mPlayerCharacter.mEffectMachine:Remove(v)
+    end
 
 end

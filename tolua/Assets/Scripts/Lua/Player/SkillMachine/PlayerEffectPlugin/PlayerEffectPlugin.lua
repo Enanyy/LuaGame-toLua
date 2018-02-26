@@ -13,11 +13,12 @@ function PlayerEffectPlugin:SetPlayerEffectState(effectState)
 
 end
 
+--特效开始显示
 function PlayerEffectPlugin:OnBegin()
 
 end
 
-
+--特效结束显示
 function PlayerEffectPlugin:OnEnd()
 
 end
