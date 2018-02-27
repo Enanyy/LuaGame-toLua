@@ -8,7 +8,7 @@ Run the LuaGame Demo:
 
 2.Click the Menu: Lua->Gen Lua Delegates
 
-3.Click the Menu: BuildAssetBundle->SetEditorName 
+3.Click the Menu: BuildAssetBundle->SetEditorMode
 
 
 4.Run
