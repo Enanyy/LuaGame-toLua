@@ -182,7 +182,7 @@ function Tweener:OnUpdate(factor, isFinished)
    if  self.onUpdate then
 
         self.onUpdate(factor, isFinished)
-        
+
    end
 
 end
@@ -206,6 +206,18 @@ end
 
 function Tweener:PlayReverse()
     self:Play(false)
+end
+
+function Tweener:ResetToBeginning ()
+	
+    self.mStarted = false
+    if self:GetAmountPerDelta() < 0 then
+        self.mFactor = 1
+    else
+        self.mFactor = 0    
+    end
+	
+	self:Sample(self.mFactor, false)
 end
 
 function Tweener:Pause()
