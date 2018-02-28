@@ -1,7 +1,4 @@
 require("Class")
-
-
-
 PlayerInput = Class()
 
 function PlayerInput:ctor(varPlayerCharacter, varCamera)
@@ -71,6 +68,8 @@ function PlayerInput:Update()
         self.mPlayerCharacter:PlaySkill (PlayerSkillType.Skill_4)
     end
 
+   
+    
     if  Input.GetKeyDown (KeyCode.P) then 
         if self.mPlayerCharacter:isPause() then
             self.mPlayerCharacter:Resume()

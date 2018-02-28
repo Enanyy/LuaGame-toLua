@@ -32,6 +32,7 @@ function Tweener:ctor()
     self.delay = 0
     self.duration = 1
     self.steeperCurves = false
+    self.isPause = false
 
     self.mStarted = false
     self.mStartTime = 0
@@ -40,6 +41,7 @@ function Tweener:ctor()
     self.mFactor = 0
 
     self.onFinished = nil
+    self.onUpdate   = nil
 
     self.update = function ()
         self:Update()
@@ -156,28 +158,32 @@ end
 
 function Tweener:BounceLogic ( val)
 	
-	if val < 0.363636 then                                      -- 0.363636 = (1/ 2.75)
+	if val < 0.363636 then                                     -- 0.363636 = (1/ 2.75)
 		
 		val = 7.5685 * val * val
 		
 	elseif val < 0.727272 then                                 -- 0.727272 = (2 / 2.75)
 		val = val - 0.545454
-		val = 7.5625 * (val) * val + 0.75                       -- 0.545454f = (1.5 / 2.75) 
+		val = 7.5625 * val * val + 0.75                        -- 0.545454 = (1.5 / 2.75) 
 		
-    elseif val < 0.909090 then                                  -- 0.909090 = (2.5 / 2.75) 
+    elseif val < 0.909090 then                                 -- 0.909090 = (2.5 / 2.75) 
 		val = val -  0.818181
-		val = 7.5625 * (val) * val + 0.9375         -- 0.818181 = (2.25 / 2.75) 
+		val = 7.5625 * val * val + 0.9375                      -- 0.818181 = (2.25 / 2.75) 
 		
     else
         val = val - 0.9545454
-        val = 7.5625 * (val ) * val + 0.984375      -- 0.9545454 = (2.625 / 2.75) 
+        val = 7.5625 * val  * val + 0.984375                   -- 0.9545454 = (2.625 / 2.75) 
 	end
     return val
 end
 
 function Tweener:OnUpdate(factor, isFinished)
 
-    print(factor ..".."..tostring(isFinished))
+   if  self.onUpdate then
+
+        self.onUpdate(factor, isFinished)
+        
+   end
 
 end
 
@@ -200,4 +206,17 @@ end
 
 function Tweener:PlayReverse()
     self:Play(false)
+end
+
+function Tweener:Pause()
+
+    self.isPause = true
+    UpdateBeat:Remove(self.update,self)
+
+end
+function Tweener:Resume()
+
+    self.isPause = false
+    UpdateBeat:Add(self.update,self)    
+
 end
