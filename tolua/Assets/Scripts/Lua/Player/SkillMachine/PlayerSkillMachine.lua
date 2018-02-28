@@ -55,7 +55,7 @@ function PlayerSKillMachine:Cache(skillType)
 
         local result = current:Cache(state)
         
-        --print("PlayerSKillMachine:ChangeState current = "..current.name .." Cache:" ..skillType .. ".."..tostring(result))
+        print("PlayerSKillMachine:ChangeState current = "..current.name .." Cache:" ..skillType .. ".."..tostring(result))
         
         return result
     end

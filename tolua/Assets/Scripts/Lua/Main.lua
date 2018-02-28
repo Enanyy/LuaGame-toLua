@@ -4,6 +4,7 @@ require("AssetManager")
 require("WindowManager")
 require("PlayerManager")
 require("SceneMachine")
+require("Tweener")
 ----
 ----Lua表不要与C#中需要Wrap的类同名，会引起混乱
 ----
@@ -40,6 +41,10 @@ function Main:Start()
 	LateUpdateBeat:Add(Main.LateUpate,self)	 		
 	FixedUpdateBeat:Add(Main.FixedUpdate,self)	 	
 	
+	local tween = Tweener.new()
+	tween.duration = 3
+	tween:Play(true)
+
 	--[[ 
 	--self.TestGameObject()
 	--self.TestStack()

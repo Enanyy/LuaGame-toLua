@@ -34,10 +34,10 @@ function PlayerSkillRotationPlugin:OnEnter()
     self.mTargetPosition = Vector3.zero
     if tmpFlag then
         self.mTargetPosition = tmpHit.point
+        self.mTargetPosition.y = self.machine.mPlayerCharacter.transform.position.y
         self.mWantedRotation = Quaternion.LookRotation (self.mTargetPosition - self.machine.mPlayerCharacter.transform.position)
         
     end
-
 
 end
 
