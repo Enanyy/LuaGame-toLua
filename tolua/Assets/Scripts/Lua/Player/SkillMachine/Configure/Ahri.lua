@@ -198,9 +198,9 @@ Role_Configure_Ahri = {
             ChangeList = {
                 {enum = "Idle",endAt= 1.250, beginAt= 0, speed = 1, fadeLength = 0 },
                 {enum = "Run",endAt=1.250, beginAt= 0, speed = 1, fadeLength = 0.2 },                
-                {enum = "Attack_1",endAt= 1, beginAt= 0.6, speed = 1.8, fadeLength = 0.2 },
-                {enum = "Attack_2",endAt= 1, beginAt= 0.6, speed = 1.8, fadeLength = 0.2 },
-                {enum = "Attack_3",endAt= 1, beginAt= 0.6, speed = 1.8, fadeLength = 0.2 },
+                {enum = "Attack_1",endAt= 0.3, beginAt= 0.6, speed = 3, fadeLength = 0.2 },
+                {enum = "Attack_2",endAt= 0.3, beginAt= 0.6, speed = 3, fadeLength = 0.2 },
+                {enum = "Attack_3",endAt= 0.3, beginAt= 0.6, speed = 3, fadeLength = 0.2 },
                 {enum = "Skill_2",endAt=1, beginAt= 0, speed = 1, fadeLength = 0 },
                 {enum = "Skill_3",endAt=1, beginAt= 0, speed = 1, fadeLength = 0 },
                 {enum = "Skill_4",endAt=1, beginAt= 0, speed = 1, fadeLength = 0 },

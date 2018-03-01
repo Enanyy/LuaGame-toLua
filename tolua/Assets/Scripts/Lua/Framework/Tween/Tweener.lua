@@ -1,5 +1,5 @@
 require("Class")
-
+Tweener = Class()
 TweenerMethod = 
 {
     Linear      = 0,
@@ -24,7 +24,7 @@ TweenerDirection =
 	Forward     = 1,
 }
 
-Tweener = Class()
+
 
 function Tweener:ctor()
     self.method = TweenerMethod.Linear
@@ -103,10 +103,11 @@ function Tweener:Update()
 
         self:Sample(self.mFactor, true)
 
+        UpdateBeat:Remove(self.update,self)
+
         if self.onFinished then
             self.onFinished()
         end
-        UpdateBeat:Remove(self.update,self)
     else
         self:Sample(self.mFactor, false)
     end
@@ -119,21 +120,16 @@ function Tweener:Sample(factor, isFinished)
     if factor < 0 then factor = 0 end
 
     if self.method == TweenerMethod.EaseIn then
-
         factor = 1 - math.sin( 0.5 * 3.14159274 * (1 - factor))
-
         if self.steeperCurves then
             factor = factor * factor
         end
-
     elseif self.method == TweenerMethod.EaseOut then
-        
         factor = math.sin( 0.5 * 3.14159274 * factor)
         if self.steeperCurves then
             factor = 1 - factor
             factor = 1 - factor * factor
         end
-    
     elseif self.method == TweenerMethod.EaseInOut then
         local PI2 = 3.14159274 * 2
         factor = factor - math.sin( factor * PI2) / PI2
@@ -145,7 +141,6 @@ function Tweener:Sample(factor, isFinished)
             factor = 1 - factor * factor
             factor = sign * factor * 0.5 + 0.5
         end
-
     elseif self.method == TweenerMethod.BounceIn then
         factor = self:BounceLogic(factor)
     elseif self.method == TweenerMethod.BounceOut then
@@ -159,17 +154,13 @@ end
 function Tweener:BounceLogic ( val)
 	
 	if val < 0.363636 then                                     -- 0.363636 = (1/ 2.75)
-		
 		val = 7.5685 * val * val
-		
 	elseif val < 0.727272 then                                 -- 0.727272 = (2 / 2.75)
 		val = val - 0.545454
-		val = 7.5625 * val * val + 0.75                        -- 0.545454 = (1.5 / 2.75) 
-		
+		val = 7.5625 * val * val + 0.75                        -- 0.545454 = (1.5 / 2.75) 	
     elseif val < 0.909090 then                                 -- 0.909090 = (2.5 / 2.75) 
 		val = val -  0.818181
 		val = 7.5625 * val * val + 0.9375                      -- 0.818181 = (2.25 / 2.75) 
-		
     else
         val = val - 0.9545454
         val = 7.5625 * val  * val + 0.984375                   -- 0.9545454 = (2.625 / 2.75) 
@@ -180,9 +171,7 @@ end
 function Tweener:OnUpdate(factor, isFinished)
 
    if  self.onUpdate then
-
         self.onUpdate(factor, isFinished)
-
    end
 
 end
@@ -194,7 +183,7 @@ function Tweener:Play(forward)
     if not forward then
         self.mAmountPerDelta = -self.mAmountPerDelta
     end
-
+    self.isPause = false
     self:Update()
 
     UpdateBeat:Add(self.update,self)	 
@@ -230,5 +219,13 @@ function Tweener:Resume()
 
     self.isPause = false
     UpdateBeat:Add(self.update,self)    
+
+end
+
+function Tweener:Clear()
+
+    self.isPause = false
+    self.onFinished = nil
+    UpdateBeat:Remove(self.update,self)
 
 end

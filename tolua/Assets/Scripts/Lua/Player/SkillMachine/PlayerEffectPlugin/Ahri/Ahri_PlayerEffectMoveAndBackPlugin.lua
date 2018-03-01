@@ -51,17 +51,21 @@ function Ahri_PlayerEffectMoveAndBackPlugin:OnBegin()
 
     self.mDuration = self.mDistance * 1.0 / self.mSpeed
 
-    self.mTween = TweenPosition.Begin(self.mGo, self.mDuration,self.mDestination)
-   
-    self.mTween.enabled = true    
-    self.mTween.method = UITweener.Method.EaseOut
-    self.mTween.onFinished:Clear()
-    self.mTween:AddOnFinished(EventDelegate.New(function() 
-        
-        self.mMoveBack = true
-       
-    end))
+    if self.mTween == nil then
+
+        self.mTween = Tweener.new()
+        self.mTween.method = TweenerMethod.EaseOut
+        self.mTween.onFinished = function() 
+            self.mMoveBack = true
+        end
+        self.mTween.onUpdate = function (factor, isFinished)
+
+            self.mGo.transform.position = self.mOriginalPosition * (1-factor) + self.mDestination * factor
+
+        end
+    end
     self.mTween:ResetToBeginning()
+    self.mTween.duration = self.mDuration
     self.mTween:PlayForward()
 
 end
@@ -90,10 +94,8 @@ function Ahri_PlayerEffectMoveAndBackPlugin:OnEnd()
 
     self.mMoveBack = false
     if self.mTween then
-
-        self.mTween.onFinished:Clear()
+        self.mTween:Pause()        
         self.mTween:ResetToBeginning()        
-        self.mTween.enabled = false
     end
     if self.mGo then
         
@@ -109,7 +111,7 @@ end
 
 function Ahri_PlayerEffectMoveAndBackPlugin:OnExit()
 
-   -- self:OnEnd()
+  
     
 end
 
