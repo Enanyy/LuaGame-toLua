@@ -74,7 +74,7 @@ function Ahri_PlayerEffectMovePlugin:OnEnd()
     
     if self.mTween then
         self.mTween:Pause()
-        self.mTween:ResetToBeginning()
+        --self.mTween:ResetToBeginning()
     end
     
     if self.mGo then

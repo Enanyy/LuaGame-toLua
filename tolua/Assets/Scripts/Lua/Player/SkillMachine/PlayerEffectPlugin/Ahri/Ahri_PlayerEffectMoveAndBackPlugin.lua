@@ -95,7 +95,7 @@ function Ahri_PlayerEffectMoveAndBackPlugin:OnEnd()
     self.mMoveBack = false
     if self.mTween then
         self.mTween:Pause()        
-        self.mTween:ResetToBeginning()        
+        --self.mTween:ResetToBeginning()        
     end
     if self.mGo then
         
