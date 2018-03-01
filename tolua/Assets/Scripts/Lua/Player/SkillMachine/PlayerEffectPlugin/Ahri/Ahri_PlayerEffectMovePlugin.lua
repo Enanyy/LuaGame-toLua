@@ -99,13 +99,17 @@ end
 
 function Ahri_PlayerEffectMovePlugin:OnPause()
 
-
+    if self.mTween then
+        self.mTween:Pause()
+    end
 end
 
 
 function Ahri_PlayerEffectMovePlugin:OnResume()
 
-
+    if self.mTween then
+        self.mTween:Resume()
+    end
 
 end
 

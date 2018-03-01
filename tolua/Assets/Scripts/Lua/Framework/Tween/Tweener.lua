@@ -119,19 +119,21 @@ function Tweener:Sample(factor, isFinished)
     if factor > 1 then factor = 1 end
     if factor < 0 then factor = 0 end
 
+    local PI = 3.14159274
+
     if self.method == TweenerMethod.EaseIn then
-        factor = 1 - math.sin( 0.5 * 3.14159274 * (1 - factor))
+        factor = 1 - math.sin( 0.5 * PI * (1 - factor))
         if self.steeperCurves then
             factor = factor * factor
         end
     elseif self.method == TweenerMethod.EaseOut then
-        factor = math.sin( 0.5 * 3.14159274 * factor)
+        factor = math.sin( 0.5 * PI * factor)
         if self.steeperCurves then
             factor = 1 - factor
             factor = 1 - factor * factor
         end
     elseif self.method == TweenerMethod.EaseInOut then
-        local PI2 = 3.14159274 * 2
+        local PI2 = PI * 2
         factor = factor - math.sin( factor * PI2) / PI2
 
         if self.steeperCurves then

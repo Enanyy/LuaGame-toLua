@@ -117,14 +117,19 @@ end
 
 function Ahri_PlayerEffectMoveAndBackPlugin:OnPause()
 
-
+    if self.mTween then
+        self.mTween:Pause()
+    end
 end
 
 
 function Ahri_PlayerEffectMoveAndBackPlugin:OnResume()
 
 
-
+    if self.mTween then
+        self.mTween:Resume()
+    end
+    
 end
 
 ---因为要控制阿狸的法球，所以要退出其他控制法球的特效状态
