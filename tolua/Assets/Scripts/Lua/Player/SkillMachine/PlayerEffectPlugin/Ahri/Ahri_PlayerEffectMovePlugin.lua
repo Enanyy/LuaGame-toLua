@@ -11,6 +11,8 @@ function Ahri_PlayerEffectMovePlugin:ctor(name)
     self.mParent = nil
     self.mGo = nil
 
+    self.mStateEnd = false
+    self.mEffectEnd = false
 end 
 
 
@@ -41,16 +43,19 @@ function Ahri_PlayerEffectMovePlugin:OnEnter()
         
         self.mGo:SetActive(false)
     end
+
+    self.mStateEnd = false
 end
 
 
 function Ahri_PlayerEffectMovePlugin:OnBegin()
     
     self:ClearEffectState()
-
     if self.mGo == nil then
         return
     end
+
+    self.mEffectEnd = false
 
     self.mGo.transform:SetParent(nil)
     self.mGo:SetActive(true)
@@ -66,6 +71,7 @@ function Ahri_PlayerEffectMovePlugin:OnBegin()
         self.mTween.method = TweenerMethod.EaseOut
         self.mTween.onFinished = function() 
             self.mGo:SetActive(false)
+            self.mPlayerEffectState.isPlaying = false   
         end
         self.mTween.onUpdate = function (factor, isFinished)
 
@@ -85,27 +91,36 @@ end
 
 function Ahri_PlayerEffectMovePlugin:OnEnd()
     
+    self.mEffectEnd = true
+
     if self.mTween then
         self.mTween:Pause()
         self.mTween:ResetToBeginning()
     end
     
-    if self.mGo then
-        
-        self.mGo:SetActive(true)
-
-        self.mGo.transform:SetParent(self.mParent)
-        self.mGo.transform.localPosition = Vector3.zero
-
-    end
+    if self.mStateEnd then
+        if self.mGo then
+            self.mGo.transform:SetParent(self.mParent)
+            self.mGo.transform.localPosition = Vector3.zero
+            self.mGo:SetActive(true)
+        end
    
+    end
    
 end
 --动作状态机退出
 function Ahri_PlayerEffectMovePlugin:OnExit()
 
-    self.mPlayerEffectState.isPlaying = false   
-
+    self.mStateEnd = true
+    
+    if self.mEffectEnd then
+        if self.mGo then
+            self.mGo.transform:SetParent(self.mParent)
+            self.mGo.transform.localPosition = Vector3.zero
+            self.mGo:SetActive(true)
+        end
+    end
+    
 end
 
 function Ahri_PlayerEffectMovePlugin:OnPause()
