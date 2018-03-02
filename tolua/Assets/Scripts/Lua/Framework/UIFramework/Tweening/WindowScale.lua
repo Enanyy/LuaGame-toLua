@@ -11,7 +11,8 @@ function WindowScale.Begin(window, duration, active, callback)
     end
 
     window.tween:ResetToBeginning()    
-
+    window.tween.onFinished = nil
+    
     local current = window.transform.localScale
     local from = Vector3.zero
     local to = Vector3.zero

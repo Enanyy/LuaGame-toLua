@@ -11,7 +11,8 @@ function WindowFade.Begin(window, duration, active, callback)
     end
 
     window.tween:ResetToBeginning()    
-
+    window.tween.onFinished = nil
+    
     local current = window.panel.alpha
     local from = 0
     local to = 0

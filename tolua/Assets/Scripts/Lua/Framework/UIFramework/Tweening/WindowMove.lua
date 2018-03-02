@@ -12,7 +12,8 @@ function WindowMove.Begin(window, pos, duration, active, callback)
     end
 
     window.tween:ResetToBeginning()    
-
+    window.tween.onFinished = nil
+    
     local current = window.transform.position
     local from = Vector3.zero
     local to = Vector3.zero
