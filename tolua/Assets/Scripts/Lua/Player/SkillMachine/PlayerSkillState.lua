@@ -145,7 +145,7 @@ end
 
 function PlayerSkillState:OnEnter()
 
-    --print("PlayerSkillState:OnEnter "..self.name .." mSpeed="..self.mSpeed .. " mRunTime ="..self.mRunTime)
+    print("PlayerSkillState:OnEnter "..self.name .." mSpeed="..self.mSpeed .. " mRunTime ="..self.mRunTime)
 
     if self.mSkillPluginList ~= nil then
 

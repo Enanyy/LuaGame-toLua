@@ -35,7 +35,12 @@ function Ahri_PlayerEffectMovePlugin:OnEnter()
         self.mParent = self.machine.mPlayerCharacter.mFashionBody.mBody.transform:Find(self.machine.mPlayerCharacter.mPlayerInfo.weaponBone)
 
     end
-
+    self:ClearEffectState()
+    if self.mGo then
+        self.mGo.transform:SetParent(nil)
+        
+        self.mGo:SetActive(false)
+    end
 end
 
 
@@ -48,7 +53,7 @@ function Ahri_PlayerEffectMovePlugin:OnBegin()
     end
 
     self.mGo.transform:SetParent(nil)
-
+    self.mGo:SetActive(true)
     self.mOriginalPosition = self.mParent.position
    
     self.mDestination = self.mOriginalPosition + self.machine.mPlayerCharacter.transform.forward * self.mDistance
@@ -130,7 +135,7 @@ function Ahri_PlayerEffectMovePlugin:ClearEffectState()
             v.mPlayerSkillState.mPlayerSkillType == PlayerSkillType.Attack_2 or
             v.mPlayerSkillState.mPlayerSkillType == PlayerSkillType.Attack_3 or
             v.mPlayerSkillState.mPlayerSkillType == PlayerSkillType.Skill_1  or
-            v.mPlayerSkillState.mPlayerSkillType == PlayerSkillType.Skill_2 then
+            v.mPlayerSkillState.mPlayerSkillType == PlayerSkillType.Skill_3 then
         
             table.insert( list, v )
         end

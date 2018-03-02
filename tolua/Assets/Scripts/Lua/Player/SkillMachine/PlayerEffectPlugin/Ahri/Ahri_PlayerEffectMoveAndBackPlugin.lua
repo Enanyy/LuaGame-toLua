@@ -34,16 +34,21 @@ function Ahri_PlayerEffectMoveAndBackPlugin:OnEnter()
         self.mParent = self.machine.mPlayerCharacter.mFashionBody.mBody.transform:Find(self.machine.mPlayerCharacter.mPlayerInfo.weaponBone)
 
     end
-
-  
+    --先退出其他控制法球的特效状态
+    self:ClearEffectState()
+ 
+    if self.mGo then
+        self.mGo.transform:SetParent(nil)
+        
+        self.mGo:SetActive(false)
+    end
 
 end
 
 
 function Ahri_PlayerEffectMoveAndBackPlugin:OnBegin()
    
-    --先退出其他控制法球的特效状态
-    self:ClearEffectState()
+    
 
     if self.mGo == nil then return end 
 
@@ -51,6 +56,7 @@ function Ahri_PlayerEffectMoveAndBackPlugin:OnBegin()
     self.mDone = false 
     
     self.mGo.transform:SetParent(nil)
+    self.mGo:SetActive(true)
 
     self.mOriginalPosition = self.mParent.position
 
@@ -150,7 +156,7 @@ function Ahri_PlayerEffectMoveAndBackPlugin:ClearEffectState()
             v.mPlayerSkillState.mPlayerSkillType == PlayerSkillType.Attack_2 or
             v.mPlayerSkillState.mPlayerSkillType == PlayerSkillType.Attack_3 or
             v.mPlayerSkillState.mPlayerSkillType == PlayerSkillType.Skill_1  or
-            v.mPlayerSkillState.mPlayerSkillType == PlayerSkillType.Skill_2 then
+            v.mPlayerSkillState.mPlayerSkillType == PlayerSkillType.Skill_3 then
         
             table.insert( list, v )
         end
