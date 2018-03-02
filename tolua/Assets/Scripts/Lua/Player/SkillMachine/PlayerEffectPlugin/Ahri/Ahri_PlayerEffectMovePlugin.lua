@@ -24,10 +24,7 @@ function Ahri_PlayerEffectMovePlugin:Init(configure)
 
 end
 
-
-function Ahri_PlayerEffectMovePlugin:OnBegin()
-    
-    self:ClearEffectState()
+function Ahri_PlayerEffectMovePlugin:OnEnter()
 
     if self.mGo == nil then
 
@@ -38,9 +35,20 @@ function Ahri_PlayerEffectMovePlugin:OnBegin()
         self.mParent = self.machine.mPlayerCharacter.mFashionBody.mBody.transform:Find(self.machine.mPlayerCharacter.mPlayerInfo.weaponBone)
 
     end
-    self:OnEnd()
+
+end
+
+
+function Ahri_PlayerEffectMovePlugin:OnBegin()
+    
+    self:ClearEffectState()
+
+    if self.mGo == nil then
+        return
+    end
+
     self.mGo.transform:SetParent(nil)
- 
+
     self.mOriginalPosition = self.mParent.position
    
     self.mDestination = self.mOriginalPosition + self.machine.mPlayerCharacter.transform.forward * self.mDistance
@@ -74,7 +82,7 @@ function Ahri_PlayerEffectMovePlugin:OnEnd()
     
     if self.mTween then
         self.mTween:Pause()
-        --self.mTween:ResetToBeginning()
+        self.mTween:ResetToBeginning()
     end
     
     if self.mGo then
@@ -91,9 +99,7 @@ end
 --动作状态机退出
 function Ahri_PlayerEffectMovePlugin:OnExit()
 
-    self:OnEnd()
-
-    self.mPlayerEffectState.isPlaying = false    
+    self.mPlayerEffectState.isPlaying = false   
 
 end
 

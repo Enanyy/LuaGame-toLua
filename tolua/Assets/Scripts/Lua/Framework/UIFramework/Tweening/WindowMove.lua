@@ -1,3 +1,4 @@
+require("Tweener")
 
 WindowMove = {}
 function WindowMove.Begin(window, pos, duration, active, callback)
@@ -6,6 +7,46 @@ function WindowMove.Begin(window, pos, duration, active, callback)
         return
     end
 
+    if window.tween == nil then
+        window.tween = Tweener.new()
+    end
+
+    window.tween:ResetToBeginning()    
+
+    local current = window.transform.position
+    local from = Vector3.zero
+    local to = Vector3.zero
+    if active then
+        to = Vector3.zero
+        if window.tween.factor > 0 then
+            from = current
+        else
+            from = pos
+        end
+        window.tween.duration = math.abs( (to - from).magnitude * duration / (to - pos).magnitude )
+        if callback then
+            callback()
+        end
+    else
+        to = pos
+        if window.tween.factor > 0 then
+            from = current
+        else
+            from = Vector3.zero
+        end
+        window.tween.duration =  math.abs( (to - from).magnitude * duration / to.magnitude )
+        window.tween.onFinished = callback
+        
+    end
+
+    window.tween.onUpdate = function(factor, isFinished)
+        window.transform.localPosition = from * (1 - factor) + to * factor
+    end
+
+    window.tween:PlayForward()
+
+
+    --[[ 
     local tween = window.transform:GetComponent(typeof(TweenPosition))
     if tween == nil then
         tween = window.gameObject:AddComponent(typeof(TweenPosition))
@@ -28,7 +69,7 @@ function WindowMove.Begin(window, pos, duration, active, callback)
         if tween.value == pos then
             tween.duration = duration
         else
-            tween.duration = (pos - tween.value).magnitude * duration / from.magnitude 
+            tween.duration = (pos - tween.value).magnitude * duration / pos.magnitude 
         end
         if callback then
             callback()
@@ -48,6 +89,8 @@ function WindowMove.Begin(window, pos, duration, active, callback)
     end
     tween:ResetToBeginning()
     tween:PlayForward()
+
+    --]]
 end
 
 WindowPivot = {

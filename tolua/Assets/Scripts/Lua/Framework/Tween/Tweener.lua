@@ -38,7 +38,8 @@ function Tweener:ctor()
     self.mStartTime = 0
     self.mDuration = 0
     self.mAmountPerDelta = 1000
-    self.mFactor = 0
+
+    self.factor = 0
 
     self.onFinished = nil
     self.onUpdate   = nil
@@ -55,7 +56,9 @@ function Tweener:GetAmountPerDelta()
         if self.mDuration ~= self.duration then
             self.mDuration = self.duration
             local sign = self.mAmountPerDelta / math.abs( self.mAmountPerDelta )
-            self.mAmountPerDelta = math.abs( 1.0 /self.duration ) * sign
+            local delta = 1000 
+            if self.duration > 0 then delta = 1.0 /self.duration end
+            self.mAmountPerDelta = math.abs( delta ) * sign
         end
     end
 
@@ -75,33 +78,33 @@ function Tweener:Update()
 
     if time < self.mStartTime then return end
 
-    self.mFactor = self.mFactor + self:GetAmountPerDelta() * delta
+    self.factor = self.factor + self:GetAmountPerDelta() * delta
 
     if self.style == TweenerStyle.Loop then
 
-        if self.mFactor > 1 then
-            self.mFactor = self.mFactor - math.floor( self.mFactor )
+        if self.factor > 1 then
+            self.factor = self.factor - math.floor( self.factor )
         end
     elseif self.style == TweenerStyle.PingPong then
 
-        if self.mFactor > 1 then
-            self.mFactor = 1 - (self.mFactor - math.floor( self.mFactor ))
+        if self.factor > 1 then
+            self.factor = 1 - (self.factor - math.floor( self.factor ))
             self.mAmountPerDelta = -self.mAmountPerDelta
-        elseif self.mFactor < 0 then
-            self.mFactor =  -self.mFactor
-            self.mFactor = self.mFactor - math.floor( self.mFactor )
+        elseif self.factor < 0 then
+            self.factor =  -self.factor
+            self.factor = self.factor - math.floor( self.factor )
             self.mAmountPerDelta = -self.mAmountPerDelta            
         end
 
     end
 
 
-    if self.style == TweenerStyle.Once and (self.duration == 0 or self.mFactor > 1 or self.mFactor < 0) then
+    if self.style == TweenerStyle.Once and (self.duration == 0 or self.factor > 1 or self.factor < 0) then
 
-        if self.mFactor > 1 then self.mFactor = 1 end
-        if self.mFactor < 0 then self.mFactor = 0 end
+        if self.factor > 1 then self.factor = 1 end
+        if self.factor < 0 then self.factor = 0 end
 
-        self:Sample(self.mFactor, true)
+        self:Sample(self.factor, true)
 
         UpdateBeat:Remove(self.update,self)
 
@@ -109,7 +112,7 @@ function Tweener:Update()
             self.onFinished()
         end
     else
-        self:Sample(self.mFactor, false)
+        self:Sample(self.factor, false)
     end
 
 end
@@ -182,7 +185,7 @@ function Tweener:Play(forward)
    
     self.mAmountPerDelta = math.abs( self:GetAmountPerDelta() )
 
-    if not forward then
+    if forward == false then
         self.mAmountPerDelta = -self.mAmountPerDelta
     end
     self.isPause = false
@@ -203,12 +206,12 @@ function Tweener:ResetToBeginning ()
 	
     self.mStarted = false
     if self:GetAmountPerDelta() < 0 then
-        self.mFactor = 1
+        self.factor = 1
     else
-        self.mFactor = 0    
+        self.factor = 0    
     end
 	
-	self:Sample(self.mFactor, false)
+	self:Sample(self.factor, false)
 end
 
 function Tweener:Pause()

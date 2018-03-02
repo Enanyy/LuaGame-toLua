@@ -23,12 +23,8 @@ function Ahri_PlayerEffectMoveAndBackPlugin:Init(configure)
 
 end
 
-
-function Ahri_PlayerEffectMoveAndBackPlugin:OnBegin()
-   
-    --先退出其他控制法球的特效状态
-    self:ClearEffectState()
-
+function Ahri_PlayerEffectMoveAndBackPlugin:OnEnter()
+    
     if self.mGo == nil then
 
         self.mGo = self.machine.mPlayerCharacter.mFashionWeapon.mWeapon
@@ -39,11 +35,22 @@ function Ahri_PlayerEffectMoveAndBackPlugin:OnBegin()
 
     end
 
+  
+
+end
+
+
+function Ahri_PlayerEffectMoveAndBackPlugin:OnBegin()
+   
+    --先退出其他控制法球的特效状态
+    self:ClearEffectState()
+
+    if self.mGo == nil then return end 
+
     self.mMoveBack = false
     self.mDone = false 
     
     self.mGo.transform:SetParent(nil)
-
 
     self.mOriginalPosition = self.mParent.position
 
