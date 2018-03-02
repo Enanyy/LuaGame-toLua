@@ -11,6 +11,9 @@ function Ahri_PlayerEffectMoveAndBackPlugin:ctor(name)
     
     self.mParent = nil
     self.mGo = nil
+
+    self.mStateEnd = false
+    self.mEffectEnd = false
 end
 
 function Ahri_PlayerEffectMoveAndBackPlugin:Init(configure)
@@ -43,13 +46,14 @@ function Ahri_PlayerEffectMoveAndBackPlugin:OnEnter()
         self.mGo:SetActive(false)
     end
 
+    self.mStateEnd = false
 end
 
 
 function Ahri_PlayerEffectMoveAndBackPlugin:OnBegin()
    
+    self.mEffectEnd = false
     
-
     if self.mGo == nil then return end 
 
     self.mMoveBack = false
@@ -105,26 +109,41 @@ end
 
 function Ahri_PlayerEffectMoveAndBackPlugin:OnEnd()
 
+    self.mEffectEnd = true
+
     self.mMoveBack = false
     if self.mTween then
         self.mTween:Pause()        
         --self.mTween:ResetToBeginning()        
     end
-    if self.mGo then
+
+    if self.mStateEnd then
+        if self.mGo then
         
-        self.mGo:SetActive(true)
+            self.mGo:SetActive(true)
 
-        self.mGo.transform:SetParent(self.mParent)
-        self.mGo.transform.localPosition = Vector3.zero
+            self.mGo.transform:SetParent(self.mParent)
+            self.mGo.transform.localPosition = Vector3.zero
 
+        end
     end
-   
    
 end
 
 function Ahri_PlayerEffectMoveAndBackPlugin:OnExit()
 
-  
+    self.mStateEnd = true
+    
+    if self.mEffectEnd then
+        if self.mGo then
+        
+            self.mGo:SetActive(true)
+
+            self.mGo.transform:SetParent(self.mParent)
+            self.mGo.transform.localPosition = Vector3.zero
+
+        end
+    end
     
 end
 
