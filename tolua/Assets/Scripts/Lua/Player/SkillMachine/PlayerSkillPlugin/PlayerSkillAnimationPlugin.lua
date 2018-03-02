@@ -81,7 +81,9 @@ function PlayerSkillAnimationPlugin:PlayAnimation()
     self.mAnimationState.speed = self.mPlayerSkillState.mSpeed
   
     if self.mDone then
-        
+        if self.mAnimation:IsPlaying(self.mAnimationClip) == false then
+            self.mAnimation:Play(self.mAnimationClip)
+        end
         return
 
     end
