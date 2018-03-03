@@ -1,6 +1,7 @@
 require("Class")
 require("WindowPath")
 require("UnityClass")
+require("UnityLayer")
 
 --全局的WindowManager对象，继承于BehaviourBase
 WindowManager = Class(BehaviourBase).new()
@@ -12,8 +13,8 @@ function  WindowManager:Initialize()
     
         self.initialized = true
 
-        self.uiLayer = LayerMask.NameToLayer("UI")              --UI显示层
-        self.blurLayer = LayerMask.NameToLayer("Blur")          --背景模糊层 Unity没有该层的话请创建
+        self.uiLayer = UnityLayer.UI              --UI显示层
+        self.blurLayer = UnityLayer.Blur          --背景模糊层 Unity没有该层的话请创建
 
         local go = GameObject('WindowManager')     
         GameObject.DontDestroyOnLoad(go)
@@ -28,7 +29,8 @@ function  WindowManager:Initialize()
         self.uiCamera = p:GetComponentInChildren(typeof(UICamera))
         local camera = self.uiCamera:GetComponent( typeof( Camera ))
         camera.clearFlags = CameraClearFlags.Depth
-        NGUITools.MakeMask(camera, self.uiLayer)
+        camera.cullingMask =  NGUITools.MakeMask(self.uiLayer)
+       
         NGUITools.SetLayer(self.uiCamera.gameObject, self.uiLayer)
         camera.depth = 2
 
@@ -63,8 +65,9 @@ function  WindowManager:Initialize()
 
         self.blurCamera = blurGo:GetComponent(typeof(UICamera))  
         local camera = self.blurCamera:GetComponent(typeof(Camera))
-        camera.clearFlags = CameraClearFlags.Depth        
-        NGUITools.MakeMask(camera,  self.blurLayer)
+        camera.clearFlags = CameraClearFlags.Depth 
+        camera.cullingMask =  NGUITools.MakeMask(self.blurLayer)       
+      
         NGUITools.SetLayer(blurGo,  self.blurLayer)
         camera.depth = 1
         self.blurCamera.enabled = false

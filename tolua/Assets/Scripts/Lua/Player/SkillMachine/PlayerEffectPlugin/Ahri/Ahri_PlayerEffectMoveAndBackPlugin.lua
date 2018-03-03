@@ -195,7 +195,9 @@ function Ahri_PlayerEffectMoveAndBackPlugin:OnTriggerEnter(other)
         return 
     end 
 
-    print(fashionBody.mPlayerCharacter.mPlayerInfo.guid)
+    if fashionBody.mPlayerCharacter.mPlayerInfo.guid ~= self.machine.mPlayerCharacter.mPlayerInfo.guid then
+        print(fashionBody.mPlayerCharacter.mPlayerInfo.guid)
+    end
 end
 ---因为要控制阿狸的法球，所以要退出其他控制法球的特效状态
 function Ahri_PlayerEffectMoveAndBackPlugin:ClearEffectState()

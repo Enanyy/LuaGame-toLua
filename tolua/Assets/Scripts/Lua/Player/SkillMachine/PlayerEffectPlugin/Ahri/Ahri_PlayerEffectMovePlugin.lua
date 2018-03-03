@@ -183,7 +183,9 @@ function Ahri_PlayerEffectMovePlugin:OnTriggerEnter(other)
         return 
     end 
 
-    print(fashionBody.mPlayerCharacter.mPlayerInfo.guid)
+    if fashionBody.mPlayerCharacter.mPlayerInfo.guid ~= self.machine.mPlayerCharacter.mPlayerInfo.guid then
+        print(fashionBody.mPlayerCharacter.mPlayerInfo.guid)
+    end
 
 end
 

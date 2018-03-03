@@ -5,11 +5,19 @@ require("FashionBody")
 require("FashionWeapon")
 require("PlayerSKillMachine")
 require("PlayerEffectMachine")
-
+require("UnityLayer")
 
 PlayerCharacter = Class(BehaviourBase)
 
 function PlayerCharacter:ctor()
+
+    self.mGuid = 0
+    self.mProfession = 0
+    self.mPlayerInfo = nil
+    self.mMoveSpeed = 0
+    self.mCallback = nil
+    self.mLockPlayerCharacter = nil
+    
 
     self.mTargetPosition = Vector3.zero
     self.mFashionBody = nil
@@ -34,6 +42,7 @@ function PlayerCharacter:CreateFashionBody()
 
     local tmpBody = GameObject ("FashionBody")
 	tmpBody.transform:SetParent (self.transform)
+    NGUITools.SetLayer(tmpBody, self.gameObject.layer)
 
 	tmpBody.transform.localPosition = Vector3.zero
 	tmpBody.transform.localScale = Vector3.one
@@ -63,7 +72,8 @@ function PlayerCharacter:CreateFashionWeapon()
 
     local tmpWeapnon = GameObject ("FashionWeapnon")
 	tmpWeapnon.transform:SetParent (self.transform)
-
+    NGUITools.SetLayer(tmpWeapnon, self.gameObject.layer)
+    
 	tmpWeapnon.transform.localPosition = Vector3.zero
 	tmpWeapnon.transform.localScale = Vector3.one
 	tmpWeapnon.transform.transform.localRotation = Quaternion.identity
@@ -184,4 +194,10 @@ function PlayerCharacter:OnMoveToPointFail()
         self.mMoveFailAction()
         self.mMoveFailAction = nil
     end
+end
+
+function PlayerCharacter:LockPlayerCharacter(varPlayerCharacter)
+
+    self.mLockPlayerCharacter = varPlayerCharacter
+
 end

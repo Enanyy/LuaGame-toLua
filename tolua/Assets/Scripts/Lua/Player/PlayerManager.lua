@@ -4,6 +4,7 @@ require("PlayerCharacter")
 require("SmoothFollow")
 require("PlayerInput")
 require("UnityClass")
+require("UnityLayer")
 
 
 PlayerManager = Class(BehaviourBase).new()
@@ -31,7 +32,7 @@ end
 
 function  PlayerManager:CreatePlayerCharacter(varGuid,  varPlayerInfo, varCallback)
     
-        local layer = LayerMask.NameToLayer("Default")
+        local layer = UnityLayer.Player
     
 		local go =  GameObject (tostring(varGuid))
         NGUITools.SetLayer(go, layer)
@@ -66,8 +67,8 @@ function  PlayerManager:CreatePlayerCharacter(varGuid,  varPlayerInfo, varCallba
                 behaviour:Init(self.mSmoothFollow)
                 self.mSmoothFollow:Init(behaviour)
 
-                NGUITools.MakeMask(self.mCamera, layer)
-                NGUITools.SetLayer(camera, layer)
+                self.mCamera.cullingMask = NGUITools.MakeMask( UnityLayer.Default, layer)
+                NGUITools.SetLayer(camera, UnityLayer.Default)
 
               
                 --输入控制

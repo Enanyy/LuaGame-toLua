@@ -1,4 +1,5 @@
 require("Class")
+require("UnityLayer")
 PlayerInput = Class()
 
 function PlayerInput:ctor(varPlayerCharacter, varCamera)
@@ -23,14 +24,20 @@ function PlayerInput:Update()
             end
 
             local tmpRay = self.mCamera:ScreenPointToRay (Input.mousePosition)
-            local tmpLayer = 2 ^ LayerMask.NameToLayer("Default")                
+            
+            local tmpLayer = NGUITools.MakeMask(UnityLayer.Default, UnityLayer.Player)
 
             local tmpFlag, tmpHit = Physics.Raycast(tmpRay,nil, 5000, tmpLayer)
          
-
+            
             if tmpFlag then
-                if self.mPlayerCharacter then
-                    self.mPlayerCharacter:MoveToPoint(tmpHit.point)
+                print(tmpHit.collider.gameObject.name)
+                if tmpHit.collider.gameObject.layer == UnityLayer.Default then
+                    if self.mPlayerCharacter then
+                        self.mPlayerCharacter:MoveToPoint(tmpHit.point)
+                    end
+                else
+                    self:OnClick(tmpHit.collider.gameObject)
                 end
             end
         end
@@ -120,5 +127,11 @@ function PlayerInput:Update()
             end
         end
     end
+
+end
+
+function PlayerInput:OnClick(gameObject)
+
+    print(gameObject.name)
 
 end
