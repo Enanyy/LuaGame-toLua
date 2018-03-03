@@ -1870,7 +1870,7 @@ static public class NGUITools
 
 			if (mSizeFrame != frame || !Application.isPlaying)
 			{
-				Profiler.BeginSample("Editor-only GC allocation (NGUITools.screenSize)");
+				UnityEngine.Profiling.Profiler.BeginSample("Editor-only GC allocation (NGUITools.screenSize)");
 				mSizeFrame = frame;
 
 				if (s_GetSizeOfMainGameView == null && !mCheckedMainViewFunc)
@@ -1904,7 +1904,7 @@ static public class NGUITools
 					mGameSize = s_GetSizeOfMainGameView();
 				}
 				else mGameSize = new Vector2(Screen.width, Screen.height);
-				Profiler.EndSample();
+				UnityEngine.Profiling.Profiler.EndSample();
 			}
 			return mGameSize;
 		}
@@ -2334,19 +2334,13 @@ static public class NGUITools
 	static ColorSpace mColorSpace = ColorSpace.Uninitialized;
 
 
-    /// <summary>
-    /// Set Camera cullingMask
-    /// </summary>
-    /// <param name="camera"></param>
-    /// <param name="layers"></param>
-    static public void MakeMask(Camera camera, params int[] layers)
+    static public int MakeMask(params int[] layers)
     {
         int mask = 0;
         for (int i = 0; i < layers.Length; i++)
         {
             mask |= 1 << layers[i];
         }
-
-        camera.cullingMask = mask;
+        return mask;
     }
 }
