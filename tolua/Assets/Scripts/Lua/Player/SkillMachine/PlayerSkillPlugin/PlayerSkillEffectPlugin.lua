@@ -12,7 +12,7 @@ function PlayerSkillEffectPlugin:ctor(name)
     self.mEffectState = PlayerEffectState.new(name)
 end
 
-function PlayerSkillEffectPlugin:Init(configure)
+function PlayerSkillEffectPlugin:InitWithConfig(configure)
 
     if configure == nil then return end
 
@@ -21,7 +21,7 @@ function PlayerSkillEffectPlugin:Init(configure)
       --先设置状态和状态机
     self.mEffectState:SetPlayerSkillState(self.mPlayerSkillState)
     self.mEffectState:SetStateMachine(self.machine)
-    self.mEffectState:Init(configure)
+    self.mEffectState:InitWithConfig(configure)
    
 end
 

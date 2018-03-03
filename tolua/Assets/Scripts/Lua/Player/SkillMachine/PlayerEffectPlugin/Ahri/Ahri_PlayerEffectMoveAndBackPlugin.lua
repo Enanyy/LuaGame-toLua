@@ -15,8 +15,12 @@ function Ahri_PlayerEffectMoveAndBackPlugin:ctor(name)
     self.mStateEnd = false
     self.mEffectEnd = false
 end
+function Ahri_PlayerEffectMoveAndBackPlugin:Init(behaviour)
 
-function Ahri_PlayerEffectMoveAndBackPlugin:Init(configure)
+    self.mBehaviour = behaviour or  self.mBehaviour
+   
+end
+function Ahri_PlayerEffectMoveAndBackPlugin:InitWithConfig(configure)
 
     if configure == nil then return end
 
@@ -37,6 +41,18 @@ function Ahri_PlayerEffectMoveAndBackPlugin:OnEnter()
         self.mParent = self.machine.mPlayerCharacter.mFashionBody.mBody.transform:Find(self.machine.mPlayerCharacter.mPlayerInfo.weaponBone)
 
     end
+
+    if self.mBehaviour == nil then
+
+        self.mBehaviour = self.mGo:GetComponent(typeof(LuaBehaviour))
+        if self.mBehaviour == nil then
+            self.mBehaviour = self.mGo:AddComponent(typeof(LuaBehaviour))
+        end
+        self.mBehaviour.enabled = false
+    end
+
+    self.mBehaviour:Init(self)
+
     --先退出其他控制法球的特效状态
     self:ClearEffectState()
  
@@ -61,6 +77,7 @@ function Ahri_PlayerEffectMoveAndBackPlugin:OnBegin()
     
     self.mGo.transform:SetParent(nil)
     self.mGo:SetActive(true)
+    self.mBehaviour.enabled = true
 
     self.mOriginalPosition = self.mParent.position
 
@@ -118,14 +135,7 @@ function Ahri_PlayerEffectMoveAndBackPlugin:OnEnd()
     end
 
     if self.mStateEnd then
-        if self.mGo then
-        
-            self.mGo:SetActive(true)
-
-            self.mGo.transform:SetParent(self.mParent)
-            self.mGo.transform.localPosition = Vector3.zero
-
-        end
+        self:Reset()
     end
    
 end
@@ -133,18 +143,24 @@ end
 function Ahri_PlayerEffectMoveAndBackPlugin:OnExit()
 
     self.mStateEnd = true
-    
+
     if self.mEffectEnd then
-        if self.mGo then
-        
-            self.mGo:SetActive(true)
-
-            self.mGo.transform:SetParent(self.mParent)
-            self.mGo.transform.localPosition = Vector3.zero
-
-        end
+       self:Reset()
     end
     
+end
+
+function Ahri_PlayerEffectMoveAndBackPlugin:Reset()
+
+    if self.mGo then
+        self.mGo.transform:SetParent(self.mParent)
+        self.mGo.transform.localPosition = Vector3.zero
+        self.mGo:SetActive(true)
+    end
+
+    if self.mBehaviour then
+        self.mBehaviour.enabled = false
+    end
 end
 
 function Ahri_PlayerEffectMoveAndBackPlugin:OnPause()
@@ -163,7 +179,24 @@ function Ahri_PlayerEffectMoveAndBackPlugin:OnResume()
     end
     
 end
+function Ahri_PlayerEffectMoveAndBackPlugin:OnTriggerEnter(other)
+    if other == nil then
+        return
+    end 
 
+    local behaviour = other.transform.parent:GetComponent(typeof(LuaBehaviour))
+    if behaviour == nil then
+        return
+    end
+
+    local fashionBody = behaviour.luaTable
+    if fashionBody == nil then
+
+        return 
+    end 
+
+    print(fashionBody.mPlayerCharacter.mPlayerInfo.guid)
+end
 ---因为要控制阿狸的法球，所以要退出其他控制法球的特效状态
 function Ahri_PlayerEffectMoveAndBackPlugin:ClearEffectState()
 

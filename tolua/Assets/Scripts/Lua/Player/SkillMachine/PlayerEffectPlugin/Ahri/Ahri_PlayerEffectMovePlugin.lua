@@ -15,8 +15,13 @@ function Ahri_PlayerEffectMovePlugin:ctor(name)
     self.mEffectEnd = false
 end 
 
+function Ahri_PlayerEffectMovePlugin:Init(behaviour)
 
-function Ahri_PlayerEffectMovePlugin:Init(configure)
+    self.mBehaviour = behaviour or  self.mBehaviour
+   
+end
+
+function Ahri_PlayerEffectMovePlugin:InitWithConfig(configure)
 
     if configure == nil then return end
 
@@ -37,6 +42,19 @@ function Ahri_PlayerEffectMovePlugin:OnEnter()
         self.mParent = self.machine.mPlayerCharacter.mFashionBody.mBody.transform:Find(self.machine.mPlayerCharacter.mPlayerInfo.weaponBone)
 
     end
+
+    if self.mBehaviour == nil then
+
+        self.mBehaviour = self.mGo:GetComponent(typeof(LuaBehaviour))
+        if self.mBehaviour == nil then
+            self.mBehaviour = self.mGo:AddComponent(typeof(LuaBehaviour))
+        end
+        self.mBehaviour.enabled = false
+
+    end
+
+    self.mBehaviour:Init(self)
+
     self:ClearEffectState()
     if self.mGo then
         self.mGo.transform:SetParent(nil)
@@ -60,7 +78,7 @@ function Ahri_PlayerEffectMovePlugin:OnBegin()
     self.mGo.transform:SetParent(nil)
     self.mGo:SetActive(true)
     self.mOriginalPosition = self.mParent.position
-   
+    self.mBehaviour.enabled = true
     self.mDestination = self.mOriginalPosition + self.machine.mPlayerCharacter.transform.forward * self.mDistance
 
     self.mDuration = self.mDistance * 1.0 / self.mSpeed
@@ -70,8 +88,12 @@ function Ahri_PlayerEffectMovePlugin:OnBegin()
         self.mTween = Tweener.new()
         self.mTween.method = TweenerMethod.EaseOut
         self.mTween.onFinished = function() 
-            self.mGo:SetActive(false)
-            self.mPlayerEffectState.isPlaying = false   
+            if self.mStateEnd and self.mEffectEnd then
+                self:Reset()
+            else
+                self.mGo:SetActive(false)
+                self.mPlayerEffectState.isPlaying = false   
+            end
         end
         self.mTween.onUpdate = function (factor, isFinished)
 
@@ -99,11 +121,8 @@ function Ahri_PlayerEffectMovePlugin:OnEnd()
     end
     
     if self.mStateEnd then
-        if self.mGo then
-            self.mGo.transform:SetParent(self.mParent)
-            self.mGo.transform.localPosition = Vector3.zero
-            self.mGo:SetActive(true)
-        end
+
+        self:Reset()
    
     end
    
@@ -114,13 +133,21 @@ function Ahri_PlayerEffectMovePlugin:OnExit()
     self.mStateEnd = true
     
     if self.mEffectEnd then
-        if self.mGo then
-            self.mGo.transform:SetParent(self.mParent)
-            self.mGo.transform.localPosition = Vector3.zero
-            self.mGo:SetActive(true)
-        end
+       self:Reset()
     end
-    
+end
+
+function Ahri_PlayerEffectMovePlugin:Reset()
+
+    if self.mGo then
+        self.mGo.transform:SetParent(self.mParent)
+        self.mGo.transform.localPosition = Vector3.zero
+        self.mGo:SetActive(true)
+    end
+   
+    if self.mBehaviour then
+        self.mBehaviour.enabled = false
+    end
 end
 
 function Ahri_PlayerEffectMovePlugin:OnPause()
@@ -136,6 +163,27 @@ function Ahri_PlayerEffectMovePlugin:OnResume()
     if self.mTween then
         self.mTween:Resume()
     end
+
+end
+
+function Ahri_PlayerEffectMovePlugin:OnTriggerEnter(other)
+   
+    if other == nil then
+        return
+    end 
+
+    local behaviour = other.transform.parent:GetComponent(typeof(LuaBehaviour))
+    if behaviour == nil then
+        return
+    end
+
+    local fashionBody = behaviour.luaTable
+    if fashionBody == nil then
+
+        return 
+    end 
+
+    print(fashionBody.mPlayerCharacter.mPlayerInfo.guid)
 
 end
 

@@ -3,7 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using LuaInterface;
 
-public class LuaBehaviour : MonoBehaviour {
+public class LuaBehaviour : MonoBehaviour
+{
 
     /// 调用先后顺序：构造函数->Awake->OnEnable->Start
     /// 在Lua AddComponent后调用Init,则先后顺序是：
@@ -12,6 +13,10 @@ public class LuaBehaviour : MonoBehaviour {
 
     private LuaTable mLuaTable;
     private Dictionary<string, LuaFunction> mButtons = new Dictionary<string, LuaFunction>();
+
+    public LuaTable luaTable {
+        get { return mLuaTable; }
+    }
 
     public LuaBehaviour()
     {
@@ -33,12 +38,18 @@ public class LuaBehaviour : MonoBehaviour {
         }
     }
 
-   
+
 
     public void Init(LuaTable table)
     {
+        if (mLuaTable!=null)
+        {
+            mLuaTable.Dispose();
+            mLuaTable = null;
+        }
+
         mLuaTable = table;
-     
+
         if (mLuaTable != null)
         {
             mLuaTable.Call("Init", mLuaTable, this);
@@ -57,7 +68,7 @@ public class LuaBehaviour : MonoBehaviour {
         }
     }
 
-   
+
 
     protected void OnDisable()
     {
@@ -91,26 +102,43 @@ public class LuaBehaviour : MonoBehaviour {
 
     public void ClearClick()
     {
-        foreach (var de in mButtons)
+        if (mButtons == null)
         {
-            if (de.Value != null)
+            return;
+        }
+        var it = mButtons.GetEnumerator();
+
+        while (it.MoveNext())
+        {
+            if (it.Current.Value != null)
             {
-                de.Value.Dispose();
+                it.Current.Value.Dispose();
             }
         }
+
+        it.Dispose();
+
         mButtons.Clear();
     }
     protected void OnDestroy()
-    {   
+    {
         ClearClick();
         Debug.Log("~" + name + " was destroy!");
 
-        if(mLuaTable!=null)
+        if (mLuaTable != null)
         {
             mLuaTable.Call("OnDestroy", mLuaTable);
 
             mLuaTable.Dispose();
             mLuaTable = null;
+        }
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (mLuaTable != null)
+        {
+            mLuaTable.Call("OnTriggerEnter", mLuaTable, other);
         }
     }
 }

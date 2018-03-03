@@ -43,7 +43,7 @@ function PlayerSkillState:ctor(name)
 	self.mRunTime = 0
 end
 
-function PlayerSkillState:Init(configure)
+function PlayerSkillState:InitWithConfig(configure)
     if configure == nil then return end
 
     self.mPlayerSkillType = configure.enum
@@ -79,7 +79,7 @@ function PlayerSkillState:Init(configure)
             plugin:SetPlayerSkillState(self)
             plugin:SetStateMachine(self.machine)
             --根据配置初始化
-            plugin:Init(v)
+            plugin:InitWithConfig(v)
             
             table.insert (self.mSkillPluginList, plugin)
         end
@@ -145,7 +145,7 @@ end
 
 function PlayerSkillState:OnEnter()
 
-    print("PlayerSkillState:OnEnter "..self.name .." mSpeed="..self.mSpeed .. " mRunTime ="..self.mRunTime)
+    --print("PlayerSkillState:OnEnter "..self.name .." mSpeed="..self.mSpeed .. " mRunTime ="..self.mRunTime)
 
     if self.mSkillPluginList ~= nil then
 

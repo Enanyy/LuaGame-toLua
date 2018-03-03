@@ -9,7 +9,7 @@ function PlayerSkillFlashMovePlugin:ctor(name)
 
 end
 
-function PlayerSkillFlashMovePlugin:Init(configure)
+function PlayerSkillFlashMovePlugin:InitWithConfig(configure)
 
     if configure == nil then return end
     

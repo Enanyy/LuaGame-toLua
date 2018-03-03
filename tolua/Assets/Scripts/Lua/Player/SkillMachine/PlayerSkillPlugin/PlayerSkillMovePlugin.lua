@@ -17,7 +17,7 @@ function PlayerSkillMovePlugin:ctor(name)
     self.mPathPendingTime = 0  --mNavMeshAgent计算路径的时长，超过1s寻路失败
 end 
 
-function PlayerSkillMovePlugin:Init(configure)
+function PlayerSkillMovePlugin:InitWithConfig(configure)
 
     if configure == nil then return end
 

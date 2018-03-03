@@ -12,7 +12,7 @@ function PlayerSkillAnimationPlugin:ctor(name)
 
 end
 
-function PlayerSkillAnimationPlugin:Init(configure)
+function PlayerSkillAnimationPlugin:InitWithConfig(configure)
 
     if configure == nil then return end
 

@@ -18,7 +18,7 @@ function PlayerSKillMachine:ctor(varPlayerCharacter)
 end
 
 
-function PlayerSKillMachine:Init(configure)
+function PlayerSKillMachine:InitWithConfig(configure)
 
     if configure == nil or configure.StateList == nil then return end
 
@@ -30,7 +30,7 @@ function PlayerSKillMachine:Init(configure)
        --先设置状态机
        state:SetStateMachine(self)
        --根据配置初始化
-       state:Init(v)
+       state:InitWithConfig(v)
        self.mPlayerSkillStateDic[skillType] = state
     end
 

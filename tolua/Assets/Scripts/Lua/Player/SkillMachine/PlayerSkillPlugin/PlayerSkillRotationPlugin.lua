@@ -14,7 +14,7 @@ function PlayerSkillRotationPlugin:ctor(name)
 end
 
 
-function PlayerSkillRotationPlugin:Init(configure)
+function PlayerSkillRotationPlugin:InitWithConfig(configure)
 
     if configure == nil then return end
 

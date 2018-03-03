@@ -30,7 +30,12 @@ function FashionBody:Start()
             NGUITools.SetLayer(go, self.gameObject.layer)
 			go.transform.localPosition = Vector3.zero
 			go.transform.localRotation = Quaternion.identity
-			go.transform.localScale = Vector3.one
+            go.transform.localScale = Vector3.one
+            local collider = go:AddComponent(typeof(CapsuleCollider))
+            collider.isTrigger = true
+            collider.height = 1.6
+            collider.radius = 0.4
+            collider.center = Vector3.New(0, 0.8, 0)
             self.mBody = go
         
         else

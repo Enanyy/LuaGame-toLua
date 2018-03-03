@@ -14,7 +14,7 @@ function PlayerEffectState:ctor(name)
 end 
 
 
-function PlayerEffectState:Init(configure)
+function PlayerEffectState:InitWithConfig(configure)
 
     if configure == nil then return end
 
@@ -28,7 +28,7 @@ function PlayerEffectState:Init(configure)
             plugin:SetStateMachine(self.machine)
             plugin:SetPlayerEffectState(self)
             --根据配置初始化
-            plugin:Init(v)
+            plugin:InitWithConfig(v)
             
             table.insert (self.mEffectPluginList, plugin)
         end

@@ -28,6 +28,7 @@ end
 GameObject = UnityEngine.GameObject
 Object = UnityEngine.Object
 BoxCollider = UnityEngine.BoxCollider
+CapsuleCollider = UnityEngine.CapsuleCollider
 Camera = UnityEngine.Camera
 CameraClearFlags = UnityEngine.CameraClearFlags
 AudioListener = UnityEngine.AudioListener

@@ -115,7 +115,7 @@ Role_Configure_Ahri = {
                 { name = "PlayerSkillAnimationPlugin", class = PlayerSkillAnimationPlugin,  animationClip ="Ahri_Attack1",loop = false },
                 { name = "PlayerSkillAttackSpeedPlugin", class = PlayerSkillAttackSpeedPlugin }, 
                 { name = "PlayerSkillRotationPlugin", class = PlayerSkillRotationPlugin, duration = 0.2, immediately = false }, 
-                { name = "PlayerSkillEffectPlugin", class = PlayerSkillEffectPlugin, beginAt = 0.2,
+                { name = "PlayerSkillEffectPlugin", class = PlayerSkillEffectPlugin, beginAt = 0.25,
                     EffectPluginList = {
                         {name = "Ahri_PlayerEffectMovePlugin", class = Ahri_PlayerEffectMovePlugin, speed = 12, distance = 5 },
                     },
@@ -148,7 +148,7 @@ Role_Configure_Ahri = {
                 { name = "PlayerSkillAnimationPlugin", class = PlayerSkillAnimationPlugin,  animationClip ="Ahri_Attack2",loop = false },
                 { name = "PlayerSkillAttackSpeedPlugin", class = PlayerSkillAttackSpeedPlugin },
                 { name = "PlayerSkillRotationPlugin", class = PlayerSkillRotationPlugin, duration = 0.2, immediately = false },                 
-                { name = "PlayerSkillEffectPlugin", class = PlayerSkillEffectPlugin, beginAt = 0.2,
+                { name = "PlayerSkillEffectPlugin", class = PlayerSkillEffectPlugin, beginAt = 0.25,
                     EffectPluginList = {
                         {name = "Ahri_PlayerEffectMovePlugin", class = Ahri_PlayerEffectMovePlugin, speed = 12, distance = 5 },
                     },
@@ -180,7 +180,7 @@ Role_Configure_Ahri = {
                 { name = "PlayerSkillAnimationPlugin", class = PlayerSkillAnimationPlugin,  animationClip ="Ahri_Attack1",loop = false },
                 { name = "PlayerSkillAttackSpeedPlugin", class = PlayerSkillAttackSpeedPlugin },
                 { name = "PlayerSkillRotationPlugin", class = PlayerSkillRotationPlugin, duration = 0.2, immediately = false },                 
-                { name = "PlayerSkillEffectPlugin", class = PlayerSkillEffectPlugin, beginAt = 0.2,
+                { name = "PlayerSkillEffectPlugin", class = PlayerSkillEffectPlugin, beginAt = 0.25,
                     EffectPluginList = {
                         {name = "Ahri_PlayerEffectMovePlugin", class = Ahri_PlayerEffectMovePlugin, speed = 12, distance = 5 },
                     },
@@ -234,6 +234,8 @@ Role_Configure_Ahri = {
                 {enum = "Idle",endAt= 1.250, beginAt= 0, speed = 1, fadeLength = 0 },
                 {enum = "Run",endAt=1.250, beginAt= 0, speed = 1, fadeLength = 0.2 },                
                 {enum = "Attack_1",endAt= 1, beginAt= 0.6, speed = 1.8, fadeLength = 0.2 },
+                {enum = "Attack_2",endAt= 1, beginAt= 0.6, speed = 1.8, fadeLength = 0.2 },
+                {enum = "Attack_3",endAt= 1, beginAt= 0.6, speed = 1.8, fadeLength = 0.2 },
                 {enum = "Skill_1",endAt=1, beginAt= 0, speed = 1, fadeLength = 0 },
                 {enum = "Skill_3",endAt=1, beginAt= 0, speed = 1, fadeLength = 0 },
                 {enum = "Skill_4",endAt=1, beginAt= 0, speed = 1, fadeLength = 0 },

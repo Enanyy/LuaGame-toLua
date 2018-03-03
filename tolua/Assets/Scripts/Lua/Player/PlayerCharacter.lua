@@ -46,7 +46,7 @@ function PlayerCharacter:CreateFashionBody()
 
 	self.mFashionBody:SetData (self, function (varBody)
 		
-			self:InitWithConfigure()
+			self:InitWithConfig()
         
             self:CreateFashionWeapon()
             
@@ -80,9 +80,9 @@ function PlayerCharacter:CreateFashionWeapon()
 
 end
 
-function PlayerCharacter:InitWithConfigure()
+function PlayerCharacter:InitWithConfig()
     self.mSkillMachine = PlayerSKillMachine.new(self)
-    self.mSkillMachine:Init(self.mPlayerInfo.configure)
+    self.mSkillMachine:InitWithConfig(self.mPlayerInfo.configure)
     
     self.mEffectMachine = PlayerEffectMachine.new()
 

@@ -15,7 +15,7 @@ function PlayerSkillPlugin:SetPlayerSkillState(state)
 
 end
 
-function PlayerSkillPlugin:Init(configure)
+function PlayerSkillPlugin:InitWithConfig(configure)
 
 
 end
