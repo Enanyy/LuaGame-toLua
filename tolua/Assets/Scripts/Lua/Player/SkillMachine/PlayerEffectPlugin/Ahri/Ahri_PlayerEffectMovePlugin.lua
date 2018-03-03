@@ -174,7 +174,7 @@ end
 
 function Ahri_PlayerEffectMovePlugin:OnTriggerEnter(other)
    
-    if other == nil then
+    if other == nil or other.transform.parent ==nil then
         return
     end 
 
@@ -190,7 +190,7 @@ function Ahri_PlayerEffectMovePlugin:OnTriggerEnter(other)
     end 
 
     if fashionBody.mPlayerCharacter.mPlayerInfo.guid ~= self.machine.mPlayerCharacter.mPlayerInfo.guid then
-        print(fashionBody.mPlayerCharacter.mPlayerInfo.guid)
+        --print(fashionBody.mPlayerCharacter.mPlayerInfo.guid)
     end
 
 end

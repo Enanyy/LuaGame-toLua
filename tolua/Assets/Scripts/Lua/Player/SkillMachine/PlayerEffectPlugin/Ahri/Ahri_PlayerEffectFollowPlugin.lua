@@ -78,6 +78,7 @@ function Ahri_PlayerEffectFollowPlugin:OnBegin()
     self.mEffectEnd = false
     self.mFollow = false
 
+    self:Reset()
     self.mGo.transform:SetParent(nil)
     self.mGo:SetActive(true)
     self.mOriginalPosition = self.mParent.position
@@ -111,7 +112,7 @@ function Ahri_PlayerEffectFollowPlugin:OnBegin()
             end
             self.mTween.onUpdate = function (factor, isFinished)
 
-            self.mGo.transform.position = self.mOriginalPosition * (1-factor) + self.mDestination * factor
+                self.mGo.transform.position = self.mOriginalPosition * (1-factor) + self.mDestination * factor
 
             end
         end
@@ -124,6 +125,8 @@ end
 function Ahri_PlayerEffectFollowPlugin:OnExecute()
 
     if self.mFollow and self.machine.mPlayerCharacter.mLockPlayerCharacter then
+        print(self.mGo.activeInHierarchy)
+        self.mGo:SetActive(true)
         
         local target =  self.machine.mPlayerCharacter.mLockPlayerCharacter.transform.position
         target.y = self.mGo.transform.position.y
@@ -145,6 +148,7 @@ end
 function Ahri_PlayerEffectFollowPlugin:OnEnd()
   
     self.mEffectEnd = true
+    self.mFollow = false
 
     if self.mTween then
         self.mTween:Pause()
@@ -199,7 +203,7 @@ end
 
 function Ahri_PlayerEffectFollowPlugin:OnTriggerEnter(other)
    
-    if other == nil then
+    if other == nil or other.transform.parent ==nil then
         return
     end 
 
@@ -215,7 +219,7 @@ function Ahri_PlayerEffectFollowPlugin:OnTriggerEnter(other)
     end 
 
     if fashionBody.mPlayerCharacter.mPlayerInfo.guid ~= self.machine.mPlayerCharacter.mPlayerInfo.guid then
-        print(fashionBody.mPlayerCharacter.mPlayerInfo.guid)
+        --print(fashionBody.mPlayerCharacter.mPlayerInfo.guid)
     end
 
 end

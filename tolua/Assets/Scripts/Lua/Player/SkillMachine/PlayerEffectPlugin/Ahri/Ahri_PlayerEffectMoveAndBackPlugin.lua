@@ -133,7 +133,7 @@ end
 function Ahri_PlayerEffectMoveAndBackPlugin:OnEnd()
 
     self.mEffectEnd = true
-
+    self.mDone = true
     self.mMoveBack = false
     if self.mTween then
         self.mTween:Pause()        
@@ -186,7 +186,7 @@ function Ahri_PlayerEffectMoveAndBackPlugin:OnResume()
     
 end
 function Ahri_PlayerEffectMoveAndBackPlugin:OnTriggerEnter(other)
-    if other == nil then
+    if other == nil or other.transform.parent ==nil then
         return
     end 
 
@@ -202,7 +202,7 @@ function Ahri_PlayerEffectMoveAndBackPlugin:OnTriggerEnter(other)
     end 
 
     if fashionBody.mPlayerCharacter.mPlayerInfo.guid ~= self.machine.mPlayerCharacter.mPlayerInfo.guid then
-        print(fashionBody.mPlayerCharacter.mPlayerInfo.guid)
+        --print(fashionBody.mPlayerCharacter.mPlayerInfo.guid)
     end
 end
 ---因为要控制阿狸的法球，所以要退出其他控制法球的特效状态
