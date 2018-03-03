@@ -81,8 +81,14 @@ function Ahri_PlayerEffectMoveAndBackPlugin:OnBegin()
 
     self.mOriginalPosition = self.mParent.position
 
-    self.mDestination = self.mOriginalPosition + self.machine.mPlayerCharacter.transform.forward * self.mDistance
+    local direction = self.machine.mPlayerCharacter.transform.forward
+    if self.machine.mPlayerCharacter.mLockPlayerCharacter then
+        local target = self.machine.mPlayerCharacter.mLockPlayerCharacter.transform.position
+        target.y = self.mOriginalPosition.y
+        direction = ( target- self.mOriginalPosition).normalized
+    end
 
+    self.mDestination = self.mOriginalPosition + direction * self.mDistance
     self.mDuration = self.mDistance * 1.0 / self.mSpeed
 
     if self.mTween == nil then

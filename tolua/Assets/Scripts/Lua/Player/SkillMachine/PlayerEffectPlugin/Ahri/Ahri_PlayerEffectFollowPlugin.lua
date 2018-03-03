@@ -1,9 +1,9 @@
 require("PlayerEffectPlugin")
 require("Tweener")
 
-Ahri_PlayerEffectMovePlugin = Class(PlayerEffectPlugin)
+Ahri_PlayerEffectFollowPlugin = Class(PlayerEffectPlugin)
  
-function Ahri_PlayerEffectMovePlugin:ctor(name)
+function Ahri_PlayerEffectFollowPlugin:ctor(name)
 
     self.mSpeed = 10
     self.mDistance = 10
@@ -13,15 +13,17 @@ function Ahri_PlayerEffectMovePlugin:ctor(name)
 
     self.mStateEnd = false
     self.mEffectEnd = false
+
+    self.mFollow = false
 end 
 
-function Ahri_PlayerEffectMovePlugin:Init(behaviour)
+function Ahri_PlayerEffectFollowPlugin:Init(behaviour)
 
     self.mBehaviour = behaviour or  self.mBehaviour
    
 end
 
-function Ahri_PlayerEffectMovePlugin:InitWithConfig(configure)
+function Ahri_PlayerEffectFollowPlugin:InitWithConfig(configure)
 
     if configure == nil then return end
 
@@ -31,7 +33,7 @@ function Ahri_PlayerEffectMovePlugin:InitWithConfig(configure)
 
 end
 
-function Ahri_PlayerEffectMovePlugin:OnEnter()
+function Ahri_PlayerEffectFollowPlugin:OnEnter()
 
     if self.mGo == nil then
 
@@ -66,7 +68,7 @@ function Ahri_PlayerEffectMovePlugin:OnEnter()
 end
 
 
-function Ahri_PlayerEffectMovePlugin:OnBegin()
+function Ahri_PlayerEffectFollowPlugin:OnBegin()
     
     self:ClearEffectState()
     if self.mGo == nil then
@@ -74,51 +76,74 @@ function Ahri_PlayerEffectMovePlugin:OnBegin()
     end
 
     self.mEffectEnd = false
+    self.mFollow = false
 
     self.mGo.transform:SetParent(nil)
     self.mGo:SetActive(true)
     self.mOriginalPosition = self.mParent.position
     self.mBehaviour.enabled = true
+
     local direction = self.machine.mPlayerCharacter.transform.forward
     if self.machine.mPlayerCharacter.mLockPlayerCharacter then
         local target = self.machine.mPlayerCharacter.mLockPlayerCharacter.transform.position
         target.y = self.mOriginalPosition.y
         direction = ( target- self.mOriginalPosition).normalized
+
+        self.mFollow = Vector3.Distance(target, self.mOriginalPosition) <= self.mDistance
     end
 
-    self.mDestination = self.mOriginalPosition + direction * self.mDistance
-    self.mDuration = self.mDistance * 1.0 / self.mSpeed
+    if self.mFollow == false then
 
-    if self.mTween == nil then
+        self.mDestination = self.mOriginalPosition + direction * self.mDistance
+        self.mDuration = self.mDistance * 1.0 / self.mSpeed
 
-        self.mTween = Tweener.new()
-        self.mTween.method = TweenerMethod.EaseOut
-        self.mTween.onFinished = function() 
-            if self.mStateEnd and self.mEffectEnd then
-                self:Reset()
-            else
-                self.mGo:SetActive(false)
-                self.mPlayerEffectState.isPlaying = false   
+        if self.mTween == nil then
+
+            self.mTween = Tweener.new()
+            self.mTween.method = TweenerMethod.EaseOut
+            self.mTween.onFinished = function() 
+                if self.mStateEnd and self.mEffectEnd then
+                    self:Reset()
+                else
+                    self.mGo:SetActive(false)
+                    self.mPlayerEffectState.isPlaying = false   
+                end
             end
-        end
-        self.mTween.onUpdate = function (factor, isFinished)
+            self.mTween.onUpdate = function (factor, isFinished)
 
             self.mGo.transform.position = self.mOriginalPosition * (1-factor) + self.mDestination * factor
 
+            end
         end
+        self.mTween:ResetToBeginning()
+        self.mTween.duration = self.mDuration
+        self.mTween:PlayForward()
     end
-    self.mTween:ResetToBeginning()
-    self.mTween.duration = self.mDuration
-    self.mTween:PlayForward()
 end
 
-function Ahri_PlayerEffectMovePlugin:OnExecute()
+function Ahri_PlayerEffectFollowPlugin:OnExecute()
 
-   
+    if self.mFollow and self.machine.mPlayerCharacter.mLockPlayerCharacter then
+        
+        local target =  self.machine.mPlayerCharacter.mLockPlayerCharacter.transform.position
+        target.y = self.mGo.transform.position.y
+        local direction = target - self.mGo.transform.position
+       
+        if direction.magnitude > 0.2 then
+
+            self.mGo.transform.position = self.mGo.transform.position + direction.normalized * self.mSpeed * Time.deltaTime
+        else
+            self.mGo:SetActive(false)
+            self.mFollow = false
+            self.mPlayerEffectState.isPlaying = false    
+
+        end
+
+    end
 end
 
-function Ahri_PlayerEffectMovePlugin:OnEnd()
-    
+function Ahri_PlayerEffectFollowPlugin:OnEnd()
+  
     self.mEffectEnd = true
 
     if self.mTween then
@@ -134,8 +159,8 @@ function Ahri_PlayerEffectMovePlugin:OnEnd()
    
 end
 --动作状态机退出
-function Ahri_PlayerEffectMovePlugin:OnExit()
-
+function Ahri_PlayerEffectFollowPlugin:OnExit()
+   
     self.mStateEnd = true
     
     if self.mEffectEnd then
@@ -143,7 +168,7 @@ function Ahri_PlayerEffectMovePlugin:OnExit()
     end
 end
 
-function Ahri_PlayerEffectMovePlugin:Reset()
+function Ahri_PlayerEffectFollowPlugin:Reset()
 
     if self.mGo then
         self.mGo.transform:SetParent(self.mParent)
@@ -156,7 +181,7 @@ function Ahri_PlayerEffectMovePlugin:Reset()
     end
 end
 
-function Ahri_PlayerEffectMovePlugin:OnPause()
+function Ahri_PlayerEffectFollowPlugin:OnPause()
 
     if self.mTween then
         self.mTween:Pause()
@@ -164,7 +189,7 @@ function Ahri_PlayerEffectMovePlugin:OnPause()
 end
 
 
-function Ahri_PlayerEffectMovePlugin:OnResume()
+function Ahri_PlayerEffectFollowPlugin:OnResume()
 
     if self.mTween then
         self.mTween:Resume()
@@ -172,7 +197,7 @@ function Ahri_PlayerEffectMovePlugin:OnResume()
 
 end
 
-function Ahri_PlayerEffectMovePlugin:OnTriggerEnter(other)
+function Ahri_PlayerEffectFollowPlugin:OnTriggerEnter(other)
    
     if other == nil then
         return
@@ -196,7 +221,7 @@ function Ahri_PlayerEffectMovePlugin:OnTriggerEnter(other)
 end
 
 ---因为要控制阿狸的法球，所以要退出其他控制法球的特效状态
-function Ahri_PlayerEffectMovePlugin:ClearEffectState()
+function Ahri_PlayerEffectFollowPlugin:ClearEffectState()
 
     local list = {}
 

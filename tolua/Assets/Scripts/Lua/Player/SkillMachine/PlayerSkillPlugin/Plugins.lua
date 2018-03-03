@@ -12,3 +12,4 @@ require("PlayerSkillRotationPlugin")
 --包含特效插件
 require("Ahri_PlayerEffectMovePlugin")
 require("Ahri_PlayerEffectMoveAndBackPlugin")
+require("Ahri_PlayerEffectFollowPlugin")

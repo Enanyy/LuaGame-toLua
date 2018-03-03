@@ -31,7 +31,7 @@ function PlayerInput:Update()
          
             
             if tmpFlag then
-                print(tmpHit.collider.gameObject.name)
+               
                 if tmpHit.collider.gameObject.layer == UnityLayer.Default then
                     if self.mPlayerCharacter then
                         self.mPlayerCharacter:MoveToPoint(tmpHit.point)
@@ -87,6 +87,7 @@ function PlayerInput:Update()
 
     if  Input.GetKeyDown (KeyCode.Space) then 
         self.mPlayerCharacter:PlaySkill (PlayerSkillType.Idle)
+        self.mPlayerCharacter:SetLockPlayerCharacter(nil)
     end
 
     --移除一个人物
@@ -132,6 +133,20 @@ end
 
 function PlayerInput:OnClick(gameObject)
 
-    print(gameObject.name)
+    local behaviour = gameObject.transform.parent:GetComponent(typeof(LuaBehaviour))
+    if behaviour == nil then
+        return
+    end
+
+    local fashionBody = behaviour.luaTable
+    if fashionBody == nil then
+
+        return 
+    end 
+    if fashionBody.mPlayerCharacter.mPlayerInfo.guid == self.mPlayerCharacter.mPlayerInfo.guid then
+        return
+    end
+
+    self.mPlayerCharacter:SetLockPlayerCharacter(fashionBody.mPlayerCharacter)
 
 end

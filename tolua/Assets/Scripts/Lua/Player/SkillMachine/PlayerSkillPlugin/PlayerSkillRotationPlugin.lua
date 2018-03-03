@@ -1,5 +1,6 @@
 require("PlayerSkillPlugin")
 require("UnityClass")
+require("UnityLayer")
 
 PlayerSkillRotationPlugin = Class(PlayerSkillPlugin)
 
@@ -25,20 +26,30 @@ end
 
 
 function PlayerSkillRotationPlugin:OnEnter()
-
-    local tmpRay = PlayerManager.mCamera:ScreenPointToRay (Input.mousePosition)
-    local tmpLayer = 2 ^ LayerMask.NameToLayer("Default")                
-
-    local tmpFlag, tmpHit = Physics.Raycast(tmpRay,nil, 5000, tmpLayer)
-         
+   
     self.mTargetPosition = Vector3.zero
-    if tmpFlag then
-        self.mTargetPosition = tmpHit.point
+
+    if self.machine.mPlayerCharacter.mLockPlayerCharacter == nil then
+        local tmpRay = PlayerManager.mCamera:ScreenPointToRay (Input.mousePosition)
+        local tmpLayer = 2 ^ UnityLayer.Default              
+
+        local tmpFlag, tmpHit = Physics.Raycast(tmpRay,nil, 100, tmpLayer)
+         
+        if tmpFlag then
+            self.mTargetPosition = tmpHit.point
+            self.mTargetPosition.y = self.machine.mPlayerCharacter.transform.position.y
+            
+        end
+    else
+        self.mTargetPosition =  self.machine.mPlayerCharacter.mLockPlayerCharacter.transform.position
         self.mTargetPosition.y = self.machine.mPlayerCharacter.transform.position.y
+    end
+
+    if self.mTargetPosition ~= nil then
+        
         self.mWantedRotation = Quaternion.LookRotation (self.mTargetPosition - self.machine.mPlayerCharacter.transform.position)
         
     end
-
 end
 
 function PlayerSkillRotationPlugin:OnExecute()

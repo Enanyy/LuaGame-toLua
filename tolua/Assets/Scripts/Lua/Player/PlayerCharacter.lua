@@ -73,7 +73,7 @@ function PlayerCharacter:CreateFashionWeapon()
     local tmpWeapnon = GameObject ("FashionWeapnon")
 	tmpWeapnon.transform:SetParent (self.transform)
     NGUITools.SetLayer(tmpWeapnon, self.gameObject.layer)
-    
+
 	tmpWeapnon.transform.localPosition = Vector3.zero
 	tmpWeapnon.transform.localScale = Vector3.one
 	tmpWeapnon.transform.transform.localRotation = Quaternion.identity
@@ -179,7 +179,6 @@ function PlayerCharacter:isPause()
 end
 
 function PlayerCharacter:OnMoveToPointSuccess()
-    print("移动成功")
 
     if self.mMoveSuccessAction then
         self.mMoveSuccessAction()
@@ -188,15 +187,14 @@ function PlayerCharacter:OnMoveToPointSuccess()
 end
 
 function PlayerCharacter:OnMoveToPointFail()
-    print("移动失败")
-
+   
     if self.mMoveFailAction then
         self.mMoveFailAction()
         self.mMoveFailAction = nil
     end
 end
 
-function PlayerCharacter:LockPlayerCharacter(varPlayerCharacter)
+function PlayerCharacter:SetLockPlayerCharacter(varPlayerCharacter)
 
     self.mLockPlayerCharacter = varPlayerCharacter
 
