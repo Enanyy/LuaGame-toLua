@@ -40,7 +40,9 @@ function PlayerSkillState:ctor(name)
     self.mChanging = false 
 
     self.mCacheSkillState = nil
-	self.mRunTime = 0
+    self.mRunTime = 0
+    
+    self.mTargetDirection = Vector3.zero
 end
 
 function PlayerSkillState:InitWithConfig(configure)
@@ -146,14 +148,14 @@ end
 function PlayerSkillState:OnEnter()
 
     --print("PlayerSkillState:OnEnter "..self.name .." mSpeed="..self.mSpeed .. " mRunTime ="..self.mRunTime)
-
+    self.mTargetDirection = Vector3.zero
     if self.mSkillPluginList ~= nil then
 
         for i,v in ipairs(self.mSkillPluginList) do
             v:OnEnter()
       
         end
-     end
+    end
 end
 
 function PlayerSkillState:OnExit()
@@ -171,6 +173,7 @@ function PlayerSkillState:OnExit()
     self.mFadeLength = 0
     self.mChanging = false 
     self.mRunTime = 0
+    self.mTargetDirection = Vector3.zero
 end
 
 function PlayerSkillState:OnExecute()

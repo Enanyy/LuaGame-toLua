@@ -65,6 +65,19 @@ function Ahri_PlayerEffectFollowPlugin:OnEnter()
     end
 
     self.mStateEnd = false
+
+    self.mPlayerSkillState.mTargetDirection = self.machine.mPlayerCharacter.transform.forward
+    if self.machine.mPlayerCharacter.mLockPlayerCharacter then
+
+        local target = self.machine.mPlayerCharacter.mLockPlayerCharacter.transform.position
+        local original = self.machine.mPlayerCharacter.transform.position
+
+        target.y = original.y
+        if Vector3.Distance(original, target) <= self.mDistance then
+            self.mPlayerSkillState.mTargetDirection = target - original
+        end
+
+    end
 end
 
 
@@ -85,17 +98,24 @@ function Ahri_PlayerEffectFollowPlugin:OnBegin()
     self.mBehaviour.enabled = true
 
     local direction = self.machine.mPlayerCharacter.transform.forward
-    if self.machine.mPlayerCharacter.mLockPlayerCharacter then
-        local target = self.machine.mPlayerCharacter.mLockPlayerCharacter.transform.position
-        target.y = self.mOriginalPosition.y
-        direction = ( target- self.mOriginalPosition).normalized
+    local original = self.machine.mPlayerCharacter.transform.position
 
-        self.mFollow = Vector3.Distance(target, self.mOriginalPosition) <= self.mDistance
+    if self.machine.mPlayerCharacter.mLockPlayerCharacter then
+       
+        local target = self.machine.mPlayerCharacter.mLockPlayerCharacter.transform.position
+        target.y = original.y
+
+        if Vector3.Distance(original, target) <= self.mDistance  then
+            direction = ( target- original).normalized
+            self.mFollow = true
+        end
+       
     end
 
     if self.mFollow == false then
 
-        self.mDestination = self.mOriginalPosition + direction * self.mDistance
+        original.y = self.mOriginalPosition.y
+        self.mDestination = original + direction * self.mDistance
         self.mDuration = self.mDistance * 1.0 / self.mSpeed
 
         if self.mTween == nil then
@@ -125,7 +145,7 @@ end
 function Ahri_PlayerEffectFollowPlugin:OnExecute()
 
     if self.mFollow and self.machine.mPlayerCharacter.mLockPlayerCharacter then
-        print(self.mGo.activeInHierarchy)
+       
         self.mGo:SetActive(true)
         
         local target =  self.machine.mPlayerCharacter.mLockPlayerCharacter.transform.position

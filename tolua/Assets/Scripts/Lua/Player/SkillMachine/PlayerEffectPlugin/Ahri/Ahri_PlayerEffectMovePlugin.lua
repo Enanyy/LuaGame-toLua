@@ -13,6 +13,8 @@ function Ahri_PlayerEffectMovePlugin:ctor(name)
 
     self.mStateEnd = false
     self.mEffectEnd = false
+
+    self.mDistanceOffset = 2
 end 
 
 function Ahri_PlayerEffectMovePlugin:Init(behaviour)
@@ -56,6 +58,7 @@ function Ahri_PlayerEffectMovePlugin:OnEnter()
     self.mBehaviour:Init(self)
 
     self:ClearEffectState()
+    
     if self.mGo then
         self.mGo.transform:SetParent(nil)
         
@@ -63,6 +66,19 @@ function Ahri_PlayerEffectMovePlugin:OnEnter()
     end
 
     self.mStateEnd = false
+
+    self.mPlayerSkillState.mTargetDirection = self.machine.mPlayerCharacter.transform.forward
+    if self.machine.mPlayerCharacter.mLockPlayerCharacter then
+
+        local target = self.machine.mPlayerCharacter.mLockPlayerCharacter.transform.position
+        local original = self.machine.mPlayerCharacter.transform.position
+
+        target.y = original.y
+        if Vector3.Distance(original, target) <= (self.mDistance + self.mDistanceOffset) then
+            self.mPlayerSkillState.mTargetDirection = target - original
+        end
+
+    end
 end
 
 
@@ -79,14 +95,23 @@ function Ahri_PlayerEffectMovePlugin:OnBegin()
     self.mGo:SetActive(true)
     self.mOriginalPosition = self.mParent.position
     self.mBehaviour.enabled = true
+
     local direction = self.machine.mPlayerCharacter.transform.forward
+    local original = self.machine.mPlayerCharacter.transform.position
+
     if self.machine.mPlayerCharacter.mLockPlayerCharacter then
+
         local target = self.machine.mPlayerCharacter.mLockPlayerCharacter.transform.position
-        target.y = self.mOriginalPosition.y
-        direction = ( target- self.mOriginalPosition).normalized
+       
+        target.y = original.y
+       
+        if Vector3.Distance(original, target) <= (self.mDistance + self.mDistanceOffset) then
+            direction = ( target- original).normalized
+        end
     end
 
-    self.mDestination = self.mOriginalPosition + direction * self.mDistance
+    original.y = self.mOriginalPosition.y
+    self.mDestination = original + direction * self.mDistance
     self.mDuration = self.mDistance * 1.0 / self.mSpeed
 
     if self.mTween == nil then

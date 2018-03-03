@@ -8,8 +8,6 @@ function PlayerSkillRotationPlugin:ctor(name)
 
     self.mDuration = 0.2
 
-    self.mTargetPosition = Vector3.zero
-
     self.mImmediately = false
 
 end
@@ -19,43 +17,26 @@ function PlayerSkillRotationPlugin:InitWithConfig(configure)
 
     if configure == nil then return end
 
-    self.mDuration = configure.duration or 0.2
-    self.mImmediately = configure.immediately or false
+    self.mDuration = configure.duration or self.mDuration
+    self.mImmediately = configure.immediately or self.mImmediately
 
 end
 
 
 function PlayerSkillRotationPlugin:OnEnter()
-   
-    self.mTargetPosition = Vector3.zero
 
-    if self.machine.mPlayerCharacter.mLockPlayerCharacter == nil then
-        local tmpRay = PlayerManager.mCamera:ScreenPointToRay (Input.mousePosition)
-        local tmpLayer = 2 ^ UnityLayer.Default              
-
-        local tmpFlag, tmpHit = Physics.Raycast(tmpRay,nil, 100, tmpLayer)
-         
-        if tmpFlag then
-            self.mTargetPosition = tmpHit.point
-            self.mTargetPosition.y = self.machine.mPlayerCharacter.transform.position.y
-            
-        end
-    else
-        self.mTargetPosition =  self.machine.mPlayerCharacter.mLockPlayerCharacter.transform.position
-        self.mTargetPosition.y = self.machine.mPlayerCharacter.transform.position.y
-    end
-
-    if self.mTargetPosition ~= nil then
-        
-        self.mWantedRotation = Quaternion.LookRotation (self.mTargetPosition - self.machine.mPlayerCharacter.transform.position)
-        
-    end
+    self.mWantedRotation = nil
+  
 end
 
 function PlayerSkillRotationPlugin:OnExecute()
 
-    if self.mTargetPosition ~= Vector3.zero then
+    if self.mPlayerSkillState.mTargetDirection ~= Vector3.zero then
 
+      
+        if self.mWantedRotation == nil then
+            self.mWantedRotation = Quaternion.LookRotation (self.mPlayerSkillState.mTargetDirection)
+        end
 
         if self.mPlayerSkillState.mRunTime <= self.mDuration and self.mImmediately == false then
             
@@ -72,6 +53,6 @@ end
 
 function PlayerSkillRotationPlugin:OnExit()
   
-    self.mTargetPosition = Vector3.zero
+    self.mWantedRotation = nil
 
 end

@@ -14,6 +14,8 @@ function Ahri_PlayerEffectMoveAndBackPlugin:ctor(name)
 
     self.mStateEnd = false
     self.mEffectEnd = false
+
+    self.mDistanceOffset = 2
 end
 function Ahri_PlayerEffectMoveAndBackPlugin:Init(behaviour)
 
@@ -63,6 +65,20 @@ function Ahri_PlayerEffectMoveAndBackPlugin:OnEnter()
     end
 
     self.mStateEnd = false
+
+    self.mPlayerSkillState.mTargetDirection = self.machine.mPlayerCharacter.transform.forward
+    if self.machine.mPlayerCharacter.mLockPlayerCharacter then
+
+        local target = self.machine.mPlayerCharacter.mLockPlayerCharacter.transform.position
+        local original = self.machine.mPlayerCharacter.transform.position
+
+        target.y = original.y
+        if Vector3.Distance(original, target) <= (self.mDistance + self.mDistanceOffset) then
+            self.mPlayerSkillState.mTargetDirection = target - original
+        end
+
+    end
+
 end
 
 
@@ -82,13 +98,22 @@ function Ahri_PlayerEffectMoveAndBackPlugin:OnBegin()
     self.mOriginalPosition = self.mParent.position
 
     local direction = self.machine.mPlayerCharacter.transform.forward
+    local original = self.machine.mPlayerCharacter.transform.position
+
     if self.machine.mPlayerCharacter.mLockPlayerCharacter then
+
         local target = self.machine.mPlayerCharacter.mLockPlayerCharacter.transform.position
-        target.y = self.mOriginalPosition.y
-        direction = ( target- self.mOriginalPosition).normalized
+       
+        target.y = original.y
+       
+        if Vector3.Distance(original, target) <= (self.mDistance + self.mDistanceOffset) then
+            direction = ( target- original).normalized
+        end
     end
 
-    self.mDestination = self.mOriginalPosition + direction * self.mDistance
+    original.y = self.mOriginalPosition.y
+    
+    self.mDestination = original + direction * self.mDistance
     self.mDuration = self.mDistance * 1.0 / self.mSpeed
 
     if self.mTween == nil then
