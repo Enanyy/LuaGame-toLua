@@ -25,7 +25,7 @@ function PlayerInput:Update()
 
             local tmpRay = self.mCamera:ScreenPointToRay (Input.mousePosition)
             
-            local tmpLayer = NGUITools.MakeMask(UnityLayer.Default, UnityLayer.Player)
+            local tmpLayer = NGUITools.MakeMask(UnityLayer.Default)
 
             local tmpFlag, tmpHit = Physics.Raycast(tmpRay,nil, 5000, tmpLayer)
          
@@ -35,11 +35,35 @@ function PlayerInput:Update()
                 if tmpHit.collider.gameObject.layer == UnityLayer.Default then
                     if self.mPlayerCharacter then
                         self.mPlayerCharacter:MoveToPoint(tmpHit.point)
-                    end
-                else
-                    self:OnClick(tmpHit.collider.gameObject)
+                    end    
                 end
             end
+        elseif Input.GetMouseButtonDown (0) then
+
+            if UICamera.Raycast(Input.mousePosition) == true then
+            
+                return
+            end
+
+            local tmpRay = self.mCamera:ScreenPointToRay (Input.mousePosition)
+            
+            local tmpLayer = NGUITools.MakeMask(UnityLayer.Player, UnityLayer.NPC, UnityLayer.Monster)
+
+            local tmpFlag, tmpHit = Physics.Raycast(tmpRay,nil, 5000, tmpLayer)
+         
+            
+            if tmpFlag then
+                local layer = tmpHit.collider.gameObject.layer 
+                if  layer == UnityLayer.Player or 
+                    layer == UnityLayer.NPC or 
+                    layer == UnityLayer.Monster
+                then
+                   
+                    self:OnClick(tmpHit.collider.gameObject)
+                 
+                end
+            end
+           
         end
     end
     

@@ -15,11 +15,16 @@ Main = {}
 function Main:DebugMode()
 	
 	return true
+
 end
 
 --资源读取方式
 function Main:AssetMode()
-	local assetmode = UnityEngine.PlayerPrefs.GetInt("assetmode")
+
+	local assetmode = 1
+	if LuaGame.EditorMode() then
+		assetmode =  UnityEngine.PlayerPrefs.GetInt("assetmode")
+	end
 	return assetmode
 end
 

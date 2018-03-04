@@ -180,6 +180,15 @@ public class LuaGame : MonoBehaviour {
         return LuaHelper.InvokeFunction<bool>("Main", "DebugMode");
     }
 
+    public static bool EditorMode()
+    {
+#if UNITY_EDITOR
+        return true;
+#else
+        return false;
+#endif
+    }
+
     public static Object LoadAssetAtPath(string path)
     {
 #if UNITY_EDITOR
