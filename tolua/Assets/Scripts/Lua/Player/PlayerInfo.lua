@@ -31,4 +31,7 @@ function PlayerInfo:ctor(profession)
 
 	self.weaponBone = "weapon/BUFFBONE_GLB_WEAPON_1" --武器绑定的骨骼
 
+	self.height = 1.6	--高
+	self.radius = 0.4	--半径
+
 end

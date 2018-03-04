@@ -9,7 +9,7 @@ function PlayerSkillAnimationPlugin:ctor(name)
     
     self.mDone = false
     self.mAnimation = nil
-
+    self.mAnimationClip = ""
 end
 
 function PlayerSkillAnimationPlugin:InitWithConfig(configure)

@@ -133,6 +133,10 @@ end
 
 function PlayerInput:OnClick(gameObject)
 
+    if gameObject == nil or  gameObject.transform.parent == nil then
+        return
+    end
+
     local behaviour = gameObject.transform.parent:GetComponent(typeof(LuaBehaviour))
     if behaviour == nil then
         return

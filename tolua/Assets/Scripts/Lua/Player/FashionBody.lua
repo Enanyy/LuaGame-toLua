@@ -33,9 +33,9 @@ function FashionBody:Start()
             go.transform.localScale = Vector3.one
             local collider = go:AddComponent(typeof(CapsuleCollider))
             collider.isTrigger = true
-            collider.height = 1.6
-            collider.radius = 0.4
-            collider.center = Vector3.New(0, 0.8, 0)
+            collider.height = tmpPlayerInfo.height
+            collider.radius = tmpPlayerInfo.radius
+            collider.center = Vector3.New(0, tmpPlayerInfo.height * 0.5, 0)
             self.mBody = go
         
         else

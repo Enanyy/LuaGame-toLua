@@ -149,10 +149,10 @@ function Ahri_PlayerEffectFollowPlugin:OnExecute()
         self.mGo:SetActive(true)
         
         local target =  self.machine.mPlayerCharacter.mLockPlayerCharacter.transform.position
-        target.y = self.mGo.transform.position.y
+        target.y = target.y + self.machine.mPlayerCharacter.mLockPlayerCharacter.mPlayerInfo.height * 0.5
         local direction = target - self.mGo.transform.position
        
-        if direction.magnitude > 0.2 then
+        if direction.magnitude > 0.1 then
 
             self.mGo.transform.position = self.mGo.transform.position + direction.normalized * self.mSpeed * Time.deltaTime
         else

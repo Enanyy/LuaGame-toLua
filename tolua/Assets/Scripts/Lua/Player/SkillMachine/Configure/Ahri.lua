@@ -308,7 +308,8 @@ Role_Configure_Ahri = {
                 { name = "PlayerSkillAttackSpeedPlugin", class = PlayerSkillAttackSpeedPlugin }, 
                 { name = "PlayerSkillRotationPlugin", class = PlayerSkillRotationPlugin, duration = 0.2, immediately = true },                         
                 { name = "PlayerSkillFlashMovePlugin", class = PlayerSkillFlashMovePlugin, distance = 6, duration = 0.5 }, 
-           
+                { name = "PlayerSkillRotateMousePositionPlugin", class = PlayerSkillRotateMousePositionPlugin }, 
+                
             }
         },
         ---------------------------技能四结束--------------------------------

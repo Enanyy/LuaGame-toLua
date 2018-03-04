@@ -27,8 +27,8 @@ function Ahri_PlayerEffectMovePlugin:InitWithConfig(configure)
 
     if configure == nil then return end
 
-    self.mSpeed = configure.speed
-    self.mDistance = configure.distance
+    self.mSpeed = configure.speed or self.mSpeed
+    self.mDistance = configure.distance or self.mDistance
 
 
 end
@@ -216,6 +216,9 @@ function Ahri_PlayerEffectMovePlugin:OnTriggerEnter(other)
 
     if fashionBody.mPlayerCharacter.mPlayerInfo.guid ~= self.machine.mPlayerCharacter.mPlayerInfo.guid then
         --print(fashionBody.mPlayerCharacter.mPlayerInfo.guid)
+        if  self.mTween.onFinished then
+            self.mTween.onFinished()
+        end
     end
 
 end

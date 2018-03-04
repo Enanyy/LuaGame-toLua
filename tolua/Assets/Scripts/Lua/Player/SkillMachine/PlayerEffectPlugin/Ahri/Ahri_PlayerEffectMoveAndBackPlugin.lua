@@ -15,7 +15,7 @@ function Ahri_PlayerEffectMoveAndBackPlugin:ctor(name)
     self.mStateEnd = false
     self.mEffectEnd = false
 
-    self.mDistanceOffset = 2
+    self.mDistanceOffset = 1
 end
 function Ahri_PlayerEffectMoveAndBackPlugin:Init(behaviour)
 
@@ -27,8 +27,8 @@ function Ahri_PlayerEffectMoveAndBackPlugin:InitWithConfig(configure)
     if configure == nil then return end
 
 
-    self.mSpeed = configure.speed
-    self.mDistance = configure.distance
+    self.mSpeed = configure.speed or self.mSpeed
+    self.mDistance = configure.distance or self.mDistance
 
 end
 
