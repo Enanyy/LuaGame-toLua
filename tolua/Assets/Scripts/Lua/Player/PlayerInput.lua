@@ -12,7 +12,7 @@ function PlayerInput:Update()
 
     if self.mPlayerCharacter == nil then return end
 
-
+    
     if self.mCamera then
 
         if Input.GetMouseButtonDown (1) then
