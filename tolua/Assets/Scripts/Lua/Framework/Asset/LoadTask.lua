@@ -24,15 +24,18 @@ end
 --开始加载
 function LoadTask:Load()
     self.mState = 1
-
+    print("Start Load:"..self.mAssetBundleName)
+    
     local  tmpFullPath = AssetManager.GetAssetBundlePath() .. self.mAssetBundleName
     if File.Exists(tmpFullPath) then
         self.mAssetBundle = AssetBundle.LoadFromFile(tmpFullPath)
         
         if self.mAssetBundle ~= nil then
             self.mState = LoadTaskState.Success --加载完成
+            print("Load AssetBundle:"..tmpFullPath.." Success")            
         else
             self.mState = LoadTaskState.Fail    --加载失败
+            print("Load AssetBundle:"..tmpFullPath.." Fail")
         end
     else
         self.mState = LoadTaskState.Fail --加载失败

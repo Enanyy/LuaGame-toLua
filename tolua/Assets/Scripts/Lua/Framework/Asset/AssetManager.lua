@@ -34,8 +34,6 @@ end
 
 function AssetManager:Awake()
     
-    print("AssetManager:Awake，name = "..self.behaviour.name)
-
     local tmpAssetManifest = self.GetAssetBundlePath() .."StreamingAssets"
 
     print(tmpAssetManifest)
@@ -51,6 +49,7 @@ function AssetManager:Awake()
 
             print(tmpAssetManifest.. " load done")
             
+           -- self:Load("assetbundle.unity3d", nil,nil)
         end
     else
         print(tmpAssetManifest.. " not exists")
@@ -59,11 +58,11 @@ function AssetManager:Awake()
 end
 
 function AssetManager:Start()
-    print("AssetManager:Start")
+    
 end
 
 function AssetManager:OnEnable()
-    print("AssetManager:OnEnable")
+   
 end
 
 function AssetManager:Update()
@@ -85,6 +84,14 @@ function AssetManager:Update()
             if self.mAssetBundleDic[tmpAssetName] ~=nil then
             
                 tmpLoadTask.mState = LoadTaskState.Success                     --已经加载完成
+                
+                if tmpLoadTask.mCallback then
+
+                    local tmpAssetBundle = self.mAssetBundleDic[tmpAssetName].mAssetbundle
+                   
+                    tmpLoadTask.mCallback(tmpAssetBundle)
+                    
+                end
 
                 self.mLoadingAssetQueue:Dequeue ()
                 tmpLoadTask = nil
@@ -104,11 +111,11 @@ function AssetManager:Update()
                 --同步加载
                 tmpLoadTask:Load()
              
+                self.mLoadingAssetQueue:Dequeue ()
+                tmpLoadTask = nil
+
                 --异步加载
                 --StartCoroutine (tmpLoadTask:LoadAsync ())
-
-                print("Start Load:"..tmpLoadTask.mAssetBundleName)
-
                 return
             
             elseif tmpLoadTask.mState == LoadTaskState.Loading then            --加载中
@@ -161,8 +168,8 @@ function AssetManager:Load(varAssetBundleName, varAssetName, varCallback)
     end
 
     if self.mManifest then
-    --tmpDependences的类型是C#的 string[]
-    local tmpDependences = self.mManifest:GetAllDependencies (varAssetBundleName)
+     
+        local tmpDependences = self.mManifest:GetAllDependencies (varAssetBundleName)     --tmpDependences的类型是C#的 string[]
         print("tmpDependences Length =" .. tmpDependences.Length )
 
         if tmpDependences.Length > 0 then
@@ -173,17 +180,21 @@ function AssetManager:Load(varAssetBundleName, varAssetName, varCallback)
 
                 if self.mAssetBundleDic[tmpDependentAssetBundleName] == nil then
         
-                    self.mLoadingAssetQueue:Enqueue (LoadTask.new (tmpDependentAssetBundleName, nil, function (varAssetBundle)
+                    local tmpDependentLoadTask = LoadTask.new (tmpDependentAssetBundleName, nil, function (varAssetBundle)
 
-                        if self.mAssetBundleDic[tmpAssetBundleName] ==  nil then 
+                        local tmpLoadedAssetbundle = LoadedAssetBundle.new (self.mManifest, tmpDependentAssetBundleName, varAssetBundle)
+                        if self.mAssetBundleDic[tmpDependentAssetBundleName] ==  nil then 
                 
-                            self.mAssetBundleDic[tmpAssetBundleName] = LoadedAssetBundle.new (self.mManifest, tmpAssetBundleName, varAssetBundle)
+                            self.mAssetBundleDic[tmpDependentAssetBundleName] = tmpLoadedAssetbundle
                 
                         else
-                
+                            self.mAssetBundleDic[tmpDependentAssetBundleName] = nil
+                            self.mAssetBundleDic[tmpDependentAssetBundleName] = tmpLoadedAssetbundle
+
                             print("Dependence "..tmpDependentAssetBundleName .." was Loaded.")
                         end
-                    end))
+                    end)
+                    self.mLoadingAssetQueue:Enqueue (tmpDependentLoadTask)
                 end
             end		
         end
@@ -217,6 +228,7 @@ function AssetManager:Load(varAssetBundleName, varAssetName, varCallback)
         end
     end)
     
+    
     self.mLoadingAssetQueue:Enqueue (tmpLoadTask)
 
     return tmpLoadTask
@@ -225,16 +237,17 @@ end
 
 function AssetManager:LoadAsset(varAssetBundleName,varAssetName,varCallback)
 
+  
     local tmpObject = nil
-		
+	
 	local tmpAssetBundleName = string.lower( varAssetBundleName )
 
 	local tmpLoadedAssetbundle = self.mAssetBundleDic[tmpAssetBundleName] 
 
-	if tmpLoadedAssetbundle ~= nil then
+	if tmpLoadedAssetbundle ~= nil and varAssetName ~=nil then
 
         tmpObject = tmpLoadedAssetbundle:LoadAsset(varAssetName);
-		
+      
         if varCallback ~=nil then
 
             varCallback(tmpObject)

@@ -10,6 +10,7 @@ function Ahri_PlayerEffectFollowPlugin:ctor(name)
     
     self.mParent = nil
     self.mGo = nil
+    self.mLockPlayerCharacter = nil
 
     self.mStateEnd = false
     self.mEffectEnd = false
@@ -69,7 +70,8 @@ function Ahri_PlayerEffectFollowPlugin:OnEnter()
     self.mPlayerSkillState.mTargetDirection = self.machine.mPlayerCharacter.transform.forward
     if self.machine.mPlayerCharacter.mLockPlayerCharacter then
 
-        local target = self.machine.mPlayerCharacter.mLockPlayerCharacter.transform.position
+        self.mLockPlayerCharacter = self.machine.mPlayerCharacter.mLockPlayerCharacter
+        local target = self.mLockPlayerCharacter.transform.position
         local original = self.machine.mPlayerCharacter.transform.position
 
         target.y = original.y
@@ -101,8 +103,9 @@ function Ahri_PlayerEffectFollowPlugin:OnBegin()
     local original = self.machine.mPlayerCharacter.transform.position
 
     if self.machine.mPlayerCharacter.mLockPlayerCharacter then
-       
-        local target = self.machine.mPlayerCharacter.mLockPlayerCharacter.transform.position
+
+        self.mLockPlayerCharacter = self.machine.mPlayerCharacter.mLockPlayerCharacter
+        local target = self.mLockPlayerCharacter.transform.position
         target.y = original.y
 
         if Vector3.Distance(original, target) <= self.mDistance  then
@@ -144,12 +147,12 @@ end
 
 function Ahri_PlayerEffectFollowPlugin:OnExecute()
 
-    if self.mFollow and self.machine.mPlayerCharacter.mLockPlayerCharacter then
+    if self.mFollow and self.mLockPlayerCharacter then
        
         self.mGo:SetActive(true)
         
-        local target =  self.machine.mPlayerCharacter.mLockPlayerCharacter.transform.position
-        target.y = target.y + self.machine.mPlayerCharacter.mLockPlayerCharacter.mPlayerInfo.height * 0.5
+        local target =  self.mLockPlayerCharacter.transform.position
+        target.y = target.y + self.mLockPlayerCharacter.mPlayerInfo.height * 0.5
         local direction = target - self.mGo.transform.position
        
         if direction.magnitude > 0.1 then

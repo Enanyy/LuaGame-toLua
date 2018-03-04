@@ -15,7 +15,7 @@ function PlayerInput:Update()
 
     if self.mCamera then
 
-        if Input.GetMouseButtonDown (0) then
+        if Input.GetMouseButtonDown (1) then
            
             --点击了UI
             if UICamera.Raycast(Input.mousePosition) == true then

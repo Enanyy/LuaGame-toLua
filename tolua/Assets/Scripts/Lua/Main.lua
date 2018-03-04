@@ -61,7 +61,7 @@ function Main:Start()
 	--self:TestOverWrite()
 		
 	--]]
-	WindowManager:Open(UI_Main, "UI_Main")
+	
 	
 	SceneMachine:ChangeScene(SceneType.FrameScene)
 
@@ -76,12 +76,14 @@ function Main:OnLevelWasLoaded(level)
 
 	Time.timeSinceLevelLoad = 0
 
+	WindowManager:Open(UI_Main, "UI_Main")
+
 	local tmpPlayerInfo = PlayerInfo.new(1)
 	tmpPlayerInfo.guid = 0
 	tmpPlayerInfo.position = Vector3.New(4,0, 8)
 	tmpPlayerInfo.direction = Vector3.New(0, -120, 0)
 	tmpPlayerInfo.baseSpeed = 6
-	tmpPlayerInfo.moveSpeedAddition = 0.5
+	tmpPlayerInfo.moveSpeedAddition = 0.3
 	tmpPlayerInfo.character = "Ahri"
 	tmpPlayerInfo.skin = "Ahri_shadowfox"
 	tmpPlayerInfo.configure = Role_Configure_Ahri
@@ -97,7 +99,7 @@ function Main:OnLevelWasLoaded(level)
 	tmpPlayerInfo1.position = Vector3.New(5,0, 6)
 	tmpPlayerInfo1.direction = Vector3.New(0, 90, 0)
 	tmpPlayerInfo1.baseSpeed = 6
-	tmpPlayerInfo1.moveSpeedAddition = 0.3
+	tmpPlayerInfo1.moveSpeedAddition = 0.0
 	tmpPlayerInfo1.character = "Ahri"
 	tmpPlayerInfo1.skin = "Ahri"
 	tmpPlayerInfo1.configure = Role_Configure_Ahri
@@ -112,7 +114,7 @@ function Main:OnLevelWasLoaded(level)
 	tmpPlayerInfo2.position = Vector3.New(5,0, 8)
 	tmpPlayerInfo2.direction = Vector3.New(0, 40, 0)
 	tmpPlayerInfo2.baseSpeed = 6
-	tmpPlayerInfo2.moveSpeedAddition = 0.3
+	tmpPlayerInfo2.moveSpeedAddition = 0.0
 	tmpPlayerInfo2.character = "Ahri"
 	tmpPlayerInfo2.skin = "Ahri_hanbok"
 	tmpPlayerInfo2.configure = Role_Configure_Ahri

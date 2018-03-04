@@ -96,13 +96,18 @@ public class AssetBundleEditor : Editor
 
             if (tmpAssetImport == null) continue;
 
-            if (tmpStringFilePath.EndsWith(".prefab"))
+            if (tmpStringFilePath.EndsWith(".prefab")
+                || tmpStringFilePath.EndsWith(".anim"))
             {
-                GameObject go = AssetDatabase.LoadAssetAtPath<GameObject>(tmpAssetImport.assetPath);
-                if (go 
-                    && ( (tmpStringFilePath.Contains("/UI/") && (go.GetComponent<UIRoot>() || go.GetComponent<UIAtlas>()))
-                        ||(tmpStringFilePath.Contains("/Character/"))
-                    ))
+                UnityEngine.Object go = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(tmpAssetImport.assetPath);
+                if(go == null)
+                {
+                    tmpAssetImport.assetBundleName = "";
+                    continue;
+                }
+                if ( (tmpStringFilePath.Contains("NGUI/") && go.GetType()==typeof(GameObject) && ((GameObject)go).GetComponent<UIAtlas>())
+                     ||tmpStringFilePath.Contains("R/")
+                    )
                 {
                     tmpAssetImport.assetBundleName = assetbundleName;
                 }
