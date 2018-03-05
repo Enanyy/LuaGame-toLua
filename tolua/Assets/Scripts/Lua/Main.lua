@@ -45,7 +45,7 @@ function Main:Start()
 	LateUpdateBeat:Add(Main.LateUpate,self)	 		
 	FixedUpdateBeat:Add(Main.FixedUpdate,self)	 	
 
-	self:TestSocket()
+	self:TestSocketClient()
 
 	--[[ 
 	--self.TestGameObject()
@@ -246,22 +246,84 @@ function Main:TestOverWrite()
 end
 
 --测试Socket,以 socket 的方式访问获取百度首页数据
-function Main:TestSocket()
+function Main:TestSocketClient()
 
 	local socket = require("socket")
-	local host = "www.baidu.com"
-	local file = "/"
-	 
-	-- 创建一个 TCP 连接，连接到 HTTP 连接的标准端口 -- 80 端口上
-	local sock = assert(socket.connect(host, 80))
-	sock:send("GET " .. file .. " HTTP/1.0\r\n\r\n")
-	repeat
-		-- 以 1K 的字节块来接收数据，并把接收到字节块输出来
-		local chunk, status, partial = sock:receive(1024)
-		print(chunk or partial)
-	until status ~= "closed"
-	-- 关闭 TCP 连接
-	sock:close()
+ 
+	local host = "127.0.0.1"
+	local port = 1255
+	local sock = socket.connect(host, port)
+
+	if sock then	
+	
+		sock:settimeout(0)
+	  
+		local input = "Hello LuaSocket!"
+		local recvt, sendt, status
+		while true do
+	
+			assert(sock:send(input .. "\n"))
+		
+		 
+			recvt, sendt, status = socket.select({sock}, nil, 1)
+			while #recvt > 0 do
+				local response, receive_status = sock:receive()
+				if receive_status ~= "closed" then
+					if response then
+						print(response)
+						recvt, sendt, status = socket.select({sock}, nil, 1)
+					end
+				else
+					break
+				end
+			end
+		end
+	else
+		print("connect "..host ..":"..port.." fail.")
+	end
+end
+
+function Main:TestSocketServer()
+
+	local socket = require("socket")
+ 
+	local host = "127.0.0.1"
+	local port = "12345"
+	local server = assert(socket.bind(host, port, 1024))
+	server:settimeout(0)
+	local client_tab = {}
+	local conn_count = 0
+ 
+	print("Server Start " .. host .. ":" .. port) 
+ 
+	while true do
+    	local conn = server:accept()
+    	if conn then
+        	conn_count = conn_count + 1
+        	client_tab[conn_count] = conn
+        	print("A client successfully connect!") 
+    	end
+  
+    	for conn_count, client in pairs(client_tab) do
+        	local recvt, sendt, status = socket.select({client}, nil, 1)
+        	if #recvt > 0 then
+            	local receive, receive_status = client:receive()
+            	if receive_status ~= "closed" then
+                	if receive then
+                    	assert(client:send("Client " .. conn_count .. " Send : "))
+                    	assert(client:send(receive .. "\n"))
+                    	print("Receive Client " .. conn_count .. " : ", receive)   
+                	end
+            	else
+                	table.remove(client_tab, conn_count) 
+                	client:close() 
+                	print("Client " .. conn_count .. " disconnect!") 
+            	end
+        	end
+         
+    	end
+	end
+
 end
 
 -------------------------------------------Test End-----------------------------------------

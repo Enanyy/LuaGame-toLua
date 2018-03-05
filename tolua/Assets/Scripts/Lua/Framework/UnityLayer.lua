@@ -1,4 +1,3 @@
-require("bit")
 
 UnityLayer =
 {
@@ -18,7 +17,7 @@ function UnityLayer.MakeMask(...)
 	local mask = 0
 	local layers = {...}
 	for i,v in ipairs(layers) do
-		mask = bit.bor(mask, bit.lshift(1,v))
+		mask = mask + 2^v
 	end
 	return mask
 end
