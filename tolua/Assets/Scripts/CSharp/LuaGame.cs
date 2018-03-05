@@ -216,5 +216,13 @@ public class LuaGame : MonoBehaviour {
 #endif
     }
 
+    public static void Log(string text)
+    {
+        if (NGUIDebug.debugRaycast)
+        {
+            NGUIDebug.Log(text);
+        }
+    }
+
     
 }
