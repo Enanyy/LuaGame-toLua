@@ -174,7 +174,7 @@ public static class CustomSettings
         //LuaGame
         _GT(typeof(LuaGame)),
         _GT(typeof(LuaBehaviour)),
-        _GT(typeof(Helper)),
+    
         
 
         //Effect    
