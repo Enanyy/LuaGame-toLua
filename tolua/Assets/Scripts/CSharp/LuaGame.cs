@@ -77,9 +77,11 @@ public class LuaGame : MonoBehaviour {
     void OpenLibs()
     {
         mLuaState.OpenLibs(LuaDLL.luaopen_pb);
+        mLuaState.OpenLibs(LuaDLL.luaopen_struct);
         mLuaState.OpenLibs(LuaDLL.luaopen_lpeg);
         mLuaState.OpenLibs(LuaDLL.luaopen_bit);
-        mLuaState.OpenLibs(LuaDLL.luaopen_socket_core);
+
+        OpenLuaSocket();
 
         OpenCJson();
     }
@@ -92,6 +94,19 @@ public class LuaGame : MonoBehaviour {
 
         mLuaState.OpenLibs(LuaDLL.luaopen_cjson_safe);
         mLuaState.LuaSetField(-2, "cjson.safe");
+    }
+
+    /// <summary>
+    ///加载LuaSocket库 
+    /// </summary>
+    void OpenLuaSocket()
+    {
+        LuaConst.openLuaSocket = true;
+
+        mLuaState.BeginPreLoad();
+        mLuaState.RegFunction("socket.core", LuaDLL.luaopen_socket_core);
+        mLuaState.RegFunction("mime.core", LuaDLL.luaopen_mime_core);
+        mLuaState.EndPreLoad();
     }
 
     public static void DoFile(string filename)
