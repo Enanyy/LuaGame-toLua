@@ -236,7 +236,7 @@ function Ahri_PlayerEffectFollowPlugin:OnTriggerEnter(other)
     end
 
     local fashionBody = behaviour.luaTable
-    if fashionBody == nil then
+    if fashionBody == nil or fashionBody.mPlayerCharacter == nil then
 
         return 
     end 

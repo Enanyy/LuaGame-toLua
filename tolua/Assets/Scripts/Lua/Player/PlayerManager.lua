@@ -61,7 +61,8 @@ function  PlayerManager:CreatePlayerCharacter(varGuid,  varPlayerInfo, varCallba
                 self.mSmoothFollow.target = tmpPlayerCharacter.transform
                 self.mSmoothFollow.followBehind = false
                 self.mSmoothFollow.distance =3
-                self.mSmoothFollow.height = 8
+                self.mSmoothFollow.height = 12
+                self.mSmoothFollow.rotation = Vector3.New(76,0,0)
 
                 local behaviour = camera:AddComponent(typeof(LuaBehaviour))
                 behaviour:Init(self.mSmoothFollow)
@@ -126,15 +127,28 @@ end
 
 function PlayerManager:RemovePlayerCharacter(varGuid)
     
+    local list = {}
     if self.mPlayerCharacterDic then
+
         local tmpPlayerCharacter = self.mPlayerCharacterDic[varGuid]
+        table.insert( list, tmpPlayerCharacter )
+
         table.remove( self.mPlayerCharacterDic, varGuid)
 
-        if tmpPlayerCharacter then
-           GameObject.Destroy(tmpPlayerCharacter.gameObject) 
-        end
-        tmpPlayerCharacter = nil
+    end
 
+    for i,v in ipairs(list) do
+
+        if v then
+            local current = v.mSkillMachine:GetCurrentState()
+            if current ~= nil then
+                current:OnExit()
+            end
+
+            v.mEffectMachine:Clear()
+
+            GameObject.Destroy(v.gameObject) 
+        end
     end
 end
 

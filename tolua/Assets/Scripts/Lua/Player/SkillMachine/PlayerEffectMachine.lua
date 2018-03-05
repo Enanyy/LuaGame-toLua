@@ -84,5 +84,15 @@ function PlayerEffectMachine:Remove(effectState)
     end
 end
 
+function PlayerEffectMachine:Clear()
+
+    for i,v in ipairs(self.mEffectStateList) do
+        v:OnEnd()
+    end
+
+    self.mEffectStateList = nil
+
+end
+
 
 

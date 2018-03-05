@@ -30,6 +30,7 @@ end
 
 function Main:Start()					
 	print("Main start")
+	LuaGame.Log(AssetManager.GetAssetBundlePath())
 	--初始化资源管理器
 	AssetManager:Initialize()
 	--初始化窗口管理器

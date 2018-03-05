@@ -91,7 +91,9 @@ function PlayerCharacter:CreateFashionWeapon()
 end
 
 function PlayerCharacter:InitWithConfig()
+    
     self.mSkillMachine = PlayerSKillMachine.new(self)
+
     self.mSkillMachine:InitWithConfig(self.mPlayerInfo.configure)
     
     self.mEffectMachine = PlayerEffectMachine.new()
