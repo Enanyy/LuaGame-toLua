@@ -1,3 +1,5 @@
+require("bit")
+
 UnityLayer =
 {
     Default         = 0,
@@ -11,3 +13,12 @@ UnityLayer =
     Monster         = 11,
 
 }
+
+function UnityLayer.MakeMask(...)
+	local mask = 0
+	local layers = {...}
+	for i,v in ipairs(layers) do
+		mask = bit.bor(mask, bit.lshift(1,v))
+	end
+	return mask
+end

@@ -4,6 +4,7 @@ require("AssetManager")
 require("WindowManager")
 require("PlayerManager")
 require("SceneMachine")
+require("bit")
 ----
 ----Lua表不要与C#中需要Wrap的类同名，会引起混乱
 ----
@@ -45,7 +46,7 @@ function Main:Start()
 	LateUpdateBeat:Add(Main.LateUpate,self)	 		
 	FixedUpdateBeat:Add(Main.FixedUpdate,self)	 	
 	
-	
+	print("位运算:"..bit.lshift(1,2))
 
 	--[[ 
 	--self.TestGameObject()

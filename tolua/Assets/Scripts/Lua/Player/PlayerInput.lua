@@ -25,7 +25,7 @@ function PlayerInput:Update()
 
             local tmpRay = self.mCamera:ScreenPointToRay (Input.mousePosition)
             
-            local tmpLayer = Helper.MakeMask(UnityLayer.Default)
+            local tmpLayer = UnityLayer.MakeMask(UnityLayer.Default)
 
             local tmpFlag, tmpHit = Physics.Raycast(tmpRay,nil, 5000, tmpLayer)
          
@@ -47,7 +47,7 @@ function PlayerInput:Update()
 
             local tmpRay = self.mCamera:ScreenPointToRay (Input.mousePosition)
             
-            local tmpLayer = Helper.MakeMask(UnityLayer.Player, UnityLayer.NPC, UnityLayer.Monster)
+            local tmpLayer = UnityLayer.MakeMask(UnityLayer.Player, UnityLayer.NPC, UnityLayer.Monster)
 
             local tmpFlag, tmpHit = Physics.Raycast(tmpRay,nil, 5000, tmpLayer)
          

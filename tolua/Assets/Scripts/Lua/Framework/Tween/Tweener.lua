@@ -1,4 +1,6 @@
 require("Class")
+require("Mathf")
+
 Tweener = Class()
 TweenerMethod = 
 {
@@ -55,7 +57,7 @@ function Tweener:GetAmountPerDelta()
     else
         if self.mDuration ~= self.duration then
             self.mDuration = self.duration
-            local sign = self.mAmountPerDelta / math.abs( self.mAmountPerDelta )
+            local sign = Mathf.Sign( self.mAmountPerDelta )
             local delta = 1000 
             if self.duration > 0 then delta = 1.0 /self.duration end
             self.mAmountPerDelta = math.abs( delta ) * sign
@@ -101,8 +103,7 @@ function Tweener:Update()
 
     if self.style == TweenerStyle.Once and (self.duration == 0 or self.factor > 1 or self.factor < 0) then
 
-        if self.factor > 1 then self.factor = 1 end
-        if self.factor < 0 then self.factor = 0 end
+        self.factor = Mathf.Clamp01(self.factor)
 
         self:Sample(self.factor, true)
 
@@ -119,8 +120,7 @@ end
 
 function Tweener:Sample(factor, isFinished)
 
-    if factor > 1 then factor = 1 end
-    if factor < 0 then factor = 0 end
+    factor = Mathf.Clamp01(factor)
 
     local PI = 3.14159274
 
@@ -141,7 +141,7 @@ function Tweener:Sample(factor, isFinished)
 
         if self.steeperCurves then
             factor = factor * 2 - 1
-            local sign = factor / math.abs(factor)
+            local sign = Mathf.Sign(factor) 
             factor = 1 - math.abs(factor)
             factor = 1 - factor * factor
             factor = sign * factor * 0.5 + 0.5
