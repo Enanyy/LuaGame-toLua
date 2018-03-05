@@ -20,7 +20,7 @@ function PlayerSkillRotateMousePositionPlugin:OnEnter()
 
     local tmpRay = PlayerManager.mCamera:ScreenPointToRay (Input.mousePosition)
             
-    local tmpLayer = NGUITools.MakeMask(UnityLayer.Default, UnityLayer.Player)
+    local tmpLayer = Helper.MakeMask(UnityLayer.Default, UnityLayer.Player)
 
     local tmpFlag, tmpHit = Physics.Raycast(tmpRay,nil, 5000, tmpLayer)
  

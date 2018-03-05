@@ -67,7 +67,7 @@ function  PlayerManager:CreatePlayerCharacter(varGuid,  varPlayerInfo, varCallba
                 behaviour:Init(self.mSmoothFollow)
                 self.mSmoothFollow:Init(behaviour)
 
-                self.mCamera.cullingMask = NGUITools.MakeMask( UnityLayer.Default, layer)
+                self.mCamera.cullingMask = Helper.MakeMask( UnityLayer.Default, layer)
                 NGUITools.SetLayer(camera, UnityLayer.Default)
 
               
