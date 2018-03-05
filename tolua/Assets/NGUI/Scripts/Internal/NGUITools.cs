@@ -1870,7 +1870,7 @@ static public class NGUITools
 
 			if (mSizeFrame != frame || !Application.isPlaying)
 			{
-				UnityEngine.Profiling.Profiler.BeginSample("Editor-only GC allocation (NGUITools.screenSize)");
+				UnityEngine.Profiler.BeginSample("Editor-only GC allocation (NGUITools.screenSize)");
 				mSizeFrame = frame;
 
 				if (s_GetSizeOfMainGameView == null && !mCheckedMainViewFunc)
@@ -1904,7 +1904,7 @@ static public class NGUITools
 					mGameSize = s_GetSizeOfMainGameView();
 				}
 				else mGameSize = new Vector2(Screen.width, Screen.height);
-				UnityEngine.Profiling.Profiler.EndSample();
+				UnityEngine.Profiler.EndSample();
 			}
 			return mGameSize;
 		}
@@ -2332,15 +2332,4 @@ static public class NGUITools
 		return v;
 	}
 	static ColorSpace mColorSpace = ColorSpace.Uninitialized;
-
-
-    static public int MakeMask(params int[] layers)
-    {
-        int mask = 0;
-        for (int i = 0; i < layers.Length; i++)
-        {
-            mask |= 1 << layers[i];
-        }
-        return mask;
-    }
 }
