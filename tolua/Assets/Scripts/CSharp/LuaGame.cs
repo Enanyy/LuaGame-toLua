@@ -184,10 +184,13 @@ public class LuaGame : MonoBehaviour {
         //array[1] = "second";
 
         //LuaHelper.CallFunction("Main", "Test1",array);
-        NGUIDebug.debugRaycast = true;
-        NGUIDebug.Log(LuaConst.luaDir);
-        NGUIDebug.Log(LuaConst.toluaDir);
-     
+        if (DebugMode())
+        {
+            NGUIDebug.debugRaycast = true;
+
+            NGUIDebug.Log(LuaConst.luaDir);
+            NGUIDebug.Log(LuaConst.toluaDir);
+        }
     }
 
     public static bool  DebugMode()
