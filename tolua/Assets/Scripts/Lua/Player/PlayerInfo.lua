@@ -17,7 +17,9 @@ function PlayerInfo:ctor(profession)
 
 	self.baseAttack = 1 --基础攻速
 
-	self.attackSpeedAddition = 0.5 -- 攻速加成
+	self.attackSpeedAddition = 0.5 		-- 攻速加成
+
+	self.attackTimeInterval	= 1.250 	--普攻时间间隔 实际= attackTimeInterval * （1 - attackSpeedAddition）
 
 	self.moveSpeedAddition = 0.0 --移速加成
 

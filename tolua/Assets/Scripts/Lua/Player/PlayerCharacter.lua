@@ -15,6 +15,7 @@ function PlayerCharacter:ctor()
     self.mProfession = 0
     self.mPlayerInfo = nil
     self.mMoveSpeed = 0
+    self.mAttackTimeInterval = 1
     self.mCallback = nil
     self.mLockPlayerCharacter = nil
     
@@ -102,6 +103,13 @@ end
 
 function PlayerCharacter:Update()
 
+    if self.mAttackTimeInterval > 0 then
+        self.mAttackTimeInterval = self.mAttackTimeInterval - Time.deltaTime
+    end
+    if self.mAttackTimeInterval < 0 then
+        self.mAttackTimeInterval = 0
+    end
+
     --print("PlayerCharacter:Update")
     if self.mSkillMachine then
 
@@ -147,6 +155,17 @@ function PlayerCharacter:PlaySkill(varSkillType)
 		return false
 	end
 
+    if  varSkillType == PlayerSkillType.Attack_1 or 
+        varSkillType == PlayerSkillType.Attack_2 or 
+        varSkillType == PlayerSkillType.Attack_3 then
+
+        if self.mAttackTimeInterval > 0 then
+            return false
+        end
+
+        self.mAttackTimeInterval = self.mPlayerInfo.attackTimeInterval * (1 - self.mPlayerInfo.attackSpeedAddition)
+
+    end
 
 	return	self.mSkillMachine:Cache (varSkillType)
 end

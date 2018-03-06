@@ -137,12 +137,13 @@ end
 function Main:Update()
 	--print("LuaGame update")
 
+	--local start = os.clock()
 	--资源管理器更新
 	AssetManager:Update()
 
 	--人物管理器更新
 	PlayerManager:Update()
-
+	--print("Main Update: " .. ((os.clock() - start) * 1000))
 
 end
 

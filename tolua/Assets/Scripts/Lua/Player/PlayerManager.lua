@@ -23,7 +23,7 @@ function  PlayerManager:Initialize()
         behaviour:Init(self)
         self:Init(behaviour)
 
-        self.mPlayerCharacterDic = {}           --人物列表
+        self.mPlayerCharacterList = {}           --人物列表
 
     end
 
@@ -90,16 +90,17 @@ function  PlayerManager:CreatePlayerCharacter(varGuid,  varPlayerInfo, varCallba
         end
         tmpPlayerCharacter.transform.rotation = Quaternion.Euler(varPlayerInfo.direction.x, varPlayerInfo.direction.y, varPlayerInfo.direction.z)
 
-        self.mPlayerCharacterDic[varGuid] = tmpPlayerCharacter
+        table.insert( self.mPlayerCharacterList, tmpPlayerCharacter )
+       
        
 end
 
 
 function PlayerManager:Update()
 
-    if self.mPlayerCharacterDic then
+    if self.mPlayerCharacterList then
 
-        for k,v in pairs(self.mPlayerCharacterDic) do
+        for i,v in ipairs(self.mPlayerCharacterList) do
 
             v:Update()
         end
@@ -113,13 +114,16 @@ end
 
 function PlayerManager:GetPlayerCharacter(varGuid)
 
-    if self.mPlayerCharacterDic then
+    if self.mPlayerCharacterList then
 
-        for k,v in pairs(self.mPlayerCharacterDic) do
+       for i,v in ipairs(self.mPlayerCharacterList) do
             if v.mGuid == varGuid then
+
                 return v
+
             end
-        end
+       end
+
     end
 
     return nil
@@ -128,12 +132,21 @@ end
 function PlayerManager:RemovePlayerCharacter(varGuid)
     
     local list = {}
-    if self.mPlayerCharacterDic then
+    if self.mPlayerCharacterList then
 
-        local tmpPlayerCharacter = self.mPlayerCharacterDic[varGuid]
-        table.insert( list, tmpPlayerCharacter )
+        for i,v in ipairs(self.mPlayerCharacterList) do
+            
+            if v.mGuid == varGuid then
 
-        table.remove( self.mPlayerCharacterDic, varGuid)
+                table.insert( list, v)
+
+                table.remove( self.mPlayerCharacterList, i )
+
+                break
+
+            end
+
+        end
 
     end
 
@@ -152,13 +165,13 @@ function PlayerManager:RemovePlayerCharacter(varGuid)
     end
 end
 
---遍历mPlayerCharacterDic, func返回true跳出遍历
+--遍历mPlayerCharacterList, func返回true跳出遍历
 function PlayerManager:Foreach(func)
 
     if func == nil then return end
 
-    if self.mPlayerCharacterDic then
-        for k,v in pairs(self.mPlayerCharacterDic) do
+    if self.mPlayerCharacterList then
+        for i,v in ipairs(self.mPlayerCharacterList) do
            
             if func(v) then
                 return 
