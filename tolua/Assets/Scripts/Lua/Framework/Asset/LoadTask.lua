@@ -11,6 +11,9 @@ LoadTaskState =
     Fail    = 3,
     Cancel  = 4,   
 }
+
+local LoadFromFile  = AssetBundle.LoadFromFile
+
 --资源加载任务类
 LoadTask = Class()
 
@@ -28,7 +31,7 @@ function LoadTask:Load()
     
     local  tmpFullPath = AssetManager.GetAssetBundlePath() .. self.mAssetBundleName
     if File.Exists(tmpFullPath) then
-        self.mAssetBundle = AssetBundle.LoadFromFile(tmpFullPath)
+        self.mAssetBundle = LoadFromFile(tmpFullPath)
         
         if self.mAssetBundle ~= nil then
             self.mState = LoadTaskState.Success --加载完成

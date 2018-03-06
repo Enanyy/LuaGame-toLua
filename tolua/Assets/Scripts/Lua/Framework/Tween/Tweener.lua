@@ -26,7 +26,13 @@ TweenerDirection =
 	Forward     = 1,
 }
 
-
+--缓存引用，避免不停的去查表
+local PI            = 3.14159274
+local Sign          = Mathf.Sign
+local abs           = math.abs
+local floor         = math.floor
+local Clamp01       = Mathf.Clamp01
+local sin           = math.sin 
 
 function Tweener:ctor()
     self.method = TweenerMethod.Linear
@@ -57,10 +63,10 @@ function Tweener:GetAmountPerDelta()
     else
         if self.mDuration ~= self.duration then
             self.mDuration = self.duration
-            local sign = Mathf.Sign( self.mAmountPerDelta )
+            local sign = Sign( self.mAmountPerDelta )
             local delta = 1000 
             if self.duration > 0 then delta = 1.0 /self.duration end
-            self.mAmountPerDelta = math.abs( delta ) * sign
+            self.mAmountPerDelta = abs( delta ) * sign
         end
     end
 
@@ -85,16 +91,16 @@ function Tweener:Update()
     if self.style == TweenerStyle.Loop then
 
         if self.factor > 1 then
-            self.factor = self.factor - math.floor( self.factor )
+            self.factor = self.factor - floor( self.factor )
         end
     elseif self.style == TweenerStyle.PingPong then
 
         if self.factor > 1 then
-            self.factor = 1 - (self.factor - math.floor( self.factor ))
+            self.factor = 1 - (self.factor - floor( self.factor ))
             self.mAmountPerDelta = -self.mAmountPerDelta
         elseif self.factor < 0 then
             self.factor =  -self.factor
-            self.factor = self.factor - math.floor( self.factor )
+            self.factor = self.factor - floor( self.factor )
             self.mAmountPerDelta = -self.mAmountPerDelta            
         end
 
@@ -103,7 +109,7 @@ function Tweener:Update()
 
     if self.style == TweenerStyle.Once and (self.duration == 0 or self.factor > 1 or self.factor < 0) then
 
-        self.factor = Mathf.Clamp01(self.factor)
+        self.factor = Clamp01(self.factor)
 
         self:Sample(self.factor, true)
 
@@ -120,29 +126,27 @@ end
 
 function Tweener:Sample(factor, isFinished)
 
-    factor = Mathf.Clamp01(factor)
-
-    local PI = 3.14159274
+    factor = Clamp01(factor)
 
     if self.method == TweenerMethod.EaseIn then
-        factor = 1 - math.sin( 0.5 * PI * (1 - factor))
+        factor = 1 - sin( 0.5 * PI * (1 - factor))
         if self.steeperCurves then
             factor = factor * factor
         end
     elseif self.method == TweenerMethod.EaseOut then
-        factor = math.sin( 0.5 * PI * factor)
+        factor = sin( 0.5 * PI * factor)
         if self.steeperCurves then
             factor = 1 - factor
             factor = 1 - factor * factor
         end
     elseif self.method == TweenerMethod.EaseInOut then
         local PI2 = PI * 2
-        factor = factor - math.sin( factor * PI2) / PI2
+        factor = factor - sin( factor * PI2) / PI2
 
         if self.steeperCurves then
             factor = factor * 2 - 1
-            local sign = Mathf.Sign(factor) 
-            factor = 1 - math.abs(factor)
+            local sign = Sign(factor) 
+            factor = 1 - abs(factor)
             factor = 1 - factor * factor
             factor = sign * factor * 0.5 + 0.5
         end
@@ -183,7 +187,7 @@ end
 
 function Tweener:Play(forward)
    
-    self.mAmountPerDelta = math.abs( self:GetAmountPerDelta() )
+    self.mAmountPerDelta = abs( self:GetAmountPerDelta() )
 
     if forward == false then
         self.mAmountPerDelta = -self.mAmountPerDelta

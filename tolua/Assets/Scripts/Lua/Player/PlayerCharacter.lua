@@ -144,6 +144,10 @@ function PlayerCharacter:MoveToPoint(varTargetPosition, varSuccessAction,varFail
         self.mTargetPosition    = varTargetPosition
 
         self:PlaySkill (PlayerSkillType.Run)
+    else
+        if varSuccessAction then
+            varSuccessAction()
+        end
     end
 
 end

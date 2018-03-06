@@ -47,51 +47,7 @@ function WindowMove.Begin(window, pos, duration, active, callback)
     window.tween:PlayForward()
 
 
-    --[[ 
-    local tween = window.transform:GetComponent(typeof(TweenPosition))
-    if tween == nil then
-        tween = window.gameObject:AddComponent(typeof(TweenPosition))
-    end
-    tween.onFinished:Clear()
-
-    if tween.tweenFactor > 0 then
-        tween.value = tween.value
-    else
-        if active then
-            tween.value = pos
-        else
-            tween.value = Vector3.zero
-        end
-    end
-
-    tween.from = tween.value
-    if active then
-        tween.to = Vector3.zero
-        if tween.value == pos then
-            tween.duration = duration
-        else
-            tween.duration = (pos - tween.value).magnitude * duration / pos.magnitude 
-        end
-        if callback then
-            callback()
-        end
-    else
-        tween.to = pos
-        if tween.value == Vector3.zero then
-            tween.duration = duration
-        else
-            tween.duration = tween.value.magnitude * duration / pos.magnitude
-        end
-        tween.onFinished:Add(EventDelegate.New(function()
-            if callback then
-                callback()
-            end
-        end))
-    end
-    tween:ResetToBeginning()
-    tween:PlayForward()
-
-    --]]
+   
 end
 
 WindowPivot = {
