@@ -122,35 +122,24 @@ function PlayerInput:Update()
     ---切换控制目标
     if  Input.GetKeyDown (KeyCode.LeftShift) then 
         
-        if self.mLastGuid == nil then
-            self.mLastGuid = self.mPlayerCharacter.mGuid
+        local tmpGuid = self.mPlayerCharacter.mGuid + 1
+        if tmpGuid >= PlayerManager:Count() then
+            tmpGuid = 0
         end
 
-        local tmpLastPlayerCharacter
+    
+        local tmpPlayerCharacter = PlayerManager:GetPlayerCharacter(tmpGuid)
 
-        PlayerManager:Foreach(function (varPlayerCharacter) 
-            
-            if varPlayerCharacter and varPlayerCharacter.mGuid ~= self.mPlayerCharacter.mGuid then
-
-                tmpLastPlayerCharacter = varPlayerCharacter
-                if tmpLastPlayerCharacter.mGuid ~= self.mLastGuid then
-                    return true
-                end
-              
-            end
-
-        end)
-
-        if tmpLastPlayerCharacter then
-            self.mLastGuid = self.mPlayerCharacter.mGuid
-
-            self.mPlayerCharacter = tmpLastPlayerCharacter 
+        if tmpPlayerCharacter then
+            self.mPlayerCharacter = tmpPlayerCharacter 
 
             local tmpSmoothFollow = PlayerManager.mSmoothFollow
             if tmpSmoothFollow then
                 tmpSmoothFollow.target = self.mPlayerCharacter.transform
             end
         end
+
+       
     end
 
 end

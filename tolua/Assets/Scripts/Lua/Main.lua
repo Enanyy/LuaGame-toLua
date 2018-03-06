@@ -84,51 +84,43 @@ function Main:OnLevelWasLoaded(level)
 
 	WindowManager:Open(UI_Main, "UI_Main")
 
-	local tmpPlayerInfo = PlayerInfo.new(1)
-	tmpPlayerInfo.guid = 0
-	tmpPlayerInfo.position = Vector3.New(4,0, 8)
-	tmpPlayerInfo.direction = Vector3.New(0, -120, 0)
-	tmpPlayerInfo.baseSpeed = 6
-	tmpPlayerInfo.moveSpeedAddition = 0.3
-	tmpPlayerInfo.character = "Ahri"
-	tmpPlayerInfo.skin = "Ahri_shadowfox"
-	tmpPlayerInfo.configure = Role_Configure_Ahri
+	self:CreatePlayer()
+
+end
 
 
-	PlayerManager:CreatePlayerCharacter(tmpPlayerInfo.guid, tmpPlayerInfo, function (varPlayerCharacter) 
-	
-	
-	end)
+function Main:CreatePlayer()
 
-	local tmpPlayerInfo1 = PlayerInfo.new(1)
-	tmpPlayerInfo1.guid = 1
-	tmpPlayerInfo1.position = Vector3.New(5,0, 6)
-	tmpPlayerInfo1.direction = Vector3.New(0, 90, 0)
-	tmpPlayerInfo1.baseSpeed = 6
-	tmpPlayerInfo1.moveSpeedAddition = 0.0
-	tmpPlayerInfo1.character = "Ahri"
-	tmpPlayerInfo1.skin = "Ahri"
-	tmpPlayerInfo1.configure = Role_Configure_Ahri
+	local mode = 0
+	for i = 0, 50 do
+		
+		local tmpPlayerInfo = PlayerInfo.new(i)
+		tmpPlayerInfo.guid = i
+		tmpPlayerInfo.position = Vector3.New(4+0.2*i,0, 8+0.2*i)
+		tmpPlayerInfo.direction = Vector3.New(0, -120, 0)
+		tmpPlayerInfo.baseSpeed = 6
+		tmpPlayerInfo.moveSpeedAddition = 0.3
+		tmpPlayerInfo.character = "Ahri"
 
-	PlayerManager:CreatePlayerCharacter(tmpPlayerInfo1.guid, tmpPlayerInfo1, function (varPlayerCharacter) 
-	
-	
-	end)
+		mode = i % 3
+		if mode == 0 then
+			tmpPlayerInfo.skin = "Ahri_shadowfox"
+		elseif mode == 1 then
+			tmpPlayerInfo.skin = "Ahri"
+		else
+			tmpPlayerInfo.skin = "Ahri_hanbok"
+		end
 
-	local tmpPlayerInfo2 = PlayerInfo.new(1)
-	tmpPlayerInfo2.guid = 2
-	tmpPlayerInfo2.position = Vector3.New(5,0, 8)
-	tmpPlayerInfo2.direction = Vector3.New(0, 40, 0)
-	tmpPlayerInfo2.baseSpeed = 6
-	tmpPlayerInfo2.moveSpeedAddition = 0.0
-	tmpPlayerInfo2.character = "Ahri"
-	tmpPlayerInfo2.skin = "Ahri_hanbok"
-	tmpPlayerInfo2.configure = Role_Configure_Ahri
+		tmpPlayerInfo.configure = Role_Configure_Ahri
+	
+	
+		PlayerManager:CreatePlayerCharacter(tmpPlayerInfo.guid, tmpPlayerInfo, function (varPlayerCharacter) 
+		
+		
+		end)
+		
+	end
 
-	PlayerManager:CreatePlayerCharacter(tmpPlayerInfo2.guid, tmpPlayerInfo2, function (varPlayerCharacter) 
-	
-	
-	end)
 end
 
 function Main:OnApplicationQuit()

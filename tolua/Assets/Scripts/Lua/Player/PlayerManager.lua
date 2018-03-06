@@ -92,6 +92,7 @@ function  PlayerManager:CreatePlayerCharacter(varGuid,  varPlayerInfo, varCallba
 
         table.insert( self.mPlayerCharacterList, tmpPlayerCharacter )
        
+        print(self:Count())
        
 end
 
@@ -178,4 +179,13 @@ function PlayerManager:Foreach(func)
             end
         end
     end
+end
+
+function PlayerManager:Count()
+    
+    if self.mPlayerCharacterList then
+        return table.getn(self.mPlayerCharacterList)
+    end
+
+    return 0
 end
