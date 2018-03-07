@@ -14,16 +14,13 @@ function this:ctor(behaviour)
     self.target = nil
     self.distance = 6.0
 	self.height = 8.0
-	self.damping = 1.0
-	self.smoothRotation = false
-	self.followBehind = false
-	self.rotationDamping = 10.0
-    self.smoothPosition = false
+
     self.onLateUpdate = true
 
     self.rotation = Vector3.New(67,0,0)
 	
 	self.wantedPosition = Vector3.zero
+	self.targetPosition = Vector3.zero
 	
     self.update = function ()
         self:Update()
@@ -62,34 +59,17 @@ function this:FollowTarget()
 			return
     end
 
-
-	if self.followBehind then
-
-		self.wantedPosition = self.target:TransformPoint (0, self.height, -self.distance)
+		
+	local x, y, z = Helper.GetPosition(self.target, nil, nil, nil)
+	self.targetPosition:Set(x, y, z)
+		
+	self.wantedPosition = self.targetPosition + Vector3.forward * self.distance * (-1)
+	self.wantedPosition.y =self.height
+    
+	Helper.SetPosition(self.gameObject,self.wantedPosition.x, self.wantedPosition.y, self.wantedPosition.z)
 	
-	else 
-		--wantedPosition = target.TransformPoint (0, height, distance);
-		self.wantedPosition = self.target.position + Vector3.forward * self.distance * (-1)
-		self.wantedPosition.y =self.height
-    end
-    
-	if self.smoothPosition then
-
-		self.transform.position =  Lerp (self.transform.position, self.wantedPosition, Time.deltaTime * self.damping)
-
-	else 
-		self.transform.position = self.wantedPosition
-	end
-
-	if self.smoothRotation then
-		self.wantedRotation = LookRotation (self.target.position - self.transform.position, self.target.up)
-		self.transform.rotation = Slerp (self.transform.rotation, self.wantedRotation, Time.deltaTime * self.rotationDamping)
-    
-     else 
-		--transform.LookAt (target, target.up)
-		self.transform.rotation = Euler(self.rotation.x, self.rotation.y, self.rotation.z)
-
-	end
+	Helper.SetRotation(self.gameObject, self.rotation.x, self.rotation.y, self.rotation.z)
+	
 end
 
 function this:OnDestroy()

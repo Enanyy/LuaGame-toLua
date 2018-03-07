@@ -2,6 +2,8 @@ require("Class")
 require("BehaviourBase")
 require("UnityClass")
 
+local Instantiate = GameObject.Instantiate
+
 FashionBody = Class(BehaviourBase)
 
 function FashionBody:ctor()
@@ -24,13 +26,15 @@ function FashionBody:Start()
     
         if varObject then
 
-            local go = GameObject.Instantiate(varObject)
-			go:SetActive(true)
-            go.transform:SetParent(self.transform)
+            local go = Instantiate(varObject)
+            go:SetActive(true)
             NGUITools.SetLayer(go, self.gameObject.layer)
-			go.transform.localPosition = Vector3.zero
-			go.transform.localRotation = Quaternion.identity
-            go.transform.localScale = Vector3.one
+            
+            Helper.SetParent(go, self.transform)   
+            Helper.SetLocalPosition(go, 0, 0, 0)
+            Helper.SetLocalRotation(go, 0, 0 , 0, 0)
+            Helper.SetScale(go, 1, 1, 1)
+
             local collider = go:AddComponent(typeof(CapsuleCollider))
             collider.isTrigger = true
             collider.height = tmpPlayerInfo.height

@@ -32,12 +32,12 @@ function FashionWeapon:Start()
 
             local go = GameObject.Instantiate(varObject)
 			go:SetActive(true)
-            go.transform:SetParent(tmpWeaponBone)
+          
+            Helper.SetParent(go, tmpWeaponBone)   
+            Helper.SetLocalPosition(go, 0, 0, 0)
+            Helper.SetLocalRotation(go, 0, 0 , 0, 0)
+            Helper.SetScale(go, 0.1, 0.1, 0.1)
             
-            NGUITools.SetLayer(go, self.gameObject.layer)
-			go.transform.localPosition = Vector3.zero
-			go.transform.localRotation = Quaternion.identity
-		
             self.mWeapon = go
         
         else

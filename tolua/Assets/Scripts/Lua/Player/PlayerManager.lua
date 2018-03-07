@@ -35,12 +35,11 @@ function  PlayerManager:CreatePlayerCharacter(varGuid,  varPlayerInfo, varCallba
         local layer = UnityLayer.Player
     
 		local go =  GameObject (tostring(varGuid))
-        NGUITools.SetLayer(go, layer)
-
-		go.transform:SetParent (self.transform)
-		go.transform.localScale = Vector3.one
-		go.transform.localPosition = Vector3.zero
-		go.transform.localRotation = Quaternion.identity
+      
+        Helper.SetParent(go, self.transform)   
+        Helper.SetLocalPosition(go, 0, 0, 0)
+        Helper.SetLocalRotation(go, 0, 0 , 0, 0)
+        Helper.SetScale(go, 1, 1, 1)
 
         local behaviour = go:AddComponent(typeof(LuaBehaviour))
         local tmpPlayerCharacter = PlayerCharacter.new()
@@ -58,8 +57,8 @@ function  PlayerManager:CreatePlayerCharacter(varGuid,  varPlayerInfo, varCallba
                 self.mCamera.depth = 0
 
                 self.mSmoothFollow = SmoothFollow.new()
-                self.mSmoothFollow.target = tmpPlayerCharacter.transform
-                self.mSmoothFollow.followBehind = false
+                self.mSmoothFollow.target = tmpPlayerCharacter.gameObject
+               
                 self.mSmoothFollow.distance =3
                 self.mSmoothFollow.height = 12
                 self.mSmoothFollow.rotation = Vector3.New(76,0,0)
@@ -86,9 +85,11 @@ function  PlayerManager:CreatePlayerCharacter(varGuid,  varPlayerInfo, varCallba
 
         local tmpFlag, tmpHit = NavMesh.SamplePosition(varPlayerInfo.position, nil, 10, NavMesh.AllAreas)
         if tmpFlag then
-            tmpPlayerCharacter.transform.position = tmpHit.position
+            
+            Helper.SetPosition(go,tmpHit.position.x, tmpHit.position.y, tmpHit.position.z)
         end
-        tmpPlayerCharacter.transform.rotation = Quaternion.Euler(varPlayerInfo.direction.x, varPlayerInfo.direction.y, varPlayerInfo.direction.z)
+     
+        Helper.SetRotation(go, varPlayerInfo.direction.x, varPlayerInfo.direction.y, varPlayerInfo.direction.z)
 
         table.insert( self.mPlayerCharacterList, tmpPlayerCharacter )
        

@@ -92,7 +92,7 @@ end
 function Main:CreatePlayer()
 
 	local mode = 0
-	for i = 0, 50 do
+	for i = 0, 2 do
 		
 		local tmpPlayerInfo = PlayerInfo.new(i)
 		tmpPlayerInfo.guid = i

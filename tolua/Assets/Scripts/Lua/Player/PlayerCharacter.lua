@@ -41,16 +41,17 @@ end
 
 function PlayerCharacter:CreateFashionBody()
 
-    local tmpBody = GameObject ("FashionBody")
-	tmpBody.transform:SetParent (self.transform)
-    NGUITools.SetLayer(tmpBody, self.gameObject.layer)
+    local go = GameObject ("FashionBody")
+	
+    NGUITools.SetLayer(go, self.gameObject.layer)
 
-	tmpBody.transform.localPosition = Vector3.zero
-	tmpBody.transform.localScale = Vector3.one
-	tmpBody.transform.transform.localRotation = Quaternion.identity
+    Helper.SetParent(go, self.transform)   
+    Helper.SetLocalPosition(go, 0, 0, 0)
+    Helper.SetLocalRotation(go, 0, 0 , 0, 0)
+    Helper.SetScale(go, 1, 1, 1)
 
     self.mFashionBody = FashionBody.new()
-    local behaviour = tmpBody:AddComponent (typeof(LuaBehaviour))
+    local behaviour = go:AddComponent (typeof(LuaBehaviour))
     behaviour:Init(self.mFashionBody)
     self.mFashionBody:Init(behaviour)
 
@@ -71,16 +72,17 @@ end
 
 function PlayerCharacter:CreateFashionWeapon()
 
-    local tmpWeapnon = GameObject ("FashionWeapnon")
-	tmpWeapnon.transform:SetParent (self.transform)
-    NGUITools.SetLayer(tmpWeapnon, self.gameObject.layer)
+    local go = GameObject ("FashionWeapnon")
 
-	tmpWeapnon.transform.localPosition = Vector3.zero
-	tmpWeapnon.transform.localScale = Vector3.one
-	tmpWeapnon.transform.transform.localRotation = Quaternion.identity
+    NGUITools.SetLayer(go, self.gameObject.layer)
+
+    Helper.SetParent(go, self.transform)   
+    Helper.SetLocalPosition(go, 0, 0, 0)
+    Helper.SetLocalRotation(go, 0, 0 , 0, 0)
+    Helper.SetScale(go, 1, 1, 1)
 
     self.mFashionWeapon = FashionWeapon.new()
-    local behaviour = tmpWeapnon:AddComponent (typeof(LuaBehaviour))
+    local behaviour = go:AddComponent (typeof(LuaBehaviour))
     behaviour:Init(self.mFashionWeapon)
     self.mFashionWeapon:Init(behaviour)
 

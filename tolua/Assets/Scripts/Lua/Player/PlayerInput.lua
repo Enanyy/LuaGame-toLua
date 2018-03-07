@@ -135,7 +135,7 @@ function PlayerInput:Update()
 
             local tmpSmoothFollow = PlayerManager.mSmoothFollow
             if tmpSmoothFollow then
-                tmpSmoothFollow.target = self.mPlayerCharacter.transform
+                tmpSmoothFollow.target = self.mPlayerCharacter.gameObject
             end
         end
 
