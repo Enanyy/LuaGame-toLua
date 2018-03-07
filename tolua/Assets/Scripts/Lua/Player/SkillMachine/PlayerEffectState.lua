@@ -27,6 +27,7 @@ function PlayerEffectState:InitWithConfig(configure)
             plugin:SetPlayerSkillState(self.mPlayerSkillState)
             plugin:SetStateMachine(self.machine)
             plugin:SetPlayerEffectState(self)
+            plugin:SetPlayerEffectMachine(self.machine.mPlayerCharacter.mEffectMachine)
             --根据配置初始化
             plugin:InitWithConfig(v)
             

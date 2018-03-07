@@ -230,5 +230,4 @@ public static class Helper  {
             go.SetActive(active == 1);
         }
     }
-
 }

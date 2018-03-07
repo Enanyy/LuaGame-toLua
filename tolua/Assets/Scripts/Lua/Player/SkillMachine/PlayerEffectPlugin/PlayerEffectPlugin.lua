@@ -13,6 +13,12 @@ function PlayerEffectPlugin:SetPlayerEffectState(effectState)
 
 end
 
+function PlayerEffectPlugin:SetPlayerEffectMachine(effectMachine)
+    
+    self.mEffectMachine = effectMachine
+
+end
+
 --特效开始显示
 function PlayerEffectPlugin:OnBegin()
 
