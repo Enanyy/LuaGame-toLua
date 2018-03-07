@@ -1,5 +1,7 @@
 require("Tweener")
 
+local abs = math.abs
+
 WindowMove = {}
 function WindowMove.Begin(window, pos, duration, active, callback)
 
@@ -24,7 +26,7 @@ function WindowMove.Begin(window, pos, duration, active, callback)
         else
             from = pos
         end
-        window.tween.duration = math.abs( (to - from).magnitude * duration / (to - pos).magnitude )
+        window.tween.duration = abs( (to - from).magnitude * duration / (to - pos).magnitude )
         if callback then
             callback()
         end
@@ -35,7 +37,7 @@ function WindowMove.Begin(window, pos, duration, active, callback)
         else
             from = Vector3.zero
         end
-        window.tween.duration =  math.abs( (to - from).magnitude * duration / to.magnitude )
+        window.tween.duration =  abs( (to - from).magnitude * duration / to.magnitude )
         window.tween.onFinished = callback
         
     end

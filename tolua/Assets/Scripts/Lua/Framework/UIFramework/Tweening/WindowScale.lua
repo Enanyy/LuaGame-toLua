@@ -1,4 +1,6 @@
 
+local abs = math.abs
+
 WindowScale = {}
 function WindowScale.Begin(window, duration, active, callback)
 
@@ -23,7 +25,7 @@ function WindowScale.Begin(window, duration, active, callback)
         else
             from = Vector3.zero
         end
-        window.tween.duration = math.abs( (to - from).magnitude * duration / Vector3.one.magnitude )
+        window.tween.duration = abs( (to - from).magnitude * duration / Vector3.one.magnitude )
         if callback then
             callback()
         end
@@ -34,7 +36,7 @@ function WindowScale.Begin(window, duration, active, callback)
         else
             from = Vector3.one
         end
-        window.tween.duration =  math.abs( (to - from).magnitude * duration / Vector3.one.magnitude )
+        window.tween.duration =  abs( (to - from).magnitude * duration / Vector3.one.magnitude )
         window.tween.onFinished = callback
         
     end

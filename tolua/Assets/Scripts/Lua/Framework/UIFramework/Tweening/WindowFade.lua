@@ -1,4 +1,6 @@
 
+local abs = math.abs
+
 WindowFade = {}
 function WindowFade.Begin(window, duration, active, callback)
 
@@ -23,7 +25,7 @@ function WindowFade.Begin(window, duration, active, callback)
         else
             from = 0
         end
-        window.tween.duration = math.abs( (to - from) * duration / 1.0 )
+        window.tween.duration = abs( (to - from) * duration / 1.0 )
         if callback then
             callback()
         end
@@ -34,7 +36,7 @@ function WindowFade.Begin(window, duration, active, callback)
         else
             from = 1
         end
-        window.tween.duration =  math.abs( (to - from) * duration / 1.0 )
+        window.tween.duration =  abs( (to - from) * duration / 1.0 )
         window.tween.onFinished = callback
         
     end

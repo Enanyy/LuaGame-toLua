@@ -5,6 +5,11 @@ require("UnityClass")
 SmoothFollow = Class(BehaviourBase)
 local this = SmoothFollow
 
+local LookRotation 	= Quaternion.LookRotation
+local Slerp 		= Quaternion.Slerp
+local Lerp			= Vector3.Lerp
+local Euler			= Quaternion.Euler
+
 function this:ctor(behaviour)
     self.target = nil
     self.distance = 6.0
@@ -58,7 +63,7 @@ function this:FollowTarget()
 	local wantedPosition
 	if self.followBehind then
 
-		wantedPosition = self.target.TransformPoint (0, self.height, -self.distance)
+		wantedPosition = self.target:TransformPoint (0, self.height, -self.distance)
 	
 	else 
 		--wantedPosition = target.TransformPoint (0, height, distance);
@@ -68,19 +73,19 @@ function this:FollowTarget()
     
 	if self.smoothPosition then
 
-		self.transform.position =  Vector3.Lerp (self.transform.position, wantedPosition, Time.deltaTime * self.damping)
+		self.transform.position =  Lerp (self.transform.position, wantedPosition, Time.deltaTime * self.damping)
 
 	else 
 		self.transform.position = wantedPosition
 	end
 
 	if self.smoothRotation then
-		local wantedRotation = Quaternion.LookRotation (self.target.position - self.transform.position, self.target.up)
-		self.transform.rotation = Quaternion.Slerp (self.transform.rotation, wantedRotation, Time.deltaTime * self.rotationDamping)
+		local wantedRotation = LookRotation (self.target.position - self.transform.position, self.target.up)
+		self.transform.rotation = Slerp (self.transform.rotation, wantedRotation, Time.deltaTime * self.rotationDamping)
     
      else 
 		--transform.LookAt (target, target.up)
-		self.transform.rotation = Quaternion.Euler(self.rotation.x, self.rotation.y, self.rotation.z)
+		self.transform.rotation = Euler(self.rotation.x, self.rotation.y, self.rotation.z)
 
 	end
 end
