@@ -22,7 +22,9 @@ function this:ctor(behaviour)
     self.onLateUpdate = true
 
     self.rotation = Vector3.New(67,0,0)
-    
+	
+	self.wantedPosition = Vector3.zero
+	
     self.update = function ()
         self:Update()
     end
@@ -60,28 +62,28 @@ function this:FollowTarget()
 			return
     end
 
-	local wantedPosition
+
 	if self.followBehind then
 
-		wantedPosition = self.target:TransformPoint (0, self.height, -self.distance)
+		self.wantedPosition = self.target:TransformPoint (0, self.height, -self.distance)
 	
 	else 
 		--wantedPosition = target.TransformPoint (0, height, distance);
-		wantedPosition = self.target.position + Vector3.forward * self.distance * (-1)
-		wantedPosition.y =self.height
+		self.wantedPosition = self.target.position + Vector3.forward * self.distance * (-1)
+		self.wantedPosition.y =self.height
     end
     
 	if self.smoothPosition then
 
-		self.transform.position =  Lerp (self.transform.position, wantedPosition, Time.deltaTime * self.damping)
+		self.transform.position =  Lerp (self.transform.position, self.wantedPosition, Time.deltaTime * self.damping)
 
 	else 
-		self.transform.position = wantedPosition
+		self.transform.position = self.wantedPosition
 	end
 
 	if self.smoothRotation then
-		local wantedRotation = LookRotation (self.target.position - self.transform.position, self.target.up)
-		self.transform.rotation = Slerp (self.transform.rotation, wantedRotation, Time.deltaTime * self.rotationDamping)
+		self.wantedRotation = LookRotation (self.target.position - self.transform.position, self.target.up)
+		self.transform.rotation = Slerp (self.transform.rotation, self.wantedRotation, Time.deltaTime * self.rotationDamping)
     
      else 
 		--transform.LookAt (target, target.up)
