@@ -5,6 +5,8 @@ require("UnityClass")
 
 PlayerSkillMovePlugin = Class(PlayerSkillPlugin)
 
+local MAX_PATHPENDGING_TIME = 1
+
 function PlayerSkillMovePlugin:ctor(name)
     self.STOPING_DISTANCE = 0.01
     self.mStopDistance = self.STOPING_DISTANCE
@@ -13,7 +15,7 @@ function PlayerSkillMovePlugin:ctor(name)
     self.mBeginMove =false
     self.mFindPath =false
 
-    self.MAX_PATHPENDGING_TIME = 1
+    
     self.mPathPendingTime = 0  --mNavMeshAgent计算路径的时长，超过1s寻路失败
 end 
 
@@ -97,7 +99,7 @@ function PlayerSkillMovePlugin:OnExecute ()
 
                 self.mPathPendingTime = self.mPathPendingTime + Time.deltaTime
                 --1s内都没计算出来就寻路失败吧
-                if self.mPathPendingTime < self.MAX_PATHPENDGING_TIME then
+                if self.mPathPendingTime < MAX_PATHPENDGING_TIME then
                     --是在计算过程中的路径，但尚未准备好
                     return
                 end

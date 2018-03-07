@@ -68,6 +68,7 @@ public class BlurEffect : MonoBehaviour
     }
 
     RenderTexture renderBuffer;
+    RenderTexture tempBuffer;
 
 
     void OnRenderImage(RenderTexture sourceTexture, RenderTexture destTexture)
@@ -108,7 +109,7 @@ public class BlurEffect : MonoBehaviour
 
                 // 【2.2】处理Shader的通道1，垂直方向模糊处理 || Pass1,for vertical blur
                 // 定义一个临时渲染的缓存tempBuffer
-                RenderTexture tempBuffer = RenderTexture.GetTemporary(renderWidth, renderHeight, 0, sourceTexture.format);
+                tempBuffer = RenderTexture.GetTemporary(renderWidth, renderHeight, 0, sourceTexture.format);
                 // 拷贝renderBuffer中的渲染数据到tempBuffer,并仅绘制指定的pass1的纹理数据
                 Graphics.Blit(renderBuffer, tempBuffer, material, 1);
                 //  清空renderBuffer
@@ -182,7 +183,14 @@ public class BlurEffect : MonoBehaviour
 
         if(renderBuffer)
         {
+            renderBuffer.Release();
+
             RenderTexture.ReleaseTemporary(renderBuffer);
+        }
+        if (tempBuffer)
+        {
+            tempBuffer.Release();
+            RenderTexture.ReleaseTemporary(tempBuffer);
         }
     }
 
