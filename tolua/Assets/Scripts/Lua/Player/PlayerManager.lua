@@ -35,6 +35,7 @@ function  PlayerManager:CreatePlayerCharacter(varGuid,  varPlayerInfo, varCallba
         local layer = UnityLayer.Player
     
 		local go =  GameObject (tostring(varGuid))
+        NGUITools.SetLayer(go, layer)
       
         Helper.SetParent(go, self.transform)   
         Helper.SetLocalPosition(go, 0, 0, 0)

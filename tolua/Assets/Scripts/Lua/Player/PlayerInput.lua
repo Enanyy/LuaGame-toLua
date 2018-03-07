@@ -1,5 +1,6 @@
 require("Class")
 require("UnityLayer")
+
 PlayerInput = Class()
 
 function PlayerInput:ctor(varPlayerCharacter, varCamera)
@@ -54,6 +55,7 @@ function PlayerInput:Update()
             
             if tmpFlag then
                 local layer = tmpHit.collider.gameObject.layer 
+                print(layer)
                 if  layer == UnityLayer.Player or 
                     layer == UnityLayer.NPC or 
                     layer == UnityLayer.Monster

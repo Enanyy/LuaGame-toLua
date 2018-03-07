@@ -125,8 +125,8 @@ function Ahri_PlayerEffectMoveAndBackPlugin:OnBegin()
         end
         self.mTween.onUpdate = function (factor, isFinished)
 
-            self.mGo.transform.position = self.mOriginalPosition * (1-factor) + self.mDestination * factor
-
+            local position = self.mOriginalPosition * (1-factor) + self.mDestination * factor
+            Helper.SetPosition(self.mGo, position.x, position.y, position.z)
         end
     end
     self.mTween:ResetToBeginning()
@@ -143,7 +143,8 @@ function Ahri_PlayerEffectMoveAndBackPlugin:OnExecute()
 
         if direction.magnitude > 0.2 then
 
-            self.mGo.transform.position = self.mGo.transform.position + direction.normalized * self.mSpeed * Time.deltaTime
+            local position = self.mGo.transform.position + direction.normalized * self.mSpeed * Time.deltaTime
+            Helper.SetPosition(self.mGo, position.x, position.y, position.z)
         else
 
             self.mDone = true

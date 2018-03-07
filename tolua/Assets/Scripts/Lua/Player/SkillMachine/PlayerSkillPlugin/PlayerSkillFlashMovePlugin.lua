@@ -1,12 +1,20 @@
 require("PlayerSkillPlugin")
 
+local SamplePosition = NavMesh.SamplePosition
+
 PlayerSkillFlashMovePlugin = Class(PlayerSkillPlugin)
+
 
 function PlayerSkillFlashMovePlugin:ctor(name)
 
     self.mDistance = 5
     self.mDuration = 0.1
 
+    self.mGo = nil
+
+    self.mOriginalPosition = Vector3.zero
+    self.mTargetPosition = Vector3.zero
+    self.mPosition = Vector3.zero
 end
 
 function PlayerSkillFlashMovePlugin:InitWithConfig(configure)
@@ -20,11 +28,20 @@ end
 
 function PlayerSkillFlashMovePlugin:OnEnter()
 
-    self.mOriginalPosition  = self.machine.mPlayerCharacter.transform.position
+    if self.mGo ==nil then
+        self.mGo = self.machine.mPlayerCharacter.gameObject
+    end
+
+    local x, y, z = Helper.GetPosition(self.mGo, nil, nil, nil)
+
+    self.mOriginalPosition:Set(x, y, z)
+
     if self.mNavMeshAgent == nil then
 
-        self.mNavMeshAgent = self.machine.mPlayerCharacter.gameObject:GetComponent(typeof(NavMeshAgent))
+        self.mNavMeshAgent = self.mGo:GetComponent(typeof(NavMeshAgent))
     end
+
+   
 
     if self.mNavMeshAgent then
         self.mNavMeshAgent.enabled = false
@@ -43,11 +60,13 @@ function PlayerSkillFlashMovePlugin:OnExecute()
         --self.mTargetPosition = self:CheckFlashPosition(self.mTargetPosition)
 
         if self.mPlayerSkillState.mRunTime <= self.mDuration then
+
             local factor = self.mPlayerSkillState.mRunTime * 1.0 / self.mDuration
-            self.machine.mPlayerCharacter.transform.position = self.mOriginalPosition * (1 - factor) + self.mTargetPosition * factor
+            self.mPosition = self.mOriginalPosition * (1 - factor) + self.mTargetPosition * factor
+            Helper.SetPosition(self.mGo, self.mPosition.x,self.mPosition.y,self.mPosition.z)
 
         else
-            self.machine.mPlayerCharacter.transform.position = self.mTargetPosition
+            Helper.SetPosition(self.mGo, self.mTargetPosition.x,self.mTargetPosition.y,self.mTargetPosition.z)
         end
     end
 
@@ -64,7 +83,7 @@ end
 
 function PlayerSkillFlashMovePlugin:CheckFlashPosition(targetPosition)
 
-    local tmpFlag, tmpHit = NavMesh.SamplePosition(targetPosition, nil, 0.1, NavMesh.AllAreas)
+    local tmpFlag, tmpHit = SamplePosition(targetPosition, nil, 0.1, NavMesh.AllAreas)
     if tmpFlag then
 
         print(1)
@@ -74,7 +93,7 @@ function PlayerSkillFlashMovePlugin:CheckFlashPosition(targetPosition)
 
         local tmpPosition = targetPosition + self.machine.mPlayerCharacter.transform.forward* self.mDistance * 0.5
 
-        tmpFlag, tmpHit = NavMesh.SamplePosition(targetPosition, nil, 0.1, NavMesh.AllAreas)
+        tmpFlag, tmpHit = SamplePosition(targetPosition, nil, 0.1, NavMesh.AllAreas)
 
         if tmpFlag then
 

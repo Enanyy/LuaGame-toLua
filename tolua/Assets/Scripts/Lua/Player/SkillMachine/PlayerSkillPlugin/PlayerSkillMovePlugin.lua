@@ -6,10 +6,11 @@ require("UnityClass")
 PlayerSkillMovePlugin = Class(PlayerSkillPlugin)
 
 local MAX_PATHPENDGING_TIME = 1
+local STOPING_DISTANCE = 0.01
 
 function PlayerSkillMovePlugin:ctor(name)
-    self.STOPING_DISTANCE = 0.01
-    self.mStopDistance = self.STOPING_DISTANCE
+   
+    self.mStopDistance = STOPING_DISTANCE
     self.mRemainingDistance = 0
 
     self.mBeginMove =false
@@ -130,7 +131,7 @@ function PlayerSkillMovePlugin:OnExecute ()
             tmpTargetPosition.y = tmpPlayerCharacter.transform.position.y
             local tmpRemainingDistance = Vector3.Distance (tmpPlayerCharacter.transform.position, tmpTargetPosition)
 
-            if tmpRemainingDistance <= self.mStopDistance or ( (tmpRemainingDistance - self.mRemainingDistance)  < self.STOPING_DISTANCE and self.mNavMeshAgent.velocity == Vector3.zero) then
+            if tmpRemainingDistance <= self.mStopDistance or ( (tmpRemainingDistance - self.mRemainingDistance)  < STOPING_DISTANCE and self.mNavMeshAgent.velocity == Vector3.zero) then
 
                 tmpPlayerCharacter:PlaySkill(PlayerSkillType.Idle)
 
@@ -160,14 +161,14 @@ function PlayerSkillMovePlugin:OnExecute ()
         if tmpRemainingDistance <= self.mStopDistance
             or self.mNavMeshAgent.remainingDistance <= self.mStopDistance
             or tmpPlayerCharacter.targetPosition == Vector3.zero
-            or ((tmpRemainingDistance - self.mRemainingDistance)  < self.STOPING_DISTANCE and self.mNavMeshAgent.velocity == Vector3.zero)
+            or ((tmpRemainingDistance - self.mRemainingDistance)  < STOPING_DISTANCE and self.mNavMeshAgent.velocity == Vector3.zero)
         then
 
                 self.mBeginMove = false
                 self.mFindPath = false
-                self.mStopDistance = self.STOPING_DISTANCE
+                self.mStopDistance = STOPING_DISTANCE
 
-            if (tmpRemainingDistance - self.mRemainingDistance)  < self.STOPING_DISTANCE then
+            if (tmpRemainingDistance - self.mRemainingDistance)  < STOPING_DISTANCE then
                
                   --print (self.mRemainingDistance .. "==" .. tmpRemainingDistance)
             end

@@ -128,8 +128,8 @@ function Ahri_PlayerEffectMovePlugin:OnBegin()
         end
         self.mTween.onUpdate = function (factor, isFinished)
 
-            self.mGo.transform.position = self.mOriginalPosition * (1-factor) + self.mDestination * factor
-
+            local position = self.mOriginalPosition * (1-factor) + self.mDestination * factor
+            Helper.SetPosition(self.mGo, position.x, position.y, position.z)
         end
     end
     self.mTween:ResetToBeginning()
