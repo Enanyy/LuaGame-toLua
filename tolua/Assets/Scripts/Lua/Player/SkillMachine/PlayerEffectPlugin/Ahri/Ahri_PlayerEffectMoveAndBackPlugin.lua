@@ -16,6 +16,11 @@ function Ahri_PlayerEffectMoveAndBackPlugin:ctor(name)
     self.mEffectEnd = false
 
     self.mDistanceOffset = 1
+
+    self.mRotation = Quaternion.identity
+    self.mForward = Vector3.zero
+    self.mPosition = Vector3.zero
+
 end
 function Ahri_PlayerEffectMoveAndBackPlugin:Init(behaviour)
 
@@ -116,12 +121,15 @@ function Ahri_PlayerEffectMoveAndBackPlugin:OnBegin()
     self.mDestination = original + direction * self.mDistance
     self.mDuration = self.mDistance * 1.0 / self.mSpeed
 
+    self.mGo.transform.forward = ( self.mDestination - self.mParent.position).normalized
+
     if self.mTween == nil then
 
         self.mTween = Tweener.new()
         self.mTween.method = TweenerMethod.EaseOut
         self.mTween.onFinished = function() 
             self.mMoveBack = true
+            self.mGo.transform.forward = (self.mParent.position - self.mGo.transform.position).normalized
         end
         self.mTween.onUpdate = function (factor, isFinished)
 
@@ -139,12 +147,25 @@ function Ahri_PlayerEffectMoveAndBackPlugin:OnExecute()
 
     if self.mMoveBack and self.mDone == false then
 
-        local direction = self.mParent.position - self.mGo.transform.position
+       
+        self.mPosition= GetPosition(self.mGo)
+
+        local direction = self.mParent.position - self.mPosition
+
+        local x,y,z,w = Helper.GetRotation(self.mGo, nil, nil, nil, nil)
+        self.mRotation:Set(x, y, z, w)
+
+        self.mRotation = Quaternion.Slerp (self.mRotation,  Quaternion.LookRotation(direction), Time.deltaTime * 20);
+
+        Helper.SetRotation(self.mGo, self.mRotation.x, self.mRotation.y,  self.mRotation.z,  self.mRotation.w )
 
         if direction.magnitude > 0.2 then
 
-            local position = self.mGo.transform.position + direction.normalized * self.mSpeed * Time.deltaTime
-            Helper.SetPosition(self.mGo, position.x, position.y, position.z)
+            local x, y, z = Helper.GetForward(self.mGo, nil, nil, nil)
+            self.mForward:Set(x, y, z)
+
+            local position = self.mPosition + self.mForward * self.mSpeed * Time.deltaTime
+            SetPosition(self.mGo, position)
         else
 
             self.mDone = true

@@ -170,7 +170,7 @@ function PlayerCharacter:PlaySkill(varSkillType)
         end
 
         self.mAttackTimeInterval = self.mPlayerInfo.attackTimeInterval * (1 - self.mPlayerInfo.attackSpeedAddition)
-
+        
     end
 
 	return	self.mSkillMachine:Cache (varSkillType)

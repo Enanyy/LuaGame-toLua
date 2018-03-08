@@ -16,6 +16,9 @@ function Ahri_PlayerEffectFollowPlugin:ctor(name)
     self.mEffectEnd = false
 
     self.mFollow = false
+
+    self.mPosition = Vector3.zero
+    self.mTargetPosition = Vector3.zero
 end 
 
 function Ahri_PlayerEffectFollowPlugin:Init(behaviour)
@@ -71,12 +74,14 @@ function Ahri_PlayerEffectFollowPlugin:OnEnter()
     if self.machine.mPlayerCharacter.mLockPlayerCharacter then
 
         self.mLockPlayerCharacter = self.machine.mPlayerCharacter.mLockPlayerCharacter
-        local target = self.mLockPlayerCharacter.transform.position
-        local original = self.machine.mPlayerCharacter.transform.position
-
-        target.y = original.y
-        if Vector3.Distance(original, target) <= self.mDistance then
-            self.mPlayerSkillState.mTargetDirection = target - original
+       
+        self.mTargetPosition = GetPosition(self.mLockPlayerCharacter.gameObject,self.mTargetPosition)
+        
+        self.mPosition = GetPosition(self.machine.mPlayerCharacter.gameObject,self.mPosition)
+       
+        self.mTargetPosition.y = self.mPosition.y
+        if Vector3.Distance( self.mPosition, self.mTargetPosition) <= self.mDistance then
+            self.mPlayerSkillState.mTargetDirection = self.mTargetPosition -  self.mPosition
         end
 
     end
@@ -100,16 +105,18 @@ function Ahri_PlayerEffectFollowPlugin:OnBegin()
     self.mBehaviour.enabled = true
 
     local direction = self.machine.mPlayerCharacter.transform.forward
-    local original = self.machine.mPlayerCharacter.transform.position
+
+    self.mPosition = GetPosition(self.machine.mPlayerCharacter.gameObject,self.mPosition)
 
     if self.machine.mPlayerCharacter.mLockPlayerCharacter then
 
         self.mLockPlayerCharacter = self.machine.mPlayerCharacter.mLockPlayerCharacter
-        local target = self.mLockPlayerCharacter.transform.position
-        target.y = original.y
+       
+        self.mTargetPosition = GetPosition(self.mLockPlayerCharacter.gameObject, self.mTargetPosition)
+        self.mTargetPosition.y = self.mPosition.y
 
-        if Vector3.Distance(original, target) <= self.mDistance  then
-            direction = ( target- original).normalized
+        if Vector3.Distance(self.mPosition, self.mTargetPosition) <= self.mDistance  then
+            direction = ( self.mTargetPosition- self.mPosition).normalized
             self.mFollow = true
         end
        
@@ -117,8 +124,8 @@ function Ahri_PlayerEffectFollowPlugin:OnBegin()
 
     if self.mFollow == false then
 
-        original.y = self.mOriginalPosition.y
-        self.mDestination = original + direction * self.mDistance
+        self.mPosition.y = self.mOriginalPosition.y
+        self.mDestination = self.mPosition + direction * self.mDistance
         self.mDuration = self.mDistance * 1.0 / self.mSpeed
 
         if self.mTween == nil then
@@ -135,8 +142,7 @@ function Ahri_PlayerEffectFollowPlugin:OnBegin()
             end
             self.mTween.onUpdate = function (factor, isFinished)
 
-                local position = self.mOriginalPosition * (1-factor) + self.mDestination * factor
-                Helper.SetPosition(self.mGo, position.x, position.y, position.z)
+                SetPosition(self.mGo, self.mOriginalPosition * (1-factor) + self.mDestination * factor)
                 
             end
         end
@@ -152,14 +158,18 @@ function Ahri_PlayerEffectFollowPlugin:OnExecute()
        
         self.mGo:SetActive(true)
         
-        local target =  self.mLockPlayerCharacter.transform.position
-        target.y = target.y + self.mLockPlayerCharacter.mPlayerInfo.height * 0.5
-        local direction = target - self.mGo.transform.position
+       
+        self.mTargetPosition = GetPosition(self.mLockPlayerCharacter.gameObject)
+        self.mPosition = GetPosition(self.mGo,self.mPosition)
+        self.mTargetPosition.y = self.mTargetPosition.y + self.mLockPlayerCharacter.mPlayerInfo.height * 0.5
+        
+        local direction = self.mTargetPosition - self.mPosition
+
        
         if direction.magnitude > 0.1 then
 
-            local position = self.mGo.transform.position + direction.normalized * self.mSpeed * Time.deltaTime
-            Helper.SetPosition(self.mGo, position.x, position.y, position.z)
+            local position = self.mPosition + direction.normalized * self.mSpeed * Time.deltaTime
+            SetPosition(self.mGo, position)
         else
             self.mGo:SetActive(false)
             self.mFollow = false

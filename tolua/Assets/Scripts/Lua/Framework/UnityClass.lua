@@ -69,3 +69,21 @@ KeyCode = UnityEngine.KeyCode
 Queue = System.Collections.Queue
 Stack  = System.Collections.Stack
 
+
+------------------------------------------Helper Begin-----------------------------------------
+
+function GetPosition(go, position)
+    local pos = position or  Vector3.New(0,0,0)
+    local x, y, z = Helper.GetPosition(go, nil, nil, nil)
+    pos:Set(x, y, z)
+    return pos
+end
+
+function SetPosition(go, position)
+    if go then
+        Helper.SetPosition(go, position.x, position.y, position.z)
+    end
+end
+
+------------------------------------------Helper End-------------------------------------------
+

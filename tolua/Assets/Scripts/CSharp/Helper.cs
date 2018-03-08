@@ -31,9 +31,8 @@ public static class Helper  {
 
     public static void GetPosition(GameObject go, out float x, out float y, out float z)
     {
-        x = 0;
-        y = 0;
-        z = 0;
+        x = y = z = 0;
+
         if (go)
         {
             x = go.transform.position.x;
@@ -44,14 +43,36 @@ public static class Helper  {
 
     public static void GetLocalPosition(GameObject go, out float x, out float y, out float z)
     {
-        x = 0;
-        y = 0;
-        z = 0;
+        x = y = z = 0;
+
         if (go)
         {
             x = go.transform.localPosition.x;
             y = go.transform.localPosition.y;
             z = go.transform.localPosition.z;
+        }
+    }
+
+    public static void SetForward(GameObject go, float x, float y, float z)
+    {
+        if (go)
+        {
+            Vector3 forward = go.transform.forward;
+            forward.x = x;
+            forward.y = y;
+            forward.z = z;
+            go.transform.forward = forward; 
+        }
+    }
+
+    public static void GetForward(GameObject go, out float x, out float y, out float z)
+    {
+        x = y = z = 0;
+        if (go)
+        {
+            x = go.transform.forward.x;
+            y = go.transform.forward.y;
+            z = go.transform.forward.z;
         }
     }
 
@@ -72,9 +93,8 @@ public static class Helper  {
     public static void GetScale(GameObject go, out float x, out float y, out float z)
     {
 
-        x = 0;
-        y = 0;
-        z = 0;
+        x = y = z = 0;
+
         if (go)
         {
             x = go.transform.localScale.x;
@@ -122,10 +142,8 @@ public static class Helper  {
 
     public static void GetRotation(GameObject go, out float x, out float y, out float z, out float w)
     {
-        x = 0;
-        y = 0;
-        z = 0;
-        w = 0;
+        x = y = z = w =0;
+
         if (go)
         {
             x = go.transform.rotation.x;
@@ -137,10 +155,8 @@ public static class Helper  {
 
     public static void GetLocalRotation(GameObject go, out float x, out float y, out float z, out float w)
     {
-        x = 0;
-        y = 0;
-        z = 0;
-        w = 0;
+        x = y = z = w = 0;
+
         if (go)
         {
             x = go.transform.localRotation.x;
