@@ -104,11 +104,21 @@ public static class Helper  {
     }
     #endregion
     #region Rotation
-    public static void SetLocalRotation(GameObject go, float x, float y, float z)
+    public static void SetLocalEuler(GameObject go, float x, float y, float z)
     {
         if(go)
         {
             go.transform.localRotation = Quaternion.Euler(x, y, z);
+        }
+    }
+    public static void GetLocalEuler(GameObject go, out float x, out float y, out float z)
+    {
+        x = y = z = 0;
+        if (go)
+        {
+            x = go.transform.localEulerAngles.x;
+            y = go.transform.localEulerAngles.y;
+            z = go.transform.localEulerAngles.z;
         }
     }
 
@@ -122,11 +132,21 @@ public static class Helper  {
         }
     }
 
-    public static void SetRotation(GameObject go, float x, float y, float z)
+    public static void SetEuler(GameObject go, float x, float y, float z)
     {
         if (go)
         {
             go.transform.rotation = Quaternion.Euler(x, y, z);
+        }
+    }
+    public static void GetEuler(GameObject go, float x, float y, float z)
+    {
+        x = y = z = 0;
+        if (go)
+        {
+            x = go.transform.eulerAngles.x;
+            y = go.transform.eulerAngles.y;
+            z = go.transform.eulerAngles.z;
         }
     }
 

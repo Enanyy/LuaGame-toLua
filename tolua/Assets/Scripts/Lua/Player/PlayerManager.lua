@@ -37,10 +37,10 @@ function  PlayerManager:CreatePlayerCharacter(varGuid,  varPlayerInfo, varCallba
 		local go =  GameObject (tostring(varGuid))
         NGUITools.SetLayer(go, layer)
       
-        Helper.SetParent(go, self.transform)   
-        Helper.SetLocalPosition(go, 0, 0, 0)
-        Helper.SetLocalRotation(go, 0, 0 , 0, 0)
-        Helper.SetScale(go, 1, 1, 1)
+        SetParent(go, self.transform)   
+        SetLocalPosition(go, Vector3.zero)
+        SetLocalRotation(go, Quaternion.identity)
+        SetScale(go, Vector3.one)
 
         local behaviour = go:AddComponent(typeof(LuaBehaviour))
         local tmpPlayerCharacter = PlayerCharacter.new()
@@ -87,10 +87,10 @@ function  PlayerManager:CreatePlayerCharacter(varGuid,  varPlayerInfo, varCallba
         local tmpFlag, tmpHit = NavMesh.SamplePosition(varPlayerInfo.position, nil, 10, NavMesh.AllAreas)
         if tmpFlag then
             
-            Helper.SetPosition(go,tmpHit.position.x, tmpHit.position.y, tmpHit.position.z)
+            SetPosition(go,tmpHit.position)
         end
      
-        Helper.SetRotation(go, varPlayerInfo.direction.x, varPlayerInfo.direction.y, varPlayerInfo.direction.z)
+        SetEuler(go, varPlayerInfo.direction)
 
         table.insert( self.mPlayerCharacterList, tmpPlayerCharacter )
        

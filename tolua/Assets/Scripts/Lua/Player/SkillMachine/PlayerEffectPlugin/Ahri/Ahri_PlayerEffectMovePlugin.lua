@@ -70,8 +70,8 @@ function Ahri_PlayerEffectMovePlugin:OnEnter()
     self.mPlayerSkillState.mTargetDirection = self.machine.mPlayerCharacter.transform.forward
     if self.machine.mPlayerCharacter.mLockPlayerCharacter then
 
-        local target = self.machine.mPlayerCharacter.mLockPlayerCharacter.transform.position
-        local original = self.machine.mPlayerCharacter.transform.position
+        local target = GetPosition( self.machine.mPlayerCharacter.mLockPlayerCharacter.gameObject)
+        local original = GetPosition( self.machine.mPlayerCharacter.gameObject)
 
         target.y = original.y
         if Vector3.Distance(original, target) <= (self.mDistance + self.mDistanceOffset) then
@@ -91,17 +91,17 @@ function Ahri_PlayerEffectMovePlugin:OnBegin()
 
     self.mEffectEnd = false
 
-    self.mGo.transform:SetParent(nil)
+    SetParent(self.mGo,nil)
     self.mGo:SetActive(true)
     self.mOriginalPosition = self.mParent.position
     self.mBehaviour.enabled = true
 
     local direction = self.machine.mPlayerCharacter.transform.forward
-    local original = self.machine.mPlayerCharacter.transform.position
+    local original = GetPosition(self.machine.mPlayerCharacter.gameObject)
 
     if self.machine.mPlayerCharacter.mLockPlayerCharacter then
 
-        local target = self.machine.mPlayerCharacter.mLockPlayerCharacter.transform.position
+        local target = GetPosition(self.machine.mPlayerCharacter.mLockPlayerCharacter.gameObject)
        
         target.y = original.y
        
@@ -129,7 +129,7 @@ function Ahri_PlayerEffectMovePlugin:OnBegin()
         self.mTween.onUpdate = function (factor, isFinished)
 
             local position = self.mOriginalPosition * (1-factor) + self.mDestination * factor
-            Helper.SetPosition(self.mGo, position.x, position.y, position.z)
+            SetPosition(self.mGo, position)
         end
     end
     self.mTween:ResetToBeginning()
@@ -171,8 +171,9 @@ end
 function Ahri_PlayerEffectMovePlugin:Reset()
 
     if self.mGo then
-        self.mGo.transform:SetParent(self.mParent)
-        self.mGo.transform.localPosition = Vector3.zero
+        SetParent(self.mGo,self.mParent)
+        
+        SetLocalPosition(self.mGo, Vector3.zero)
         self.mGo:SetActive(true)
     end
    

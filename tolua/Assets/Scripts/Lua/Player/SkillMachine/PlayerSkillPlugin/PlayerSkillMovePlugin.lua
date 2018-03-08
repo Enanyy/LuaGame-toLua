@@ -118,7 +118,7 @@ function PlayerSkillMovePlugin:OnExecute ()
             then
                         
                 self.mFindPath = false
-                tmpPlayerCharacter.mTargetPosition = tmpPlayerCharacter.transform.position
+                tmpPlayerCharacter.mTargetPosition = GetPosition( tmpPlayerCharacter.gameObject, tmpPlayerCharacter.mTargetPosition)
                 self.mNavMeshAgent.destination = tmpPlayerCharacter.mTargetPosition
                 tmpPlayerCharacter:OnMoveToPointFail()
                 tmpPlayerCharacter:PlaySkill(PlayerSkillType.Idle)

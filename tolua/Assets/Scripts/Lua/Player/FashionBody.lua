@@ -30,10 +30,10 @@ function FashionBody:Start()
             go:SetActive(true)
             NGUITools.SetLayer(go, self.gameObject.layer)
             
-            Helper.SetParent(go, self.transform)   
-            Helper.SetLocalPosition(go, 0, 0, 0)
-            Helper.SetLocalRotation(go, 0, 0 , 0, 0)
-            Helper.SetScale(go, 1, 1, 1)
+            SetParent(go, self.transform)   
+            SetLocalPosition(go, Vector3.zero)
+            SetLocalRotation(go, Quaternion.identity)
+            SetScale(go, Vector3.one)
 
             local collider = go:AddComponent(typeof(CapsuleCollider))
             collider.isTrigger = true

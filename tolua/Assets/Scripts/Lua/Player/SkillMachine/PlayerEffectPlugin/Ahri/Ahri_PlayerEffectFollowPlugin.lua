@@ -210,8 +210,8 @@ end
 function Ahri_PlayerEffectFollowPlugin:Reset()
 
     if self.mGo then
-        self.mGo.transform:SetParent(self.mParent)
-        self.mGo.transform.localPosition = Vector3.zero
+        SetParent(self.mGo,self.mParent)
+        SetLocalPosition(self.mGo, Vector3.zero)
         self.mGo:SetActive(true)
     end
    

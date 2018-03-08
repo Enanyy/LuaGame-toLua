@@ -51,15 +51,15 @@ function PlayerSkillRotationPlugin:OnExecute()
             
             local factor = self.mPlayerSkillState.mRunTime / self.mDuration
 
-            local x,y,z,w = Helper.GetRotation(self.mGo, nil, nil, nil,nil)
-            self.mRotation:Set(x,y,z,w)
+            
+            self.mRotation= GetRotation(self.mGo,self.mRotation)
 
             self.mRotation = Lerp(self.mRotation, self.mWantedRotation, factor)
 
-            Helper.SetRotation(self.mGo, self.mRotation.x,self.mRotation.y,self.mRotation.z,self.mRotation.w)
+            SetRotation(self.mGo, self.mRotation)
         
         else
-            Helper.SetRotation(self.mGo, self.mWantedRotation.x,self.mWantedRotation.y,self.mWantedRotation.z,self.mWantedRotation.w)
+            SetRotation(self.mGo, self.mWantedRotation)
             
         end
     end

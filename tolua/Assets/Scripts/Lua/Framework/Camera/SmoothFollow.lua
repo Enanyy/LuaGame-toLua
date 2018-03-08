@@ -60,15 +60,14 @@ function this:FollowTarget()
     end
 
 		
-	local x, y, z = Helper.GetPosition(self.target, nil, nil, nil)
-	self.targetPosition:Set(x, y, z)
+	self.targetPosition = GetPosition(self.target,self.targetPosition)
 		
 	self.wantedPosition = self.targetPosition + Vector3.forward * self.distance * (-1)
 	self.wantedPosition.y =self.height
     
-	Helper.SetPosition(self.gameObject,self.wantedPosition.x, self.wantedPosition.y, self.wantedPosition.z)
+	SetPosition(self.gameObject,self.wantedPosition)
 	
-	Helper.SetRotation(self.gameObject, self.rotation.x, self.rotation.y, self.rotation.z)
+	SetEuler(self.gameObject, self.rotation)
 	
 end
 

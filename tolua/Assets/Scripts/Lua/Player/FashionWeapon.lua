@@ -33,11 +33,11 @@ function FashionWeapon:Start()
             local go = GameObject.Instantiate(varObject)
 			go:SetActive(true)
           
-            Helper.SetParent(go, tmpWeaponBone)   
-            Helper.SetLocalPosition(go, 0, 0, 0)
-            Helper.SetLocalRotation(go, 0, 0 , 0, 0)
-            Helper.SetScale(go, 0.1, 0.1, 0.1)
-            
+ 
+            SetParent(go, tmpWeaponBone)   
+            SetLocalPosition(go, Vector3.zero)
+            SetLocalRotation(go, Quaternion.identity)
+            SetScale(go, Vector3.New(0.1, 0.1, 0.1))
             self.mWeapon = go
         
         else

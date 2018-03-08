@@ -117,7 +117,7 @@ Role_Configure_Ahri = {
                 { name = "PlayerSkillRotationPlugin", class = PlayerSkillRotationPlugin, duration = 0.2, immediately = false }, 
                 { name = "PlayerSkillEffectPlugin", class = PlayerSkillEffectPlugin, beginAt = 0.25,
                     EffectPluginList = {
-                        {name = "Ahri_PlayerEffectFollowPlugin", class = Ahri_PlayerEffectFollowPlugin, speed = 12, distance = 6  },
+                        {name = "Ahri_PlayerEffectFollowPlugin", class = Ahri_PlayerEffectFollowPlugin, speed = 15, distance = 6  },
                     },
                 },                  
             }
@@ -150,7 +150,7 @@ Role_Configure_Ahri = {
                 { name = "PlayerSkillRotationPlugin", class = PlayerSkillRotationPlugin, duration = 0.2, immediately = false },                 
                 { name = "PlayerSkillEffectPlugin", class = PlayerSkillEffectPlugin, beginAt = 0.25,
                     EffectPluginList = {
-                        {name = "Ahri_PlayerEffectFollowPlugin", class = Ahri_PlayerEffectFollowPlugin, speed = 12, distance = 6  },
+                        {name = "Ahri_PlayerEffectFollowPlugin", class = Ahri_PlayerEffectFollowPlugin, speed = 15, distance = 6  },
                     },
                 },        
             }
@@ -182,7 +182,7 @@ Role_Configure_Ahri = {
                 { name = "PlayerSkillRotationPlugin", class = PlayerSkillRotationPlugin, duration = 0.2, immediately = false },                 
                 { name = "PlayerSkillEffectPlugin", class = PlayerSkillEffectPlugin, beginAt = 0.25,
                     EffectPluginList = {
-                        {name = "Ahri_PlayerEffectFollowPlugin", class = Ahri_PlayerEffectFollowPlugin, speed = 12, distance = 6 },
+                        {name = "Ahri_PlayerEffectFollowPlugin", class = Ahri_PlayerEffectFollowPlugin, speed = 15, distance = 6 },
                     },
                 },        
             }

@@ -51,6 +51,7 @@ function PlayerSkillAnimationPlugin:OnExit()
     if self.mPlayerSkillState then
         --print(self.mPlayerSkillState.name .. " time = "..self.mAnimationState.time .." length = "..self.mAnimationState.length .." runtime =" .. self.mPlayerSkillState.mRunTime.." speed ="..self.mAnimationState.speed)
     end
+   
 end
 
 function PlayerSkillAnimationPlugin:OnPause()

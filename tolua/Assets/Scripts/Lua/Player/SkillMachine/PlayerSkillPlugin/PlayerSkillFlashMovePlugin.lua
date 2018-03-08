@@ -32,9 +32,7 @@ function PlayerSkillFlashMovePlugin:OnEnter()
         self.mGo = self.machine.mPlayerCharacter.gameObject
     end
 
-    local x, y, z = Helper.GetPosition(self.mGo, nil, nil, nil)
-
-    self.mOriginalPosition:Set(x, y, z)
+    self.mOriginalPosition= GetPosition(self.mGo,self.mOriginalPosition)
 
     if self.mNavMeshAgent == nil then
 
@@ -63,10 +61,10 @@ function PlayerSkillFlashMovePlugin:OnExecute()
 
             local factor = self.mPlayerSkillState.mRunTime * 1.0 / self.mDuration
             self.mPosition = self.mOriginalPosition * (1 - factor) + self.mTargetPosition * factor
-            Helper.SetPosition(self.mGo, self.mPosition.x,self.mPosition.y,self.mPosition.z)
+            SetPosition(self.mGo, self.mPosition)
 
         else
-            Helper.SetPosition(self.mGo, self.mTargetPosition.x,self.mTargetPosition.y,self.mTargetPosition.z)
+            SetPosition(self.mGo, self.mTargetPosition)
         end
     end
 

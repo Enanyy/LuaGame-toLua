@@ -64,18 +64,18 @@ function Ahri_PlayerEffectMoveAndBackPlugin:OnEnter()
     self:ClearEffectState()
  
     if self.mGo then
-        self.mGo.transform:SetParent(nil)
+        SetParent(self.mGo,nil)
         
         self.mGo:SetActive(false)
     end
 
     self.mStateEnd = false
 
-    self.mPlayerSkillState.mTargetDirection = self.machine.mPlayerCharacter.transform.forward
+    self.mPlayerSkillState.mTargetDirection = GetForward(self.machine.mPlayerCharacter.gameObject,self.mPlayerSkillState.mTargetDirection)
     if self.machine.mPlayerCharacter.mLockPlayerCharacter then
 
-        local target = self.machine.mPlayerCharacter.mLockPlayerCharacter.transform.position
-        local original = self.machine.mPlayerCharacter.transform.position
+        local target = GetPosition(self.machine.mPlayerCharacter.mLockPlayerCharacter.gameObject)
+        local original = GetPosition(self.machine.mPlayerCharacter.gameObject)
 
         target.y = original.y
         if Vector3.Distance(original, target) <= (self.mDistance + self.mDistanceOffset) then
@@ -96,18 +96,18 @@ function Ahri_PlayerEffectMoveAndBackPlugin:OnBegin()
     self.mMoveBack = false
     self.mDone = false 
     
-    self.mGo.transform:SetParent(nil)
+    SetParent(self.mGo,nil)
     self.mGo:SetActive(true)
     self.mBehaviour.enabled = true
 
     self.mOriginalPosition = self.mParent.position
 
-    local direction = self.machine.mPlayerCharacter.transform.forward
-    local original = self.machine.mPlayerCharacter.transform.position
+    local direction = GetForward(self.machine.mPlayerCharacter.gameObject)
+    local original = GetPosition(self.machine.mPlayerCharacter.gameObject)
 
     if self.machine.mPlayerCharacter.mLockPlayerCharacter then
 
-        local target = self.machine.mPlayerCharacter.mLockPlayerCharacter.transform.position
+        local target = GetPosition(self.machine.mPlayerCharacter.mLockPlayerCharacter.gameObject)
        
         target.y = original.y
        
@@ -134,7 +134,7 @@ function Ahri_PlayerEffectMoveAndBackPlugin:OnBegin()
         self.mTween.onUpdate = function (factor, isFinished)
 
             local position = self.mOriginalPosition * (1-factor) + self.mDestination * factor
-            Helper.SetPosition(self.mGo, position.x, position.y, position.z)
+            SetPosition(self.mGo, position)
         end
     end
     self.mTween:ResetToBeginning()
@@ -148,21 +148,20 @@ function Ahri_PlayerEffectMoveAndBackPlugin:OnExecute()
     if self.mMoveBack and self.mDone == false then
 
        
-        self.mPosition= GetPosition(self.mGo)
+        self.mPosition= GetPosition(self.mGo,self.mPosition)
 
         local direction = self.mParent.position - self.mPosition
 
-        local x,y,z,w = Helper.GetRotation(self.mGo, nil, nil, nil, nil)
-        self.mRotation:Set(x, y, z, w)
+        self.mRotation=GetRotation(self.mGo,self.mRotation)
 
         self.mRotation = Quaternion.Slerp (self.mRotation,  Quaternion.LookRotation(direction), Time.deltaTime * 20);
 
-        Helper.SetRotation(self.mGo, self.mRotation.x, self.mRotation.y,  self.mRotation.z,  self.mRotation.w )
+        SetRotation(self.mGo, self.mRotation)
 
         if direction.magnitude > 0.2 then
 
-            local x, y, z = Helper.GetForward(self.mGo, nil, nil, nil)
-            self.mForward:Set(x, y, z)
+           
+            self.mForward= GetForward(self.mGo,self.mForward)
 
             local position = self.mPosition + self.mForward * self.mSpeed * Time.deltaTime
             SetPosition(self.mGo, position)
@@ -206,8 +205,8 @@ end
 function Ahri_PlayerEffectMoveAndBackPlugin:Reset()
 
     if self.mGo then
-        self.mGo.transform:SetParent(self.mParent)
-        self.mGo.transform.localPosition = Vector3.zero
+        SetParent(self.mGo,self.mParent)
+        SetLocalPosition(self.mGo, Vector3.zero)
         self.mGo:SetActive(true)
     end
 
