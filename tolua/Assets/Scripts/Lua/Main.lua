@@ -28,7 +28,10 @@ function Main:AssetMode()
 	return assetmode
 end
 
-function Main:Start()					
+function Main:Start()		
+	--self:TestSetPosition()
+	--self:TestSetPosition1()
+	 		
 	print("Main start")
 	LuaGame.Log(AssetManager.GetAssetBundlePath())
 	--初始化资源管理器
@@ -72,6 +75,7 @@ function Main:Start()
 	SceneMachine:ChangeScene(SceneType.FrameScene)
 
 	--SceneManager.LoadScene("FrameScene")
+		
 end
 
 
@@ -319,6 +323,35 @@ function Main:TestSocketServer()
 	end
 
 end
+
+function Main:TestSetPosition()
+
+	local go = GameObject('TestSetPosition')
+
+	local time = os.clock()
+
+	for i = 1, 1000000 do
+		SetPosition(go, Vector3.zero)
+	end
+
+	print(os.clock() - time)
+
+end
+
+function Main:TestSetPosition1()
+
+	local go = GameObject('TestSetPosition1')
+
+	local time = os.clock()
+
+	for i = 1, 1000000 do
+		go.transform.position = Vector3.zero
+	end
+
+	print(os.clock() - time)
+
+end
+
 
 -------------------------------------------Test End-----------------------------------------
 

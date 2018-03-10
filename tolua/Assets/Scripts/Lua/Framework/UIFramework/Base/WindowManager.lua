@@ -49,7 +49,7 @@ function  WindowManager:Initialize()
         if (tmpScreenAspectRatio * 100) < (tmpDesignAspectRatio * 100) then
         
             self.uiRoot.fitWidth = true
-            self. uiRoot.fitHeight = false
+            self.uiRoot.fitHeight = false
 
         elseif (tmpScreenAspectRatio * 100) > (tmpDesignAspectRatio * 100) then
         

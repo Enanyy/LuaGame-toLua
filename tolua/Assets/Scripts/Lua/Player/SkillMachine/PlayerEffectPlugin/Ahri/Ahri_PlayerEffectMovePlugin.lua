@@ -96,8 +96,10 @@ function Ahri_PlayerEffectMovePlugin:OnBegin()
     self.mOriginalPosition = self.mParent.position
     self.mBehaviour.enabled = true
 
-    local direction = self.machine.mPlayerCharacter.transform.forward
-    local original = GetPosition(self.machine.mPlayerCharacter.gameObject)
+    local go = self.machine.mPlayerCharacter.gameObject
+
+    local direction = GetForward(go)
+    local original = GetPosition(go)
 
     if self.machine.mPlayerCharacter.mLockPlayerCharacter then
 

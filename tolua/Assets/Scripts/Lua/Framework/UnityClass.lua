@@ -90,6 +90,7 @@ local _GetForward = Helper.GetForward
 
 local _SetParent = Helper.SetParent
 
+
 function GetPosition(go, position)
     local pos = position or  Vector3.New(0,0,0)
     local x, y, z = _GetPosition(go, nil, nil, nil)
@@ -199,5 +200,7 @@ function SetParent (go, parent)
         _SetParent(go, parent)
     end
 end
+
+
 ------------------------------------------Helper End-------------------------------------------
 

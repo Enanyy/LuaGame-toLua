@@ -104,9 +104,10 @@ function Ahri_PlayerEffectFollowPlugin:OnBegin()
     self.mOriginalPosition = self.mParent.position
     self.mBehaviour.enabled = true
 
-    local direction = self.machine.mPlayerCharacter.transform.forward
+    local go = self.machine.mPlayerCharacter.gameObject
+    local direction =GetForward(go)
 
-    self.mPosition = GetPosition(self.machine.mPlayerCharacter.gameObject,self.mPosition)
+    self.mPosition = GetPosition(go,self.mPosition)
 
     if self.machine.mPlayerCharacter.mLockPlayerCharacter then
 
@@ -159,7 +160,7 @@ function Ahri_PlayerEffectFollowPlugin:OnExecute()
         self.mGo:SetActive(true)
         
        
-        self.mTargetPosition = GetPosition(self.mLockPlayerCharacter.gameObject)
+        self.mTargetPosition = GetPosition(self.mLockPlayerCharacter.gameObject,self.mTargetPosition)
         self.mPosition = GetPosition(self.mGo,self.mPosition)
         self.mTargetPosition.y = self.mTargetPosition.y + self.mLockPlayerCharacter.mPlayerInfo.height * 0.5
         

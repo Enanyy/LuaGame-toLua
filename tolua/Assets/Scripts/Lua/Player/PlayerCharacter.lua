@@ -136,7 +136,8 @@ end
 
 function PlayerCharacter:MoveToPoint(varTargetPosition, varSuccessAction,varFailAction)
 
-    local tmpDistance = Vector3.Distance (self.transform.position, Vector3.New (varTargetPosition.x, self.transform.position.y, varTargetPosition.z))
+    local position = GetPosition(self.gameObject)
+    local tmpDistance = Vector3.Distance (position, Vector3.New (varTargetPosition.x, position.y, varTargetPosition.z))
 
     if tmpDistance > 0.1 then
 

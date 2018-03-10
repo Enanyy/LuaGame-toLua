@@ -1,5 +1,8 @@
 require("PlayerEffectPlugin")
 
+local Slerp =  Quaternion.Slerp
+local LookRotation = Quaternion.LookRotation
+
 Ahri_PlayerEffectMoveAndBackPlugin = Class(PlayerEffectPlugin)
 
 function Ahri_PlayerEffectMoveAndBackPlugin:ctor(name)
@@ -102,8 +105,9 @@ function Ahri_PlayerEffectMoveAndBackPlugin:OnBegin()
 
     self.mOriginalPosition = self.mParent.position
 
-    local direction = GetForward(self.machine.mPlayerCharacter.gameObject)
-    local original = GetPosition(self.machine.mPlayerCharacter.gameObject)
+    local go = self.machine.mPlayerCharacter.gameObject
+    local direction = GetForward(go)
+    local original = GetPosition(go)
 
     if self.machine.mPlayerCharacter.mLockPlayerCharacter then
 
@@ -154,7 +158,7 @@ function Ahri_PlayerEffectMoveAndBackPlugin:OnExecute()
 
         self.mRotation=GetRotation(self.mGo,self.mRotation)
 
-        self.mRotation = Quaternion.Slerp (self.mRotation,  Quaternion.LookRotation(direction), Time.deltaTime * 20);
+        self.mRotation =Slerp (self.mRotation,  LookRotation(direction), Time.deltaTime * 20);
 
         SetRotation(self.mGo, self.mRotation)
 

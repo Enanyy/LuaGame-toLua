@@ -10,6 +10,7 @@ function PlayerSkillAnimationPlugin:ctor(name)
     self.mDone = false
     self.mAnimation = nil
     self.mAnimationClip = ""
+    self.mAnimationInterval = 0.5 
 end
 
 function PlayerSkillAnimationPlugin:InitWithConfig(configure)
@@ -82,12 +83,17 @@ function PlayerSkillAnimationPlugin:PlayAnimation()
     self.mAnimationState.speed = self.mPlayerSkillState.mSpeed
   
     if self.mDone then
-        if self.mAnimation and self.mAnimation.isPlaying == false then
-            --这句产生GC
-            if  self.mAnimation:IsPlaying(self.mAnimationClip) == false
-            then
-               self.mAnimation:Play(self.mAnimationClip)
-            end
+        
+        self.mAnimationInterval = self.mAnimationInterval - Time.deltaTime
+        if self.mAnimationInterval < 0 then
+            self.mAnimationInterval = 0.4
+            --if self.mAnimation and self.mAnimation.isPlaying == false then
+                --这句产生GC
+                if  self.mAnimation:IsPlaying(self.mAnimationClip) == false
+                then
+                    self.mAnimation:Play(self.mAnimationClip)
+                end
+            --end
         end
         return
 

@@ -30,12 +30,13 @@ end
 function BaseWindow:CreateMask()
 
     local go = GameObject("Mask")
-    go.transform:SetParent(self.transform)
+    SetParent(go, self.transform)
+    SetLocalPosition(go, Vector3.zero)
+    SetScale(go, Vector3.one)
+    SetLocalRotation(go, Quaternion.identity)
+  
     go.transform:SetAsFirstSibling()
-    go.transform.localPosition = Vector3.zero
-    go.transform.localScale = Vector3.one
-    go.transform.localRotation = Quaternion.identity
-
+  
     self.mask = go
 
     local box = go:AddComponent(typeof(BoxCollider))

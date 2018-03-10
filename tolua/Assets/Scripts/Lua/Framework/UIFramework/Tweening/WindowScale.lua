@@ -15,7 +15,7 @@ function WindowScale.Begin(window, duration, active, callback)
     window.tween:ResetToBeginning()    
     window.tween.onFinished = nil
     
-    local current = window.transform.localScale
+    local current = GetScale( window.gameObject)
     local from = Vector3.zero
     local to = Vector3.zero
     if active then
@@ -42,7 +42,7 @@ function WindowScale.Begin(window, duration, active, callback)
     end
 
     window.tween.onUpdate = function(factor, isFinished)
-        window.transform.localScale = from * (1 - factor) + to * factor
+       SetScale(window.gameObject , from * (1 - factor) + to * factor)
     end
 
     window.tween:PlayForward()

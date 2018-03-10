@@ -16,7 +16,7 @@ function WindowMove.Begin(window, pos, duration, active, callback)
     window.tween:ResetToBeginning()    
     window.tween.onFinished = nil
     
-    local current = window.transform.position
+    local current = GetLocalPosition(window.gameObject)
     local from = Vector3.zero
     local to = Vector3.zero
     if active then
@@ -43,7 +43,9 @@ function WindowMove.Begin(window, pos, duration, active, callback)
     end
 
     window.tween.onUpdate = function(factor, isFinished)
-        window.transform.localPosition = from * (1 - factor) + to * factor
+
+        SetLocalPosition(window.gameObject,  from * (1 - factor) + to * factor)
+
     end
 
     window.tween:PlayForward()
