@@ -89,7 +89,8 @@ local _SetForward = Helper.SetForward
 local _GetForward = Helper.GetForward
 
 local _SetParent = Helper.SetParent
-
+local _AddComponent = Helper.AddComponent
+local _GetComponent = Helper.GetComponent
 
 function GetPosition(go, position)
     local pos = position or  Vector3.New(0,0,0)
@@ -201,6 +202,17 @@ function SetParent (go, parent)
     end
 end
 
+function AddComponent(go, component)
+
+    return _AddComponent(go, component)
+
+end
+
+function GetComponent(go, component)
+
+    return _GetComponent(go, component)
+
+end
 
 ------------------------------------------Helper End-------------------------------------------
 

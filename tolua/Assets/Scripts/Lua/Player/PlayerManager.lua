@@ -19,7 +19,7 @@ function  PlayerManager:Initialize()
         local go = GameObject('PlayerManager')     
         GameObject.DontDestroyOnLoad(go)
 
-        local behaviour = go:AddComponent(typeof(LuaBehaviour))  
+        local behaviour = AddComponent(go, typeof(LuaBehaviour))  
         behaviour:Init(self)
         self:Init(behaviour)
 
@@ -42,7 +42,7 @@ function  PlayerManager:CreatePlayerCharacter(varGuid,  varPlayerInfo, varCallba
         SetLocalRotation(go, Quaternion.identity)
         SetScale(go, Vector3.one)
 
-        local behaviour = go:AddComponent(typeof(LuaBehaviour))
+        local behaviour = AddComponent(go, typeof(LuaBehaviour))
         local tmpPlayerCharacter = PlayerCharacter.new()
 
         behaviour:Init(tmpPlayerCharacter)
@@ -54,7 +54,7 @@ function  PlayerManager:CreatePlayerCharacter(varGuid,  varPlayerInfo, varCallba
                 local camera = GameObject("MainCamera")
                 GameObject.DontDestroyOnLoad(camera)
                 camera.tag = "MainCamera"
-                self.mCamera = camera:AddComponent(typeof(Camera))
+                self.mCamera = AddComponent(camera,typeof(Camera))
                 self.mCamera.depth = 0
 
                 self.mSmoothFollow = SmoothFollow.new()
@@ -64,7 +64,7 @@ function  PlayerManager:CreatePlayerCharacter(varGuid,  varPlayerInfo, varCallba
                 self.mSmoothFollow.height = 12
                 self.mSmoothFollow.rotation = Vector3.New(76,0,0)
 
-                local behaviour = camera:AddComponent(typeof(LuaBehaviour))
+                local behaviour = AddComponent(camera,typeof(LuaBehaviour))
                 behaviour:Init(self.mSmoothFollow)
                 self.mSmoothFollow:Init(behaviour)
 

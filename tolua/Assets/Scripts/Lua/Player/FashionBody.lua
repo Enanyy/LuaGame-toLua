@@ -35,7 +35,7 @@ function FashionBody:Start()
             SetLocalRotation(go, Quaternion.identity)
             SetScale(go, Vector3.one)
 
-            local collider = go:AddComponent(typeof(CapsuleCollider))
+            local collider = AddComponent(go, typeof(CapsuleCollider))
             collider.isTrigger = true
             collider.height = tmpPlayerInfo.height
             collider.radius = tmpPlayerInfo.radius

@@ -21,20 +21,18 @@ function this:ctor(behaviour)
 	
 	self.wantedPosition = Vector3.zero
 	self.targetPosition = Vector3.zero
-	
-    self.update = function ()
-        self:Update()
-    end
-    self.lateUpdate = function()
-        self:LateUpdate() 
-    end
+    
+    self.update = UpdateBeat:CreateListener(function() self:Update() end, self)
+   
+    self.lateUpdate = LateUpdateBeat:CreateListener(function() self:LateUpdate() end, self)
+      
 end
 
 function this:Start()
 
-    --添加Lua逻辑更新
-	UpdateBeat:Add(self.update,self)	 		
-	LateUpdateBeat:Add(self.lateUpdate,self)	 		
+    --添加Lua逻辑更新	
+    UpdateBeat:AddListener(self.update)	 		
+	LateUpdateBeat:AddListener(self.lateUpdate)	 		
 
 end
 
@@ -73,6 +71,7 @@ end
 
 function this:OnDestroy()
     --移除Lua逻辑更新
-    UpdateBeat:Remove(self.update,self)	 		
-    LateUpdateBeat:Remove(self.lateUpdate,self)
+    UpdateBeat:RemoveListener(self.update)
+    LateUpdateBeat:RemoveListener(self.lateUpdate)
+   
 end

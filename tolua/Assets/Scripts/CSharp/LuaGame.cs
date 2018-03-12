@@ -66,6 +66,12 @@ public class LuaGame : MonoBehaviour {
         mLuaState.LuaSetTop(0);
 
         LuaBinder.Bind(mLuaState);
+
+        //测试自定义Wrap
+        mLuaState.BeginModule(null);
+        TestLuaWrap.Register(mLuaState);
+        mLuaState.EndModule();
+
         DelegateFactory.Init();
         LuaCoroutine.Register(mLuaState, this);
     }
@@ -227,5 +233,104 @@ public class LuaGame : MonoBehaviour {
         }
     }
 
-    
+    public static class TestLua
+    {
+
+        static System.Collections.Generic.Dictionary<int, GameObject> mObjectDic = new System.Collections.Generic.Dictionary<int, GameObject>();
+        static int mIndex = 0;
+        public static void Test(int number)
+        {
+            Debug.Log("TestLua number = " + number);
+        }
+
+        public static int TestCreateGameObject(int index)
+        {
+            GameObject go = new GameObject(index.ToString());
+            mObjectDic.Add(++mIndex, go);
+            return mIndex;
+        }
+
+        public static GameObject Get(int index)
+        {
+            if(mObjectDic.ContainsKey(index))
+            {
+                return mObjectDic[index];
+            }
+            return null;
+        }
+
+    }
+    public static class TestLuaWrap
+    {
+        public static void Register(LuaState L)
+        {
+            L.BeginStaticLibs("TestLua");
+            L.RegFunction("Test", Test);
+            L.RegFunction("TestCreateGameObject", TestCreateGameObject);
+            L.RegFunction("TestSetPosition", TestSetPosition);
+            L.EndStaticLibs();
+        }
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int Test(System.IntPtr L)
+        {
+            try
+            {
+                ToLua.CheckArgsCount(L, 1);
+              
+                int arg0 = (int)LuaDLL.luaL_checknumber(L, 1);
+
+                TestLua.Test(arg0);
+                return 0;
+            }
+            catch (System.Exception e)
+            {
+                return LuaDLL.toluaL_exception(L, e);
+            }
+        }
+
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int TestCreateGameObject(System.IntPtr L)
+        {
+            try
+            {
+                ToLua.CheckArgsCount(L, 1);
+
+                int arg0 = (int)LuaDLL.luaL_checknumber(L, 1);
+
+                int index = TestLua.TestCreateGameObject(arg0);
+                LuaDLL.lua_pushinteger(L, index);
+                return 1;
+            }
+            catch (System.Exception e)
+            {
+                return LuaDLL.toluaL_exception(L, e);
+            }
+        }
+
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int TestSetPosition(System.IntPtr L)
+        {
+            try
+            {
+                ToLua.CheckArgsCount(L, 4);
+
+                int arg0 = (int)LuaDLL.luaL_checknumber(L, 1);
+                float arg1 = (float)LuaDLL.luaL_checknumber(L, 2);
+                float arg2 = (float)LuaDLL.luaL_checknumber(L, 3);
+                float arg3 = (float)LuaDLL.luaL_checknumber(L, 4);
+
+                GameObject o = TestLua.Get(arg0);
+                if (o)
+                {
+                    o.transform.position = new Vector3(arg1, arg2, arg3);
+                }
+               
+                return 0;
+            }
+            catch (System.Exception e)
+            {
+                return LuaDLL.toluaL_exception(L, e);
+            }
+        }
+    }
 }

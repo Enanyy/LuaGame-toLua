@@ -86,7 +86,7 @@ function PlayerSkillAnimationPlugin:PlayAnimation()
         
         self.mAnimationInterval = self.mAnimationInterval - Time.deltaTime
         if self.mAnimationInterval < 0 then
-            self.mAnimationInterval = 0.4
+            self.mAnimationInterval = 0.2
             --if self.mAnimation and self.mAnimation.isPlaying == false then
                 --这句产生GC
                 if  self.mAnimation:IsPlaying(self.mAnimationClip) == false

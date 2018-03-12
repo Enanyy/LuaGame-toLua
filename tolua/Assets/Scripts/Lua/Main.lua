@@ -28,11 +28,14 @@ function Main:AssetMode()
 	return assetmode
 end
 
-function Main:Start()		
-	--self:TestSetPosition()
-	--self:TestSetPosition1()
-	 		
+function Main:Start()
+	--[[	
+	self:TestSetPosition()
+	self:TestSetPosition1()
+	self:TestSetPosition2()
+	 	--]]		
 	print("Main start")
+	
 	LuaGame.Log(AssetManager.GetAssetBundlePath())
 	--初始化资源管理器
 	AssetManager:Initialize()
@@ -45,9 +48,15 @@ function Main:Start()
 	SceneMachine:Initialize()
 
 	--添加Lua逻辑更新
-	UpdateBeat:Add(Main.Update,self)	 		
-	LateUpdateBeat:Add(Main.LateUpate,self)	 		
-	FixedUpdateBeat:Add(Main.FixedUpdate,self)	 	
+
+	self.update = UpdateBeat:CreateListener(self.Update,self)		
+	self.lateUpate = LateUpdateBeat:CreateListener(Main.LateUpate,self)	 		
+	self.fixedUpdate = FixedUpdateBeat:CreateListener(Main.FixedUpdate,self)	 	
+	
+	UpdateBeat:AddListener(self.update)
+	LateUpdateBeat:AddListener(self.lateUpate)
+	FixedUpdateBeat:AddListener(self.fixedUpdate)
+
 
 	self:TestSocketClient()
 
@@ -347,6 +356,24 @@ function Main:TestSetPosition1()
 	for i = 1, 1000000 do
 		go.transform.position = Vector3.zero
 	end
+
+	print(os.clock() - time)
+
+end
+
+function Main:TestSetPosition2()
+
+
+	local index = TestLua.TestCreateGameObject(1000)
+	local TestSetPosition = TestLua.TestSetPosition
+	local time = os.clock()
+
+	for i = 1, 1000000 do
+		TestSetPosition(index, 0,0,0)
+	end
+
+
+	
 
 	print(os.clock() - time)
 
