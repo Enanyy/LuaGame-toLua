@@ -9,6 +9,7 @@ function Ahri_PlayerEffectFollowPlugin:ctor(name)
     self.mDistance = 10
     
     self.mParent = nil
+    self.mWeapon = nil
     self.mGo = nil
     self.mLockPlayerCharacter = nil
 
@@ -39,15 +40,23 @@ end
 
 function Ahri_PlayerEffectFollowPlugin:OnEnter()
 
-    if self.mGo == nil then
+    if self.mWeapon == nil then
 
-        self.mGo = self.machine.mPlayerCharacter.mFashionWeapon.mWeapon
+        self.mWeapon = self.machine.mPlayerCharacter.mFashionWeapon.mWeapon
       
     end
     if self.mParent == nil then
         self.mParent = self.machine.mPlayerCharacter.mFashionBody.mBody.transform:Find(self.machine.mPlayerCharacter.mPlayerInfo.weaponBone)
 
     end
+
+    if self.mGo == nil then
+        self.mGo = Instantiate(self.mWeapon)
+        self.mGo.name = self.mPlayerSkillState.mPlayerSkillType
+        SetParent(self.mGo, self.mParent)
+        SetScale(self.mGo, GetScale(self.mWeapon))
+    end
+
 
     if self.mBehaviour == nil then
 
@@ -61,12 +70,16 @@ function Ahri_PlayerEffectFollowPlugin:OnEnter()
 
     self.mBehaviour:Init(self)
 
-    self:ClearEffectState()
+    
+
     if self.mGo then
-        self.mGo.transform:SetParent(nil)
+        SetParent(self.mGo, nil)
         
-        self.mGo:SetActive(false)
+        SetActive(self.mGo, false)
     end
+
+    SetActive(self.mWeapon, false)
+    
 
     self.mStateEnd = false
 
@@ -90,7 +103,6 @@ end
 
 function Ahri_PlayerEffectFollowPlugin:OnBegin()
     
-    self:ClearEffectState()
     if self.mGo == nil then
         return
     end
@@ -98,9 +110,8 @@ function Ahri_PlayerEffectFollowPlugin:OnBegin()
     self.mEffectEnd = false
     self.mFollow = false
 
-    self:Reset()
-    self.mGo.transform:SetParent(nil)
-    self.mGo:SetActive(true)
+    SetParent(self.mGo, nil)
+    SetActive(self.mGo,true)
     self.mOriginalPosition = self.mParent.position
     self.mBehaviour.enabled = true
 
@@ -157,7 +168,7 @@ function Ahri_PlayerEffectFollowPlugin:OnExecute()
 
     if self.mFollow and self.mLockPlayerCharacter then
        
-        self.mGo:SetActive(true)
+        SetActive(self.mGo, true)
         
        
         self.mTargetPosition = GetPosition(self.mLockPlayerCharacter.gameObject,self.mTargetPosition)
@@ -172,7 +183,7 @@ function Ahri_PlayerEffectFollowPlugin:OnExecute()
             local position = self.mPosition + direction.normalized * self.mSpeed * Time.deltaTime
             SetPosition(self.mGo, position)
         else
-            self.mGo:SetActive(false)
+            SetActive( self.mGo, false)
             self.mFollow = false
             self.mPlayerEffectState.isPlaying = false    
 
@@ -213,8 +224,10 @@ function Ahri_PlayerEffectFollowPlugin:Reset()
     if self.mGo then
         SetParent(self.mGo,self.mParent)
         SetLocalPosition(self.mGo, Vector3.zero)
-        self.mGo:SetActive(true)
+        SetActive(self.mGo,false)
     end
+
+    SetActive(self.mWeapon,true)
    
     if self.mBehaviour then
         self.mBehaviour.enabled = false
@@ -256,30 +269,6 @@ function Ahri_PlayerEffectFollowPlugin:OnTriggerEnter(other)
 
     if fashionBody.mPlayerCharacter.mPlayerInfo.guid ~= self.machine.mPlayerCharacter.mPlayerInfo.guid then
         --print(fashionBody.mPlayerCharacter.mPlayerInfo.guid)
-    end
-
-end
-
----因为要控制阿狸的法球，所以要退出其他控制法球的特效状态
-function Ahri_PlayerEffectFollowPlugin:ClearEffectState()
-
-    local list = {}
-
-    for i,v in ipairs(self.machine.mPlayerCharacter.mEffectMachine.mEffectStateList) do
-     
-        if  v.mPlayerSkillState.mPlayerSkillType == PlayerSkillType.Attack_1 or
-            v.mPlayerSkillState.mPlayerSkillType == PlayerSkillType.Attack_2 or
-            v.mPlayerSkillState.mPlayerSkillType == PlayerSkillType.Attack_3 or
-            v.mPlayerSkillState.mPlayerSkillType == PlayerSkillType.Skill_1  or
-            v.mPlayerSkillState.mPlayerSkillType == PlayerSkillType.Skill_3 then
-        
-            table.insert( list, v )
-        end
-
-    end
-
-    for i,v in ipairs(list) do
-        self.machine.mPlayerCharacter.mEffectMachine:Remove(v)
     end
 
 end

@@ -13,6 +13,7 @@ function Ahri_PlayerEffectMoveAndBackPlugin:ctor(name)
     self.mDone = false  
     
     self.mParent = nil
+    self.mWeapon = nil    
     self.mGo = nil
 
     self.mStateEnd = false
@@ -42,14 +43,21 @@ end
 
 function Ahri_PlayerEffectMoveAndBackPlugin:OnEnter()
     
-    if self.mGo == nil then
+    if self.mWeapon == nil then
 
-        self.mGo = self.machine.mPlayerCharacter.mFashionWeapon.mWeapon
-
+        self.mWeapon = self.machine.mPlayerCharacter.mFashionWeapon.mWeapon
+      
     end
     if self.mParent == nil then
         self.mParent = self.machine.mPlayerCharacter.mFashionBody.mBody.transform:Find(self.machine.mPlayerCharacter.mPlayerInfo.weaponBone)
 
+    end
+
+    if self.mGo == nil then
+        self.mGo = Instantiate(self.mWeapon)
+        self.mGo.name = self.mPlayerSkillState.mPlayerSkillType
+        SetParent(self.mGo, self.mParent)
+        SetScale(self.mGo, GetScale(self.mWeapon))
     end
 
     if self.mBehaviour == nil then
@@ -63,14 +71,14 @@ function Ahri_PlayerEffectMoveAndBackPlugin:OnEnter()
 
     self.mBehaviour:Init(self)
 
-    --先退出其他控制法球的特效状态
-    self:ClearEffectState()
  
     if self.mGo then
         SetParent(self.mGo,nil)
         
-        self.mGo:SetActive(false)
+        SetActive(self.mGo,false)
     end
+
+    SetActive(self.mWeapon,false)
 
     self.mStateEnd = false
 
@@ -100,7 +108,7 @@ function Ahri_PlayerEffectMoveAndBackPlugin:OnBegin()
     self.mDone = false 
     
     SetParent(self.mGo,nil)
-    self.mGo:SetActive(true)
+    SetActive(self.mGo,true)
     self.mBehaviour.enabled = true
 
     self.mOriginalPosition = self.mParent.position
@@ -156,13 +164,15 @@ function Ahri_PlayerEffectMoveAndBackPlugin:OnExecute()
 
         local direction = self.mParent.position - self.mPosition
 
-        self.mRotation=GetRotation(self.mGo,self.mRotation)
+        local distance =  direction.magnitude
+       
+        self.mRotation= GetRotation(self.mGo,self.mRotation)
 
-        self.mRotation =Slerp (self.mRotation,  LookRotation(direction), Time.deltaTime * 20);
+        self.mRotation = Slerp (self.mRotation,  LookRotation(direction), Time.deltaTime * 100);
 
         SetRotation(self.mGo, self.mRotation)
-
-        if direction.magnitude > 0.2 then
+        
+        if distance > 0.2 then
 
            
             self.mForward= GetForward(self.mGo,self.mForward)
@@ -211,9 +221,9 @@ function Ahri_PlayerEffectMoveAndBackPlugin:Reset()
     if self.mGo then
         SetParent(self.mGo,self.mParent)
         SetLocalPosition(self.mGo, Vector3.zero)
-        self.mGo:SetActive(true)
+        SetActive(self.mGo,false)
     end
-
+    SetActive(self.mWeapon,true)
     if self.mBehaviour then
         self.mBehaviour.enabled = false
     end
@@ -254,27 +264,4 @@ function Ahri_PlayerEffectMoveAndBackPlugin:OnTriggerEnter(other)
     if fashionBody.mPlayerCharacter.mPlayerInfo.guid ~= self.machine.mPlayerCharacter.mPlayerInfo.guid then
         --print(fashionBody.mPlayerCharacter.mPlayerInfo.guid)
     end
-end
----因为要控制阿狸的法球，所以要退出其他控制法球的特效状态
-function Ahri_PlayerEffectMoveAndBackPlugin:ClearEffectState()
-
-    local list = {}
-
-    for i,v in ipairs(self.machine.mPlayerCharacter.mEffectMachine.mEffectStateList) do
-     
-        if  v.mPlayerSkillState.mPlayerSkillType == PlayerSkillType.Attack_1 or
-            v.mPlayerSkillState.mPlayerSkillType == PlayerSkillType.Attack_2 or
-            v.mPlayerSkillState.mPlayerSkillType == PlayerSkillType.Attack_3 or
-            v.mPlayerSkillState.mPlayerSkillType == PlayerSkillType.Skill_1  or
-            v.mPlayerSkillState.mPlayerSkillType == PlayerSkillType.Skill_3 then
-        
-            table.insert( list, v )
-        end
-
-    end
-
-    for i,v in ipairs(list) do
-        self.machine.mPlayerCharacter.mEffectMachine:Remove(v)
-    end
-
 end
