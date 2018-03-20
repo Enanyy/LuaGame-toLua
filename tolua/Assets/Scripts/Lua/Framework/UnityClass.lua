@@ -69,6 +69,9 @@ KeyCode = UnityEngine.KeyCode
 Queue = System.Collections.Queue
 Stack  = System.Collections.Stack
 
+------------------------------------------function Begin -------------------------------------
+Instantiate = GameObject.Instantiate
+
 
 ------------------------------------------Helper Begin-----------------------------------------
 local _GetPosition = Helper.GetPosition
@@ -91,6 +94,7 @@ local _GetForward = Helper.GetForward
 local _SetParent = Helper.SetParent
 local _AddComponent = Helper.AddComponent
 local _GetComponent = Helper.GetComponent
+local _SetActive = Helper.SetActive
 
 function GetPosition(go, position)
     local pos = position or  Vector3.New(0,0,0)
@@ -212,6 +216,14 @@ function GetComponent(go, component)
 
     return _GetComponent(go, component)
 
+end
+
+function SetActive(go, active)
+    if active then
+        _SetActive(go, 1)
+    else
+        _SetActive(go, 0)
+    end
 end
 
 ------------------------------------------Helper End-------------------------------------------
