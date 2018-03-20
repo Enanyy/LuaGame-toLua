@@ -93,14 +93,10 @@ Shader "Camera/BlurEffect"
 	{
 		//像素位置坐标
 		float4 pos : SV_POSITION;
-		//一级纹理坐标（右上）
-		half2 uv20 : TEXCOORD0;
-		//二级纹理坐标（左下）
-		half2 uv21 : TEXCOORD1;
-		//三级纹理坐标（右下）
-		half2 uv22 : TEXCOORD2;
-		//四级纹理坐标（左上）
-		half2 uv23 : TEXCOORD3;
+		//xy保存左上，zw保存左下
+		half4 uv_left:TEXCOORD0;
+		//xy保存右上，zw保存右下
+		half4 uv_right:TEXCOORD1;
 	};
 
 
@@ -127,10 +123,10 @@ Shader "Camera/BlurEffect"
 		//将三维空间中的坐标投影到二维窗口  
 		o.pos = mul(UNITY_MATRIX_MVP, v.vertex);
 		//对图像的降采样：取像素上下左右周围的点，分别存于四级纹理坐标中
-		o.uv20 = v.texcoord + _MainTex_TexelSize.xy* half2(0.5h, 0.5h);;
-		o.uv21 = v.texcoord + _MainTex_TexelSize.xy * half2(-0.5h, -0.5h);
-		o.uv22 = v.texcoord + _MainTex_TexelSize.xy * half2(0.5h, -0.5h);
-		o.uv23 = v.texcoord + _MainTex_TexelSize.xy * half2(-0.5h, 0.5h);
+		o.uv_left.xy = v.texcoord + _MainTex_TexelSize.xy* half2(0.5h, 0.5h);;//左上
+		o.uv_left.zw = v.texcoord + _MainTex_TexelSize.xy * half2(-0.5h, -0.5h);//左下
+		o.uv_right.xy = v.texcoord + _MainTex_TexelSize.xy * half2(0.5h, -0.5h);//右上
+		o.uv_right.zw = v.texcoord + _MainTex_TexelSize.xy * half2(-0.5h, 0.5h);//右下
 
 		//【6.3】返回最终的输出结果
 		return o;
@@ -142,14 +138,14 @@ Shader "Camera/BlurEffect"
 		//【7.1】定义一个临时的颜色值
 		fixed4 color = (0,0,0,0);
 
-	//【7.2】四个相邻像素点处的纹理值相加
-	color += tex2D(_MainTex, i.uv20);
-	color += tex2D(_MainTex, i.uv21);
-	color += tex2D(_MainTex, i.uv22);
-	color += tex2D(_MainTex, i.uv23);
+		//【7.2】四个相邻像素点处的纹理值相加
+		color += tex2D(_MainTex, i.uv_left.xy);
+		color += tex2D(_MainTex, i.uv_left.zw);
+		color += tex2D(_MainTex, i.uv_right.xy);
+		color += tex2D(_MainTex, i.uv_right.zw);
 
-	//【7.3】返回最终的平均值
-	return color / 4;
+		//【7.3】返回最终的平均值
+		return color / 4;
 	}
 
 		//【8】顶点输入结构体 || Vertex Input Struct
@@ -158,7 +154,7 @@ Shader "Camera/BlurEffect"
 		//像素坐标
 		float4 pos : SV_POSITION;
 		//一级纹理（纹理坐标）
-		half4 uv : TEXCOORD0;
+		half2 uv : TEXCOORD0;
 		//二级纹理（偏移量）
 		half2 offset : TEXCOORD1;
 	};
@@ -173,7 +169,7 @@ Shader "Camera/BlurEffect"
 		//将三维空间中的坐标投影到二维窗口  
 		o.pos = mul(UNITY_MATRIX_MVP, v.vertex);
 		//纹理坐标
-		o.uv = half4(v.texcoord.xy, 1, 1);
+		o.uv = v.texcoord.xy;
 		//计算X方向的偏移量
 		o.offset = _MainTex_TexelSize.xy * half2(1.0, 0.0) * _DownSampleValue;
 
@@ -191,7 +187,7 @@ Shader "Camera/BlurEffect"
 		//将三维空间中的坐标投影到二维窗口  
 		o.pos = mul(UNITY_MATRIX_MVP, v.vertex);
 		//纹理坐标
-		o.uv = half4(v.texcoord.xy, 1, 1);
+		o.uv = v.texcoord.xy;
 		//计算Y方向的偏移量
 		o.offset = _MainTex_TexelSize.xy * half2(0.0, 1.0) * _DownSampleValue;
 
