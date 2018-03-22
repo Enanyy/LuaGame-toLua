@@ -66,20 +66,25 @@
 
 			fixed4 frag(v2f i):SV_Target
 			{
+				//屏幕坐标原点是左上角，转换一下
 #if UNITY_UV_START_AT_TOP
 				if (_MainTex_TexelSize.y < 0)
 				{
 					_Center.y = 1 - _Center.y;
 				}
 #endif
+				
+				//像素uv对应水波中心点的方向，向内缩紧则 i.uv - _Center.xy
 				float2 direction = _Center.xy - i.uv;
 
+				//按照屏幕比例缩放
 				direction = direction * float2(_ScreenParams.x / _ScreenParams.y, 1);
 
+				//计算像素点到水波中心的距离
 				float distance = sqrt(direction.x * direction.x + direction.y * direction.y);
-
+				//使用sin计算出当前时间的偏移度[-1,1]
 				float factor = sin(distance * _DistanceFactor + _Time.y * _TimeFacttor) *_TotalFactor * 0.01;
-
+				//根据偏移度计算偏移
 				float2 offset = normalize(direction) * factor * clamp(_Width - abs(_WaveDistance - distance), 0, 1) / _Width;
 
 				fixed4 color = tex2D(_MainTex, i.uv + offset);
