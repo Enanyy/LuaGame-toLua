@@ -73,13 +73,14 @@
 				}
 #endif
 				float2 direction = _Center.xy - i.uv;
+
 				direction = direction * float2(_ScreenParams.x / _ScreenParams.y, 1);
 
 				float distance = sqrt(direction.x * direction.x + direction.y * direction.y);
 
 				float factor = sin(distance * _DistanceFactor + _Time.y * _TimeFacttor) *_TotalFactor * 0.01;
 
-				float offset = normalize(direction) * factor * clamp(_Width - abs(_WaveDistance - distance), 0, 1) / _Width;
+				float2 offset = normalize(direction) * factor * clamp(_Width - abs(_WaveDistance - distance), 0, 1) / _Width;
 
 				fixed4 color = tex2D(_MainTex, i.uv + offset);
 				
