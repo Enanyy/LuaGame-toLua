@@ -94,5 +94,18 @@ function PlayerEffectMachine:Clear()
 
 end
 
+function PlayerEffectMachine:IsPlaying(skillType)
 
+    if skillType == nil then
+        return false
+    end
 
+    for i,v in ipairs(self.mEffectStateList) do
+      
+        if v.mPlayerSkillState.mSkillType == skillType then
+            return true
+        end
+    end
+
+    return false
+end

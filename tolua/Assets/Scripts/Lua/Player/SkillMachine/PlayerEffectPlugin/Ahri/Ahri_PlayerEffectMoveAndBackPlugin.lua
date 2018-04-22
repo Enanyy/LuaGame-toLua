@@ -223,7 +223,13 @@ function Ahri_PlayerEffectMoveAndBackPlugin:Reset()
         SetLocalPosition(self.mGo, Vector3.zero)
         SetActive(self.mGo,false)
     end
-    SetActive(self.mWeapon,true)
+    if  (not self.mEffectMachine:IsPlaying(PlayerSkillType.Skill_3))  and 
+        (not self.mEffectMachine:IsPlaying(PlayerSkillType.Attack_1)) and 
+        (not self.mEffectMachine:IsPlaying(PlayerSkillType.Attack_2)) and
+        (not self.mEffectMachine:IsPlaying(PlayerSkillType.Attack_3))
+    then
+        SetActive(self.mWeapon,true)
+    end
     if self.mBehaviour then
         self.mBehaviour.enabled = false
     end

@@ -109,8 +109,8 @@ function Main:CreatePlayer()
 		
 		local tmpPlayerInfo = PlayerInfo.new(i)
 		tmpPlayerInfo.guid = i
-		tmpPlayerInfo.position = Vector3.New(4+0.2*i,0, 8+0.2*i)
-		tmpPlayerInfo.direction = Vector3.New(0, -120, 0)
+		tmpPlayerInfo.position = Vector3.New(4+2*i,0, 8+3*i)
+		tmpPlayerInfo.direction = Vector3.New(0, -120+ i*10, 0)
 		tmpPlayerInfo.baseSpeed = 6
 		tmpPlayerInfo.moveSpeedAddition = 0.3
 		tmpPlayerInfo.character = "Ahri"

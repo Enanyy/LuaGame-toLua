@@ -1,5 +1,6 @@
 require("io")
 
+
 File = {}
 
 function File.Exists(path)
@@ -7,5 +8,7 @@ function File.Exists(path)
     if file then
         file:close()
     end
+    
     return file ~= nil
 end
+

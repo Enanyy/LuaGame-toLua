@@ -1870,7 +1870,7 @@ static public class NGUITools
 
 			if (mSizeFrame != frame || !Application.isPlaying)
 			{
-				UnityEngine.Profiler.BeginSample("Editor-only GC allocation (NGUITools.screenSize)");
+				UnityEngine.Profiling.Profiler.BeginSample("Editor-only GC allocation (NGUITools.screenSize)");
 				mSizeFrame = frame;
 
 				if (s_GetSizeOfMainGameView == null && !mCheckedMainViewFunc)
@@ -1904,7 +1904,7 @@ static public class NGUITools
 					mGameSize = s_GetSizeOfMainGameView();
 				}
 				else mGameSize = new Vector2(Screen.width, Screen.height);
-				UnityEngine.Profiler.EndSample();
+				UnityEngine.Profiling.Profiler.EndSample();
 			}
 			return mGameSize;
 		}

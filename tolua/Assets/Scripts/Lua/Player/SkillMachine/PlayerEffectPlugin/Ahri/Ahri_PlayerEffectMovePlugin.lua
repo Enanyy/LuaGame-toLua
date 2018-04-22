@@ -129,12 +129,8 @@ function Ahri_PlayerEffectMovePlugin:OnBegin()
         self.mTween = Tweener.new()
         self.mTween.method = TweenerMethod.EaseOut
         self.mTween.onFinished = function() 
-            if self.mStateEnd and self.mEffectEnd then
-                self:Reset()
-            else
-                SetActive(self.mGo,false)
-                self.mPlayerEffectState.isPlaying = false   
-            end
+            
+            self.mPlayerEffectState.isPlaying = false  
         end
         self.mTween.onUpdate = function (factor, isFinished)
 
@@ -186,8 +182,16 @@ function Ahri_PlayerEffectMovePlugin:Reset()
         SetLocalPosition(self.mGo, Vector3.zero)
         SetActive(self.mGo,false)
     end
+    
 
-    self.mWeapon:SetActive(true)
+    if  (not self.mEffectMachine:IsPlaying(PlayerSkillType.Skill_1))  and 
+        (not self.mEffectMachine:IsPlaying(PlayerSkillType.Attack_1)) and 
+        (not self.mEffectMachine:IsPlaying(PlayerSkillType.Attack_2)) and
+        (not self.mEffectMachine:IsPlaying(PlayerSkillType.Attack_3))
+    then
+        SetActive(self.mWeapon, true)
+    end
+    
    
     if self.mBehaviour then
         self.mBehaviour.enabled = false

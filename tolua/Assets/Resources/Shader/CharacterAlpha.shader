@@ -1,3 +1,5 @@
+// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
 Shader "CharacterAlpha" {
 Properties {
 		_MainTex ("Albedo (RGB)", 2D) = "white" {}
@@ -36,7 +38,7 @@ Properties {
 	        v2f vert(appdata_t i){
 	            v2f o;
 				UNITY_INITIALIZE_OUTPUT(v2f, o);
-	            o.vertex = mul(UNITY_MATRIX_MVP,i.vertex);
+	            o.vertex = UnityObjectToClipPos(i.vertex);
 	            o.texcoord = TRANSFORM_TEX(i.texcoord,_MainTex).xy;
 	            return o;
 	        }

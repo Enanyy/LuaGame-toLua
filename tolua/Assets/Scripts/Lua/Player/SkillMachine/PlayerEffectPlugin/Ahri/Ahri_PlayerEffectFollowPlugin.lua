@@ -111,12 +111,13 @@ function Ahri_PlayerEffectFollowPlugin:OnBegin()
     self.mFollow = false
 
     SetParent(self.mGo, nil)
-    SetActive(self.mGo,true)
+    SetActive(self.mGo, true)
+
     self.mOriginalPosition = self.mParent.position
     self.mBehaviour.enabled = true
 
     local go = self.machine.mPlayerCharacter.gameObject
-    local direction =GetForward(go)
+    local direction = GetForward(go)
 
     self.mPosition = GetPosition(go,self.mPosition)
 
@@ -148,7 +149,7 @@ function Ahri_PlayerEffectFollowPlugin:OnBegin()
                 if self.mStateEnd and self.mEffectEnd then
                     self:Reset()
                 else
-                    self.mGo:SetActive(false)
+                    SetActive(self.mGo, false)
                     self.mPlayerEffectState.isPlaying = false   
                 end
             end
@@ -227,7 +228,11 @@ function Ahri_PlayerEffectFollowPlugin:Reset()
         SetActive(self.mGo,false)
     end
 
-    SetActive(self.mWeapon,true)
+    if (not self.mEffectMachine:IsPlaying(PlayerSkillType.Skill_1)) and 
+        (not self.mEffectMachine:IsPlaying(PlayerSkillType.Skill_3))
+    then
+        SetActive(self.mWeapon,true)
+    end
    
     if self.mBehaviour then
         self.mBehaviour.enabled = false

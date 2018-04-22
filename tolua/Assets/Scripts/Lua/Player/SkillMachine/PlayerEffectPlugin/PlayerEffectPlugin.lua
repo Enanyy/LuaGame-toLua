@@ -17,6 +17,9 @@ function PlayerEffectPlugin:SetPlayerEffectMachine(effectMachine)
     
     self.mEffectMachine = effectMachine
 
+    if self.mEffectMachine ==nil then
+        print("mEffectMachine nil")
+    end
 end
 
 --特效开始显示
