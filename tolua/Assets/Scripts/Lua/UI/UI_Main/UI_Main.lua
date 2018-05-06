@@ -5,7 +5,7 @@ require("BaseWindow")
 UI_Main = Class(BaseWindow)
 local this = UI_Main
 
-function this:ctor(behaviour, path)
+function this:ctor(path)
     self.path  = path
     self.windowType = WindowType.Root --主界面
     self.useMask = false 

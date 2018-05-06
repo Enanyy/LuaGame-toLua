@@ -30,18 +30,13 @@ end
 
 function Main:Start()
 		
-	print("Main start")
-	
 	LuaGame.Log(AssetManager.GetAssetBundlePath())
 	--初始化资源管理器
 	AssetManager:Initialize()
-
-	
 	--初始化窗口管理器
 	WindowManager:Initialize()
 	--初始化人物管理器
 	PlayerManager:Initialize()
-
 	--初始化场景状态机
 	SceneMachine:Initialize()
 
@@ -161,28 +156,7 @@ end
 --测试创建GameObject
 function Main:TestGameObject()
 
-    LuaGame.DoFile("UI_Main")
-	
-	local mainGo = GameObject('UI_Main')
-	local mainBehaviour = mainGo:AddComponent(typeof(LuaBehaviour))
-	local mainUI = UI_Main.new()
-	mainUI.data = "AAAAAAA"
-
-	mainBehaviour:Init(mainUI)
-
-	local mainGo1 = GameObject('UI_Main1')
-	local mainBehaviour1 = mainGo1:AddComponent(typeof(LuaBehaviour))
-	local mainUI1 = UI_Main.new()
-	mainUI1.data = "BBBBBBB"
-	mainBehaviour1:Init(mainUI1)
-
-	
-	
-	if mainUI ~= mainUI1 then
-		print("mainUI!=mainUI1")
-	else
-		print("mainUI==mainUI1")
-	end
+   
 
 end
 

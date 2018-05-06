@@ -5,13 +5,9 @@ require("BaseWindow")
 UI_PopWindow = Class(BaseWindow)
 local this = UI_PopWindow
 
-function this:ctor(behaviour, path)
+function this:ctor( path)
     self.path  = path
     self.windowType = WindowType.Pop --弹出行界面
-
-    self.base = BaseWindow.new(behaviour, self.path, self.windowType)
-
-
 end
 
 function this:Awake()
@@ -45,9 +41,11 @@ function this:Start()
 end
 
 function this:OnEnter()
-    if self.base then
-        self.base:OnEnter()
-    end
+    self.panel = self.transform:GetComponent(typeof(UIPanel))
+
+    self.base = BaseWindow.new(self.path, self.windowType)
+    self.base:Init(self.behaviour)
+    self.base:OnEnter()
 end
 
 function this:OnPause()

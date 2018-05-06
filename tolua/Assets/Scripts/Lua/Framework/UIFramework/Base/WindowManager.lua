@@ -19,9 +19,7 @@ function  WindowManager:Initialize()
         local go = GameObject('WindowManager')     
         GameObject.DontDestroyOnLoad(go)
 
-        local behaviour = go:AddComponent(typeof(LuaBehaviour))  
-        behaviour:Init(self)
-        self:Init(behaviour)
+        local behaviour =  AddLuaBehaviour(go, "WindowManager", self)
         
         local p = NGUITools.CreateUI(false)
         p.transform:SetParent(behaviour.transform)
@@ -150,16 +148,16 @@ function WindowManager:Open(class, name, callback)
                     tran.localRotation = Quaternion.identity
                     tran.localScale = Vector3.one
 
+                    local reference = AssetReference.new(tmpAssetBundleName, path)
+
+                    local behaviour = AddLuaBehaviour(tran.gameObject, "AssetReference", reference)
+
                     tran.gameObject:SetActive(true)
 
-                    local behaviour = tran:GetComponent(typeof(LuaBehaviour))
-                    if behaviour == nil then
-                        behaviour = tran.gameObject:AddComponent(typeof(LuaBehaviour))
-                    end
+                 
+                    t = class.new(path)
 
-                    t = class.new(behaviour, path)
-
-                    behaviour:Init(t)
+                    behaviour:AddLuaTable(name, t)
 
                     if  t.windowType == WindowType.Root then
                     

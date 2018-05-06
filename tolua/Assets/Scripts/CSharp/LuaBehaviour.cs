@@ -11,71 +11,75 @@ public class LuaBehaviour : MonoBehaviour
     /// 构造函数->Awake->OnEnable->Init->Start
     /// 所以要在Init后再调用一次Awake和OnEnable
 
-    private LuaTable mLuaTable;
     private Dictionary<string, LuaFunction> mButtons = new Dictionary<string, LuaFunction>();
+    [SerializeField]
+    private Dictionary<string, LuaTable> mLuaTables = new Dictionary<string, LuaTable>();
 
-    public LuaTable luaTable {
-        get { return mLuaTable; }
-    }
-
+    bool mStart = false;
     public LuaBehaviour()
     {
-        //LuaGame.DoFile(string.Format("{0}.lua", name));
+        
     }
 
-    protected void Awake()
+    void CallFunction(string name)
     {
-        if (mLuaTable != null)
+        var it = mLuaTables.GetEnumerator();
+        while (it.MoveNext())
         {
-            mLuaTable.Call("Awake", mLuaTable);
-        }
-    }
-    protected void OnEnable()
-    {
-        if (mLuaTable != null)
-        {
-            mLuaTable.Call("OnEnable", mLuaTable);
-        }
-    }
-
-
-
-    public void Init(LuaTable table)
-    {
-        if (mLuaTable!=null)
-        {
-            mLuaTable.Dispose();
-            mLuaTable = null;
-        }
-
-        mLuaTable = table;
-
-        if (mLuaTable != null)
-        {
-            mLuaTable.Call("Init", mLuaTable, this);
-
-            //再调用一次Awake和OnEnable以通知Lua的Awake和OnEnable
-            Awake();
-            OnEnable();
-        }
-    }
-
-    protected void Start()
-    {
-        if (mLuaTable != null)
-        {
-            mLuaTable.Call("Start", mLuaTable);
+            LuaTable table = it.Current.Value;
+            if (table != null)
+            {
+                table.Call(name, table);
+            }
         }
     }
 
 
-
-    protected void OnDisable()
+    public void AddLuaTable(string name, LuaTable table)
     {
-        if (mLuaTable != null)
+        if (string.IsNullOrEmpty(name) || table == null)
         {
-            mLuaTable.Call("OnDisable", mLuaTable);
+            return;
         }
+
+        if (mLuaTables.ContainsKey(name) == false)
+        {
+            mLuaTables.Add(name, table);
+            table.Call("Init", table, this);
+            table.Call("Awake", table);
+            table.Call("OnEnable", table);
+
+            if (mStart)
+            {
+                table.Call("Start", table);
+            }
+        }
+    }
+
+    public LuaTable GetLuaTable(string name)
+    {
+        LuaTable table;
+        mLuaTables.TryGetValue(name, out table);
+        return table;
+    }
+
+   
+
+    void Start()
+    {
+        mStart = true;
+        CallFunction("Start");
+    }
+
+    void OnEnable()
+    {
+        CallFunction("OnEnable");
+    }
+
+
+    void OnDisable()
+    {
+        CallFunction("OnDisable");
     }
 
     public void AddClick(GameObject go, LuaFunction luafunc)
@@ -123,22 +127,20 @@ public class LuaBehaviour : MonoBehaviour
     protected void OnDestroy()
     {
         ClearClick();
+
+        CallFunction("OnDestroy");
+
         Debug.Log("~" + name + " was destroy!");
 
-        if (mLuaTable != null)
-        {
-            mLuaTable.Call("OnDestroy", mLuaTable);
-
-            mLuaTable.Dispose();
-            mLuaTable = null;
-        }
     }
 
     void OnTriggerEnter(Collider other)
     {
-        if (mLuaTable != null)
+        var it = mLuaTables.GetEnumerator();
+        while(it.MoveNext())
         {
-            mLuaTable.Call("OnTriggerEnter", mLuaTable, other);
+            LuaTable table = it.Current.Value;
+            table.Call("OnTriggerEnter", table, other);
         }
     }
 }

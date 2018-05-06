@@ -157,7 +157,7 @@ function PlayerInput:OnClick(gameObject)
         return
     end
 
-    local fashionBody = behaviour.luaTable
+    local fashionBody = behaviour:GetLuaTable("FashionBody")
     if fashionBody == nil or  fashionBody.mPlayerCharacter == nil then
 
         return 

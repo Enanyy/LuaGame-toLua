@@ -60,15 +60,12 @@ function Ahri_PlayerEffectFollowPlugin:OnEnter()
 
     if self.mBehaviour == nil then
 
-        self.mBehaviour = self.mGo:GetComponent(typeof(LuaBehaviour))
-        if self.mBehaviour == nil then
-            self.mBehaviour = self.mGo:AddComponent(typeof(LuaBehaviour))
-        end
+        self.mBehaviour = AddLuaBehaviour(self.mGo, "Ahri_PlayerEffectFollowPlugin", self )
+       
         self.mBehaviour.enabled = false
 
     end
 
-    self.mBehaviour:Init(self)
 
     
 
@@ -266,7 +263,7 @@ function Ahri_PlayerEffectFollowPlugin:OnTriggerEnter(other)
         return
     end
 
-    local fashionBody = behaviour.luaTable
+    local fashionBody = behaviour:GetLuaTable("FashionBody")
     if fashionBody == nil or fashionBody.mPlayerCharacter == nil then
 
         return 

@@ -5,13 +5,8 @@
 BehaviourBase = Class()
 
 ---构造函数 Class函数构造调用
-function BehaviourBase:ctor(behaviour)
-    self.behaviour = behaviour or nil                     ---保存C# LuaBehaviour类的对象
-    if self.behaviour then 
-        self.gameObject = self.behaviour.gameObject 
-        self.transform = self.behaviour.transform
-    end
-    
+function BehaviourBase:ctor()
+   
 
 end
 

@@ -51,6 +51,8 @@ function LoadedAssetBundle:AddReference(varReference)
         table.insert( self.mReferenceList, varReference)
 
     end
+
+    print("AddReference ".. self.mAssetBundleName .." referenceCount:"..self:GetReferenceCount())
 end
 
 function LoadedAssetBundle:RemoveReference(varReference)
@@ -61,11 +63,12 @@ function LoadedAssetBundle:RemoveReference(varReference)
 
     for i = self:GetReferenceCount(), 1, -1 do
       
-        if v == varReference  or v == nil then
+        local reference = self.mReferenceList[i]
+        if reference == nil or reference == varReference then
             table.remove( self.mReferenceList, i )
         end
     end
-
+    print("RemoveReference " .. self.mAssetBundleName .." referenceCount:"..self:GetReferenceCount())
 end
 
 function LoadedAssetBundle:AddDependence()

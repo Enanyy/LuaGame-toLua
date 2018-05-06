@@ -6,14 +6,9 @@ require("WindowFade")
 UI_FadeWindow = Class(BaseWindow)
 local this = UI_FadeWindow
 
-function this:ctor(behaviour, path)
+function this:ctor(path)
     self.path  = path
     self.windowType = WindowType.Normal --普通界面
-
-    --因为要重写基类的OnPause、OnResume和OnExit方法做一些动画
-    --所以要保存一份基类的对象，以调用基类的方法，因为重写后基类的方法被覆盖了
-    self.base = BaseWindow.new(behaviour, self.path, self.windowType)
-
 
 end
 
@@ -58,6 +53,13 @@ function this:Start()
 end
 
 
+function this:OnEnter()
+    self.panel = self.transform:GetComponent(typeof(UIPanel))
+
+    self.base = BaseWindow.new(self.path, self.windowType)
+    self.base:Init(self.behaviour)
+    self.base:OnEnter()
+end
 
 function this:OnPause()
     self.isPause = true

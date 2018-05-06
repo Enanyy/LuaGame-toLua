@@ -24,13 +24,15 @@ function FashionWeapon:Start()
 
     if tmpWeaponBone == nil then return end
 
-    local tmpPath = string.format("Assets/R/Weapon/%s/%s.prefab",tmpPlayerInfo.character, tmpPlayerInfo.weapon) 
+    local tmpAssetBundleName = "assetbundle.unity3d"
 
-    AssetManager:Load ("assetbundle.unity3d", tmpPath, function(varObject) 
+    local tmpAssetName = string.format("Assets/R/Weapon/%s/%s.prefab",tmpPlayerInfo.character, tmpPlayerInfo.weapon) 
+
+    AssetManager:Load (tmpAssetBundleName, tmpAssetName, function(varObject) 
     
         if varObject then
 
-            local go = GameObject.Instantiate(varObject)
+            local go =AssetManager:Instantiate(tmpAssetBundleName,tmpAssetName, varObject)
 			go:SetActive(true)
           
  
@@ -41,7 +43,7 @@ function FashionWeapon:Start()
             self.mWeapon = go
         
         else
-            print ("FashionWeapon:Start Can't Load :".. tmpPath)
+            print ("FashionWeapon:Start Can't Load :".. tmpAssetBundleName)
         end
 
         if self.mCallback then

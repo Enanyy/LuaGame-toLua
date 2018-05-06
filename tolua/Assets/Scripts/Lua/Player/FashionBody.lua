@@ -27,7 +27,7 @@ function FashionBody:Start()
     
         if varObject then
 
-            local go = AssetManager:Instantiate(tmpAssetBundleName,tmpAssetBundleName, varObject)
+            local go = AssetManager:Instantiate(tmpAssetBundleName,tmpAssetName, varObject)
             go:SetActive(true)
             NGUITools.SetLayer(go, self.gameObject.layer)
             

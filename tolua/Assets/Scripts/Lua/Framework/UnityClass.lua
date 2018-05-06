@@ -227,5 +227,32 @@ function SetActive(go, active)
     end
 end
 
+function AddLuaBehaviour(go, name, lua)
+
+    local behaviour = GetComponent(go, typeof(LuaBehaviour))
+    if behaviour == nil then
+        behaviour = AddComponent(go, typeof(LuaBehaviour))
+    end
+
+    if behaviour:GetLuaTable(name) == nil then
+        
+        lua:Init(behaviour)
+        behaviour:AddLuaTable(name, lua);
+
+    end
+    
+    return behaviour
+
+end
+
+function GetLuaTable(go, name)
+
+    local behaviour = GetComponent(go, typeof(LuaBehaviour))
+    if behaviour ~=nil then
+        return behaviour:GetLuaTable(name)
+    end
+    return  nil
+end
+
 ------------------------------------------Helper End-------------------------------------------
 

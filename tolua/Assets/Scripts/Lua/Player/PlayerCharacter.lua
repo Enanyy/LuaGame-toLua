@@ -51,9 +51,8 @@ function PlayerCharacter:CreateFashionBody()
     SetScale(go, Vector3.one)
 
     self.mFashionBody = FashionBody.new()
-    local behaviour = AddComponent(go,typeof(LuaBehaviour))
-    behaviour:Init(self.mFashionBody)
-    self.mFashionBody:Init(behaviour)
+ 
+    AddLuaBehaviour(go, "FashionBody", self.mFashionBody)
 
 	self.mFashionBody:SetData (self, function (varBody)
 		
@@ -82,9 +81,8 @@ function PlayerCharacter:CreateFashionWeapon()
     SetScale(go, Vector3.one)
 
     self.mFashionWeapon = FashionWeapon.new()
-    local behaviour = AddComponent(go,typeof(LuaBehaviour))
-    behaviour:Init(self.mFashionWeapon)
-    self.mFashionWeapon:Init(behaviour)
+
+    AddLuaBehaviour(go, "FashionWeapon",self.mFashionWeapon)
 
 	self.mFashionWeapon:SetData (self, function (varWeapon)
 		

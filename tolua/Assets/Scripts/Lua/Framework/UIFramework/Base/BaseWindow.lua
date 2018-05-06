@@ -3,14 +3,10 @@ require("BehaviourBase")
 require("WindowType")
 require("UnityClass")
 
-BaseWindow = Class(BehaciourBase)
+BaseWindow = Class(BehaviourBase)
 
-function BaseWindow:ctor(behaviour, path, wondowType)
-   self.behaviour = behaviour
-   self.gameObject = behaviour.gameObject
-   self.transform = behaviour.transform
-   self.panel = self.transform:GetComponent(typeof(UIPanel))
-
+function BaseWindow:ctor(path, wondowType)
+  
    self.path = path
    --window类型
   
@@ -24,7 +20,7 @@ function BaseWindow:OnEnter()
     if self.useMask then
         self:CreateMask()
     end
-       
+    self.panel = self.transform:GetComponent(typeof(UIPanel))
 end
 
 function BaseWindow:CreateMask()

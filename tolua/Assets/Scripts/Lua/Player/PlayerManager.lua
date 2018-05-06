@@ -19,9 +19,7 @@ function  PlayerManager:Initialize()
         local go = GameObject('PlayerManager')     
         GameObject.DontDestroyOnLoad(go)
 
-        local behaviour = AddComponent(go, typeof(LuaBehaviour))  
-        behaviour:Init(self)
-        self:Init(behaviour)
+        AddLuaBehaviour(go, "PlayerManager", self)
 
         self.mPlayerCharacterList = {}           --人物列表
 
@@ -42,11 +40,9 @@ function  PlayerManager:CreatePlayerCharacter(varGuid,  varPlayerInfo, varCallba
         SetLocalRotation(go, Quaternion.identity)
         SetScale(go, Vector3.one)
 
-        local behaviour = AddComponent(go, typeof(LuaBehaviour))
         local tmpPlayerCharacter = PlayerCharacter.new()
-
-        behaviour:Init(tmpPlayerCharacter)
-        tmpPlayerCharacter:Init(behaviour)
+        
+        AddLuaBehaviour(go, "PlayerCharacter",tmpPlayerCharacter)
 
 		tmpPlayerCharacter:CreatePlayerCharacter (varGuid, varPlayerInfo, function()
 
@@ -64,9 +60,7 @@ function  PlayerManager:CreatePlayerCharacter(varGuid,  varPlayerInfo, varCallba
                 self.mSmoothFollow.height = 12
                 self.mSmoothFollow.rotation = Vector3.New(76,0,0)
 
-                local behaviour = AddComponent(camera,typeof(LuaBehaviour))
-                behaviour:Init(self.mSmoothFollow)
-                self.mSmoothFollow:Init(behaviour)
+                AddLuaBehaviour(camera, "SmoothFollow", self.mSmoothFollow )
 
                 self.mCamera.cullingMask = UnityLayer.MakeMask( UnityLayer.Default, layer)
                 NGUITools.SetLayer(camera, UnityLayer.Default)

@@ -21,12 +21,11 @@ function AssetManager:Initialize()
         self.mLoadTaskQueue = Queue.New() --直接使用C#的队列
        
    
-        local go = GameObject('AssetManager')     
+        local go = GameObject("AssetManager")     
         GameObject.DontDestroyOnLoad(go)
 
-        local behaviour = go:AddComponent(typeof(LuaBehaviour))  
-        behaviour:Init(self)
-        self:Init(self)
+    
+        AddLuaBehaviour(go, "AssetManager", self)
     end
 
     return self
@@ -322,10 +321,7 @@ function AssetManager:Instantiate(varAssetBundleName,varAssetName, varObject)
     local go = Instantiate(varObject)
     local reference = AssetReference.new(varAssetBundleName, varAssetName)
 
-    local behaviour = AddComponent(go, typeof(LuaBehaviour))
-    behaviour:Init(reference)
-    reference:Init(behaviour)
-
+    AddLuaBehaviour(go, "AssetReference", reference)
 
     return go
 end
