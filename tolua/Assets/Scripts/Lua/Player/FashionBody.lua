@@ -18,15 +18,16 @@ end
 
 function FashionBody:Start()
 
-    print("FashionBody:Start")
+ 
     local tmpPlayerInfo = self.mPlayerCharacter.mPlayerInfo
     if tmpPlayerInfo == nil then return end 
-    local tmpPath = string.format("Assets/R/Character/%s/Prefabs/%s.prefab",tmpPlayerInfo.character, tmpPlayerInfo.skin) 
-    AssetManager:Load ("assetbundle.unity3d", tmpPath, function(varObject) 
+    local tmpAssetBundleName = "assetbundle.unity3d"
+    local tmpAssetName = string.format("Assets/R/Character/%s/Prefabs/%s.prefab",tmpPlayerInfo.character, tmpPlayerInfo.skin) 
+    AssetManager:Load (tmpAssetBundleName, tmpAssetName, function(varObject) 
     
         if varObject then
 
-            local go = Instantiate(varObject)
+            local go = AssetManager:Instantiate(tmpAssetBundleName,tmpAssetBundleName, varObject)
             go:SetActive(true)
             NGUITools.SetLayer(go, self.gameObject.layer)
             
@@ -43,7 +44,7 @@ function FashionBody:Start()
             self.mBody = go
         
         else
-            print ("FashionBody:Start Can't Load :".. tmpPath)
+            print ("FashionBody:Start Can't Load :".. tmpAssetName)
         end
 
         if self.mCallback then

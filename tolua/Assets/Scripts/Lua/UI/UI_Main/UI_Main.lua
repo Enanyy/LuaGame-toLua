@@ -15,14 +15,12 @@ function this:ctor(behaviour, path)
 end
 
 function this:Awake()
-    -- body
-    print(self.behaviour.name..".Awake ")
+   
 end 
 
 function this:Start()
 
-    print(self.behaviour.name..".Start ")
-
+ 
     local fadeWindow = self.transform:Find("FadeWindow")
     self.behaviour:AddClick(fadeWindow.gameObject, function() 
         print("Click FadeWindow")

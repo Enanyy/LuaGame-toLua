@@ -93,9 +93,7 @@ function  PlayerManager:CreatePlayerCharacter(varGuid,  varPlayerInfo, varCallba
         SetEuler(go, varPlayerInfo.direction)
 
         table.insert( self.mPlayerCharacterList, tmpPlayerCharacter )
-       
-        print(self:Count())
-       
+           
 end
 
 

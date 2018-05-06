@@ -2,6 +2,7 @@ require("Class")
 require("BehaviourBase")
 require("LoadTask")
 require("LoadedAssetBundle")
+require("AssetReference")
 require("UnityClass")
 
 --new 一个全局对象，该对象的类继承于BehaviourBase
@@ -17,7 +18,7 @@ function AssetManager:Initialize()
         self.mManifestAssetBundle = nil
         self.mManifest = nil
         self.mAssetBundleDic = {}
-        self.mLoadingAssetQueue = Queue.New() --直接使用C#的队列
+        self.mLoadTaskQueue = Queue.New() --直接使用C#的队列
        
    
         local go = GameObject('AssetManager')     
@@ -67,33 +68,29 @@ end
 
 function AssetManager:Update()
 
-    if self.mLoadingAssetQueue.Count > 0 then
+    if self.mLoadTaskQueue.Count > 0 then
 
-        local tmpLoadTask = self.mLoadingAssetQueue:Peek ()
+        local tmpLoadTask = self.mLoadTaskQueue:Peek ()
 
         if tmpLoadTask == nil then
         
-            self.mLoadingAssetQueue:Dequeue ()
+            self.mLoadTaskQueue:Dequeue ()
 
             return
          
         else
         
-            local tmpAssetName = string.lower(tmpLoadTask.mAssetBundleName)
+            local tmpAssetBundleName = string.lower(tmpLoadTask.mAssetBundleName)
 
-            if self.mAssetBundleDic[tmpAssetName] ~=nil then
+            if self.mAssetBundleDic[tmpAssetBundleName] ~=nil then
             
                 tmpLoadTask.mState = LoadTaskState.Success                     --已经加载完成
-                
-                if tmpLoadTask.mCallback then
+            
+                tmpLoadTask.mAssetBundle = self.mAssetBundleDic[tmpAssetBundleName].mAssetbundle
 
-                    local tmpAssetBundle = self.mAssetBundleDic[tmpAssetName].mAssetbundle
-                   
-                    tmpLoadTask.mCallback(tmpAssetBundle)
-                    
-                end
+                self:OnLoadTaskFinish(tmpLoadTask)
 
-                self.mLoadingAssetQueue:Dequeue ()
+                self.mLoadTaskQueue:Dequeue ()
                 tmpLoadTask = nil
 
                 return
@@ -101,7 +98,7 @@ function AssetManager:Update()
 
             if tmpLoadTask.mState == LoadTaskState.Cancel then                 --已经取消加载
             
-                self.mLoadingAssetQueue:Dequeue ()
+                self.mLoadTaskQueue:Dequeue ()
                 tmpLoadTask = nil
 
                 return
@@ -111,9 +108,6 @@ function AssetManager:Update()
                 --同步加载
                 tmpLoadTask:Load()
              
-                self.mLoadingAssetQueue:Dequeue ()
-                tmpLoadTask = nil
-
                 --异步加载
                 --StartCoroutine (tmpLoadTask:LoadAsync ())
                 return
@@ -124,12 +118,14 @@ function AssetManager:Update()
             
             elseif tmpLoadTask.mState == LoadTaskState.Success then            --加载完成   
             
-                self.mLoadingAssetQueue:Dequeue ()			
+                self:OnLoadTaskFinish(tmpLoadTask)
+
+                self.mLoadTaskQueue:Dequeue ()			
                 tmpLoadTask = nil
             
             elseif tmpLoadTask.mState == LoadTaskState.Fail then            --加载失败
                           
-                self.mLoadingAssetQueue:Dequeue()
+                self.mLoadTaskQueue:Dequeue()
                 tmpLoadTask = nil
 
             end
@@ -137,10 +133,58 @@ function AssetManager:Update()
     end
 end
 
-function AssetManager:Load(varAssetBundleName, varAssetName, varCallback)
+function AssetManager:GetLoadTask(varAssetBundleName)
 
-    local tmpAssetBundleName = string.lower( varAssetBundleName )
+    local it = self.mLoadTaskQueue:GetEnumerator()
+
+    while it:MoveNext() do
+
+        if it.Current.mAssetBundleName == varAssetBundleName then
+            return it.Current
+        end
+
+    end
+    return nil
+end
+
+function AssetManager:GetAllDependencies(varAssetBundleName)
+       
+    if varAssetBundleName == nil or self.mManifest == nil then
+        
+        return nil
+    end
+
+    return self.mManifest:GetAllDependencies(varAssetBundleName)  --tmpDependences的类型是C#的 string[]
+
+end
+
+function AssetManager:OnLoadTaskFinish(varLoadTask)
+
+    if varLoadTask == nil then
+        return
+    end
+
+    local tmpAssetBundleName = string.lower( varLoadTask.mAssetBundleName )
+
+    local tmpLoadedAssetBundle = self:GetLoadedAssetBundle(tmpAssetBundleName)
+
+    if tmpLoadedAssetBundle == nil then
+
+        tmpLoadedAssetBundle = LoadedAssetBundle.new (tmpAssetBundleName, varLoadTask.mAssetBundle)
+        tmpLoadedAssetBundle:AddDependence()
+
+        self.mAssetBundleDic[tmpAssetBundleName] = tmpLoadedAssetBundle
+    else
+        varLoadTask.mAssetBundle = tmpLoadedAssetBundle.mAssetBundle
+    end
+
+    varLoadTask:OnLoadFinish()
+end
+
+function AssetManager:Load(varAssetBundleName, varAssetName, varCallback)
     
+    local tmpAssetBundleName = string.lower( varAssetBundleName )
+   
     local tmpLoadTask = nil
 
     --Editor模式
@@ -151,122 +195,178 @@ function AssetManager:Load(varAssetBundleName, varAssetName, varCallback)
         if varCallback then
             varCallback(o)
         end
-        tmpLoadTask = LoadTask.new(varAssetBundleName, varAssetName,nil)
+        tmpLoadTask = LoadTask.new(tmpAssetBundleName, varAssetName,nil)
         tmpLoadTask.state = LoadTaskState.Success
         
         return tmpLoadTask
     end
 
 
+    local tmpLoadedAssetBundle = self:GetLoadedAssetBundle(tmpAssetBundleName)
 
-    if self:LoadAsset (tmpAssetBundleName, varAssetName, varCallback) then
+    if  tmpLoadedAssetBundle ~= nil then
 
-        tmpLoadTask = LoadTask.new(varAssetBundleName);
+        local tmpObject = tmpLoadedAssetBundle:LoadAsset(varAssetName)
+
+        if varCallback ~= nil then
+
+            varCallback(tmpObject)
+
+        end
+
+        tmpLoadTask = LoadTask.new(tmpAssetBundleName)
         tmpLoadTask.mState = LoadTaskState.Success
 
         return tmpLoadTask
     end
 
+    local tmpLoadTask = self:GetLoadTask(tmpAssetBundleName)
+
+    
+    if tmpLoadTask ~= nil then
+
+        tmpLoadTask:AddLoadAssetTask(varAssetName, varCallback)
+       
+        return tmpLoadTask
+    end
+
     if self.mManifest then
      
-        local tmpDependences = self.mManifest:GetAllDependencies (varAssetBundleName)     --tmpDependences的类型是C#的 string[]
-        print("tmpDependences Length =" .. tmpDependences.Length )
+        local tmpDependences = self:GetAllDependencies  (tmpAssetBundleName)    
+       
+        --print(tmpAssetBundleName.." Dependences Length =" .. tmpDependences.Length )
 
-        if tmpDependences.Length > 0 then
+        if tmpDependences ~=nil and tmpDependences.Length > 0 then
 
             for  i = 0, tmpDependences.Length - 1 do
 
                 local tmpDependentAssetBundleName = string.lower( tmpDependences:GetValue(i) )
 
-                if self.mAssetBundleDic[tmpDependentAssetBundleName] == nil then
+                if self:GetLoadedAssetBundle(tmpDependentAssetBundleName) == nil and self:GetLoadTask(tmpDependentAssetBundleName) == nil then
         
-                    local tmpDependentLoadTask = LoadTask.new (tmpDependentAssetBundleName, nil, function (varAssetBundle)
+                    local tmpDependentLoadTask = LoadTask.new (tmpDependentAssetBundleName)
+                    self.mLoadTaskQueue:Enqueue (tmpDependentLoadTask)
 
-                        local tmpLoadedAssetbundle = LoadedAssetBundle.new (self.mManifest, tmpDependentAssetBundleName, varAssetBundle)
-                        if self.mAssetBundleDic[tmpDependentAssetBundleName] ==  nil then 
-                
-                            self.mAssetBundleDic[tmpDependentAssetBundleName] = tmpLoadedAssetbundle
-                
-                        else
-                            self.mAssetBundleDic[tmpDependentAssetBundleName] = nil
-                            self.mAssetBundleDic[tmpDependentAssetBundleName] = tmpLoadedAssetbundle
-
-                            print("Dependence "..tmpDependentAssetBundleName .." was Loaded.")
-                        end
-                    end)
-                    self.mLoadingAssetQueue:Enqueue (tmpDependentLoadTask)
                 end
             end		
         end
     end
 
-    tmpLoadTask =  LoadTask.new (varAssetBundleName, varAssetName, function (varAssetBundle)
-    
-        if varAssetBundle ~=nil then
-        
-            local tmpLoadedAssetbundle = LoadedAssetBundle.new (self.mManifest, tmpAssetBundleName, varAssetBundle)
+    tmpLoadTask =  LoadTask.new (tmpAssetBundleName)
+    tmpLoadTask:AddLoadAssetTask(varAssetName, varCallback)
 
-            if  self.mAssetBundleDic[tmpAssetBundleName] == nil then 
-            
-                self.mAssetBundleDic[tmpAssetBundleName] = tmpLoadedAssetbundle
-            
-            else
-                self.mAssetBundleDic[tmpAssetBundleName] = nil
-                self.mAssetBundleDic[tmpAssetBundleName] = tmpLoadedAssetbundle
-            end
-
-            tmpLoadedAssetbundle:AddReference()
-
-            self:LoadAsset (tmpAssetBundleName, varAssetName, varCallback)
-
-        else
-        
-            if varCallback ~= null then
-
-                varCallback (nil)
-            end
-        end
-    end)
-    
-    
-    self.mLoadingAssetQueue:Enqueue (tmpLoadTask)
+    self.mLoadTaskQueue:Enqueue (tmpLoadTask)
 
     return tmpLoadTask
 
 end
 
-function AssetManager:LoadAsset(varAssetBundleName,varAssetName,varCallback)
 
-  
-    local tmpObject = nil
-	
-	local tmpAssetBundleName = string.lower( varAssetBundleName )
 
-	local tmpLoadedAssetbundle = self.mAssetBundleDic[tmpAssetBundleName] 
-
-	if tmpLoadedAssetbundle ~= nil and varAssetName ~=nil then
-
-        tmpObject = tmpLoadedAssetbundle:LoadAsset(varAssetName);
-      
-        if varCallback ~=nil then
-
-            varCallback(tmpObject)
-        end
-
+function AssetManager:GetLoadedAssetBundle(varAssetBundleName)
+    
+    if self.mAssetBundleDic == nil then
+        return nil
     end
-    return tmpObject ~= nil
-
-end
-
-function AssetManager:GetLoadedAssetbundle(varAssetbundleName)
-	
+    
 	local tmpLoadedAssetBundle = self.mAssetBundleDic[string.lower( varAssetBundleName )]
 
     return tmpLoadedAssetBundle
 end
 
+
+function AssetManager:UnLoad(varAssetBundleName)
+
+    if not varAssetBundleName then
+        return
+    end
+
+    print("UnLoad:".. varAssetBundleName)
+
+
+    local tmpAssetBundleName = string.lower( varAssetBundleName ) 
+    local tmpLoadedAssetBundle = self:GetLoadedAssetBundle (tmpAssetBundleName)
+    if tmpLoadedAssetBundle == nil then
+        return
+    end
+    --先移除
+    self.mAssetBundleDic[tmpAssetBundleName] = nil
+
+    --卸载本身以及单独的依赖
+    tmpLoadedAssetBundle:UnLoad()
+
+    
+end
+
+function AssetManager:OtherDependence(varAssetBundleName)
+
+    for k,v in pairs(self.mAssetBundleDic) do
+      
+        if v ~= nil and v:Dependence(varAssetBundleName) then
+            return true
+        end
+
+    end
+   
+    return false
+end
+
+function AssetManager:Instantiate(varAssetBundleName,varAssetName, varObject)
+
+    if varObject == nil then
+
+        print("Trying Instantiate object is NULL!");
+        return nil
+    end
+
+    local go = Instantiate(varObject)
+    local reference = AssetReference.new(varAssetBundleName, varAssetName)
+
+    local behaviour = AddComponent(go, typeof(LuaBehaviour))
+    behaviour:Init(reference)
+    reference:Init(behaviour)
+
+
+    return go
+end
+function AssetManager:Destroy(varReference)
+    
+    if varReference == nil then
+        
+        return
+    end
+      
+    local tmpLoadedAssetBundle = self:GetLoadedAssetBundle(varReference.mAssetBundleName)
+        
+    if tmpLoadedAssetBundle ~= nil then
+              
+        tmpLoadedAssetBundle:RemoveReference(varReference)
+
+        if tmpLoadedAssetBundle:GetReferenceCount() == 0 then
+            
+            self:UnLoad(varReference.mAssetBundleName)
+        
+        end
+    end
+end
+
 function AssetManager:OnDestroy()
     print("AssetManager:OnDestroy")
+
+    local tmpAssetBundleArray = {}
+    for k,v in pairs(self.mAssetBundleDic) do
+        table.insert( tmpAssetBundleArray, k )
+    end
+
+    for i,v in ipairs(tmpAssetBundleArray) do
+        self:UnLoad(v)
+    end
+
+    tmpAssetBundleArray = nil
+    self.mAssetBundleDic = nil
+    self.mManifestAssetBundle:Unload(true)
+    self.mManifestAssetBundle = nil
+    self.mManifest = nil
 end
 
 ---AssetBundle路径

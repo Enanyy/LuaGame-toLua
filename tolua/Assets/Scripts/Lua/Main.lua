@@ -29,16 +29,14 @@ function Main:AssetMode()
 end
 
 function Main:Start()
-	--[[	
-	self:TestSetPosition()
-	self:TestSetPosition1()
-	self:TestSetPosition2()
-	 	--]]		
+		
 	print("Main start")
 	
 	LuaGame.Log(AssetManager.GetAssetBundlePath())
 	--初始化资源管理器
 	AssetManager:Initialize()
+
+	
 	--初始化窗口管理器
 	WindowManager:Initialize()
 	--初始化人物管理器
@@ -58,32 +56,8 @@ function Main:Start()
 	FixedUpdateBeat:AddListener(self.fixedUpdate)
 
 
-	self:TestSocketClient()
-
-	--[[ 
-	--self.TestGameObject()
-	--self.TestStack()
-	--]]
-
-	--[[ 
-	--测试是否单例模式
-	local a = AssetManager:Initialize()
-	local b = AssetManager:Initialize()
-
-	if a == b then
-		print("a == b")
-	else
-		print("a != b")		
-	end
-	
-	--self:TestOverWrite()
-		
-	--]]
-	
 	
 	SceneMachine:ChangeScene(SceneType.FrameScene)
-
-	--SceneManager.LoadScene("FrameScene")
 		
 end
 
@@ -150,6 +124,8 @@ function Main:Update()
 	PlayerManager:Update()
 	--print("Main Update: " .. ((os.clock() - start) * 1000))
 
+	
+	
 end
 
 function Main:LateUpate()
@@ -380,6 +356,62 @@ function Main:TestSetPosition2()
 end
 
 
+function Main:TestAssetManager()
+	local plane = "assets/r/Plane.prefab";
+    AssetManager:Load(plane, plane, function (varGo)
+
+        if varGo then
+            
+            self.go0 = AssetManager:Instantiate(plane, plane, varGo) 
+			
+		end
+    end)
+
+
+    local cube = "assets/r/Cube.prefab";
+    AssetManager:Load(cube, cube, function (varGo)
+
+        if varGo then
+            
+            self.go1 = AssetManager:Instantiate(cube, cube, varGo) 
+			
+		end
+	end)
+	
+end
+
+function Main:TestAssetManagerUpdate()
+	if  Input.GetKeyDown (KeyCode.Keypad0) then 
+		Destroy(self.go0)
+	end
+	if  Input.GetKeyDown (KeyCode.Keypad1) then 
+		Destroy(self.go1)
+	end
+
+	if  Input.GetKeyDown (KeyCode.Keypad2) then 
+		if self.mList  then
+			for i,v in ipairs(self.mList) do
+				Destroy(v)
+			end
+		end
+	end
+
+	if  Input.GetKeyDown (KeyCode.Keypad3) then 
+		local plane = "assets/r/Plane.prefab";
+    	AssetManager:Load(plane, plane, function (varGo)
+
+        	if varGo then
+            
+				local go = AssetManager:Instantiate(plane, plane, varGo) 
+				if self.mList == nil then
+					self.mList =  {}
+				end
+				table.insert( self.mList, go )
+
+			end
+    	end)
+	end
+end
 -------------------------------------------Test End-----------------------------------------
 
 

@@ -71,6 +71,7 @@ Stack  = System.Collections.Stack
 
 ------------------------------------------function Begin -------------------------------------
 Instantiate = GameObject.Instantiate
+Destroy = GameObject.Destroy
 
 
 ------------------------------------------Helper Begin-----------------------------------------
