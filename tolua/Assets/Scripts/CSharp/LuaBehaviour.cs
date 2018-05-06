@@ -12,8 +12,13 @@ public class LuaBehaviour : MonoBehaviour
     /// 所以要在Init后再调用一次Awake和OnEnable
 
     private Dictionary<string, LuaFunction> mButtons = new Dictionary<string, LuaFunction>();
-    [SerializeField]
+
     private Dictionary<string, LuaTable> mLuaTables = new Dictionary<string, LuaTable>();
+
+#if UNITY_EDITOR
+    [SerializeField]
+    private string[] LuaTables;
+#endif
 
     bool mStart = false;
     public LuaBehaviour()
@@ -54,9 +59,20 @@ public class LuaBehaviour : MonoBehaviour
                 table.Call("Start", table);
             }
         }
+
+#if UNITY_EDITOR
+        LuaTables = new string[mLuaTables.Count];
+        mLuaTables.Keys.CopyTo(LuaTables, 0);
+        for(int i = 0; i < LuaTables.Length; ++i)
+        {
+            string key = LuaTables[i];
+            LuaTables[i] = key + "-"+ mLuaTables[key].ToString();
+        }
+#endif
+
     }
 
-    public LuaTable GetLuaTable(string name)
+public LuaTable GetLuaTable(string name)
     {
         LuaTable table;
         mLuaTables.TryGetValue(name, out table);
