@@ -12,7 +12,7 @@ function Class(name,super)
     class_type.ctor = false
     class_type.super = super
 
-    class_type.new=function(...) 
+    class_type.new = function(...) 
         local o = {}
         do
             local create 
@@ -30,6 +30,9 @@ function Class(name,super)
 
         o.GetType = function()
             return class_type.GetType()
+        end
+        if class_type.super then
+            o.base = class_type.super.new(...)
         end
 
         setmetatable(o, { __index= class[class_type] })

@@ -16,6 +16,7 @@ function BaseWindow:ctor(path, wondowType)
    self.useMask = true
 end 
 
+
 function BaseWindow:OnEnter()
 
     if self.useMask then

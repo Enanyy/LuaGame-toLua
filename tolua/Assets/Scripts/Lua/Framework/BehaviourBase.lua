@@ -20,4 +20,7 @@ function BehaviourBase:Init(behaviour)
     else
         error("BehaviourBase:Init behaviour nil")
     end
+    if self.base then
+        self.base:Init(behaviour)
+    end
 end

@@ -57,8 +57,8 @@ end
 function this:OnEnter()
     self.panel = self.transform:GetComponent(typeof(UIPanel))
 
-    self.base = BaseWindow.new(self.path, self.windowType)
-    self.base:Init(self.behaviour)
+    --self.base = BaseWindow.new(self.path, self.windowType)
+    --self.base:Init(self.behaviour)
     self.base:OnEnter()
 end
 

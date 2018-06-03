@@ -41,14 +41,15 @@ function Main:Start()
 		
 	--self:TestTcp()
 	--self:TestSocketClient()
-	local ret =	NetWorkManager:CreateConnection("Login", "127.0.0.1",7000)
+	--local ret =	NetWorkManager:CreateConnection("Login", "127.0.0.1",7000)
 
-	if ret then
+	--if ret then
 
-		NetWorkManager:Send("Login","Hello !!!")
-	end
+		--NetWorkManager:Send("Login","Hello !!!")
+	--end
 
-	--[[
+	self:TestOverWrite()
+
 	LuaGame.Log(AssetManager.GetAssetBundlePath())
 	--初始化资源管理器
 	AssetManager:Initialize()
@@ -60,7 +61,6 @@ function Main:Start()
 	SceneMachine:Initialize()
 
 	--添加Lua逻辑更新
---]]
 	self.update = UpdateBeat:CreateListener(self.Update,self)		
 	self.lateUpate = LateUpdateBeat:CreateListener(Main.LateUpate,self)	 		
 	self.fixedUpdate = FixedUpdateBeat:CreateListener(Main.FixedUpdate,self)	 	
@@ -71,9 +71,8 @@ function Main:Start()
 
 
 	
-	--SceneMachine:ChangeScene(SceneType.Pvp_000)
+	SceneMachine:ChangeScene(SceneType.Pvp_000)
 		
-	 --]]
 end
 
 
@@ -147,13 +146,13 @@ function Main:Update()
 
 	--local start = os.clock()
 	--资源管理器更新
-	--AssetManager:Update()
+	AssetManager:Update()
 
 	--人物管理器更新
-	--PlayerManager:Update()
+	PlayerManager:Update()
 	--print("Main Update: " .. ((os.clock() - start) * 1000))
 
-	NetWorkManager:Update()
+	--NetWorkManager:Update()
 	
 end
 
@@ -208,16 +207,39 @@ function Main.TestStack()
 end
 
 --测试继承和重写
-A = Class()
+A = Class("A")
 function A:print()
 	print("A:print")
 end
+function A:init(a)
+	print("Class A a =" ..a)
+end
 
-B = Class(A)
+B = Class("B",A)
 
 function B:ctor()
 	--self.base = A.new()
 end
+
+function B:init(b)
+
+	self.base:init(b)
+	print("Class B b =" ..b)
+
+end
+
+C = Class("C",B)
+function C:ctor()
+
+end
+
+function C:init(c)
+
+	self.base:init(c)
+	print("Class C c =" ..c)
+
+end
+
 --[[
 function B:print()
 	print("B:print")
@@ -232,7 +254,10 @@ function Main:TestOverWrite()
 
 	--没有重写 调用A的print
 	local b = B.new()
-	b:print()
+	b:init(111)
+
+	local c = C.new()
+	c:init(222)
 
 end
 
