@@ -1,7 +1,8 @@
 require("Class")
 
 --定义一个状态机类
-StateMachine = Class()
+StateMachine = Class("StateMachine")
+
 
 --构造函数
 function StateMachine:ctor()

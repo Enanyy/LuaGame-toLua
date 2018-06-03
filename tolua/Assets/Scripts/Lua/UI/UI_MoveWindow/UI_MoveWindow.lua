@@ -3,7 +3,8 @@ require("BaseWindow")
 require("WindowMove")
 
 --UI_MoveWindow继承于BaseWindow
-UI_MoveWindow = Class(BaseWindow)
+UI_MoveWindow = Class("UI_MoveWindow",BaseWindow)
+
 local this = UI_MoveWindow
 
 function this:ctor(path)
@@ -28,23 +29,23 @@ function this:Start()
 
     self.behaviour:AddClick(mainWindow.gameObject, function() 
         print("Click MainWindow")
-        WindowManager:Open(UI_Main,"UI_Main")
+        WindowManager:Open(UI_Main)
     end)
 
     local scaleWindow = self.transform:Find("ScaleWindow")
     self.behaviour:AddClick(scaleWindow.gameObject, function() 
         print("Click ScaleWindow")
-        WindowManager:Open(UI_ScaleWindow,"UI_ScaleWindow")
+        WindowManager:Open(UI_ScaleWindow)
     end)
     local fadeWindow = self.transform:Find("FadeWindow")
     self.behaviour:AddClick(fadeWindow.gameObject, function() 
         print("Click FadeWindow")
-        WindowManager:Open(UI_FadeWindow,"UI_FadeWindow")
+        WindowManager:Open(UI_FadeWindow)
     end)
     local popWindow = self.transform:Find("PopWindow")
     self.behaviour:AddClick(popWindow.gameObject, function() 
         print("Click PopWindow")
-        WindowManager:Open(UI_PopWindow,"UI_PopWindow")
+        WindowManager:Open(UI_PopWindow)
     end)
    
     local close = self.transform:Find("Close")

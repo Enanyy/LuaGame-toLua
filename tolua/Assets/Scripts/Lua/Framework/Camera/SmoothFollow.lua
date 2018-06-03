@@ -2,8 +2,10 @@ require("Class")
 require("BehaviourBase")
 require("UnityClass")
 
-SmoothFollow = Class(BehaviourBase)
+SmoothFollow = Class("SmoothFollow",BehaviourBase)
+
 local this = SmoothFollow
+
 
 local LookRotation 	= Quaternion.LookRotation
 local Slerp 		= Quaternion.Slerp
@@ -56,12 +58,11 @@ function this:FollowTarget()
 	if self.target == nil then
 			return
     end
-
-		
+	
 	self.targetPosition = GetPosition(self.target,self.targetPosition)
 		
 	self.wantedPosition = self.targetPosition + Vector3.forward * self.distance * (-1)
-	self.wantedPosition.y =self.height
+	self.wantedPosition.y =self.targetPosition.y + self.height
     
 	SetPosition(self.gameObject,self.wantedPosition)
 	

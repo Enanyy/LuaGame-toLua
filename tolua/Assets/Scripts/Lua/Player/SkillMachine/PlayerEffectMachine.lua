@@ -1,6 +1,6 @@
 require("Class")
 
-PlayerEffectMachine = Class()
+PlayerEffectMachine = Class( "PlayerEffectMachine")
 
 function PlayerEffectMachine:ctor()
 

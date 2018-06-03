@@ -1,7 +1,8 @@
 require("State")
 require("UnityClass")
 
-Scene = Class(State)
+Scene = Class("Scene",State)
+
 
 function Scene:ctor(name)
     

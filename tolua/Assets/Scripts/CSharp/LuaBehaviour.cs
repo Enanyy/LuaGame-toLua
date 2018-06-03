@@ -66,13 +66,13 @@ public class LuaBehaviour : MonoBehaviour
         for(int i = 0; i < LuaTables.Length; ++i)
         {
             string key = LuaTables[i];
-            LuaTables[i] = key + "-"+ mLuaTables[key].ToString();
+            LuaTables[i] = key + "-"+ mLuaTables[key].Invoke<string>("GetType");
         }
 #endif
 
     }
 
-public LuaTable GetLuaTable(string name)
+    public LuaTable GetLuaTable(string name)
     {
         LuaTable table;
         mLuaTables.TryGetValue(name, out table);

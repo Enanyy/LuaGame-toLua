@@ -2,7 +2,9 @@ require("Class")
 require("BaseWindow")
 
 --UI_Dialog继承于BaseWindow
-UI_Dialog = Class(BaseWindow)
+UI_Dialog = Class("UI_Dialog",BaseWindow)
+
+
 local this = UI_Dialog
 
 function this:ctor( path)
@@ -25,7 +27,7 @@ function this:Start()
     self.behaviour:AddClick(mainWindow.gameObject, function() 
         print("Click MainWindow")
 
-        WindowManager:Open(UI_Main,"UI_Main")
+        WindowManager:Open(UI_Main)
     end)
 
     

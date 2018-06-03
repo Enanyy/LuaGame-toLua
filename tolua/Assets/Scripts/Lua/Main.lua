@@ -4,6 +4,11 @@ require("AssetManager")
 require("WindowManager")
 require("PlayerManager")
 require("SceneMachine")
+
+require("NetWorkManager")
+
+require("common_pb")
+require("person_pb")
 ----
 ----Lua表不要与C#中需要Wrap的类同名，会引起混乱
 ----
@@ -11,6 +16,10 @@ require("SceneMachine")
 --主入口函数。从这里开始lua逻辑
 --LuaGame.cs会调用Main.lua执行Lua逻辑
 Main = {}
+
+function Main.GetType()
+	return "Main"
+end
 
 function Main:DebugMode()
 	
@@ -30,6 +39,16 @@ end
 
 function Main:Start()
 		
+	--self:TestTcp()
+	--self:TestSocketClient()
+	local ret =	NetWorkManager:CreateConnection("Login", "127.0.0.1",7000)
+
+	if ret then
+
+		NetWorkManager:Send("Login","Hello !!!")
+	end
+
+	--[[
 	LuaGame.Log(AssetManager.GetAssetBundlePath())
 	--初始化资源管理器
 	AssetManager:Initialize()
@@ -41,7 +60,7 @@ function Main:Start()
 	SceneMachine:Initialize()
 
 	--添加Lua逻辑更新
-
+--]]
 	self.update = UpdateBeat:CreateListener(self.Update,self)		
 	self.lateUpate = LateUpdateBeat:CreateListener(Main.LateUpate,self)	 		
 	self.fixedUpdate = FixedUpdateBeat:CreateListener(Main.FixedUpdate,self)	 	
@@ -52,8 +71,9 @@ function Main:Start()
 
 
 	
-	SceneMachine:ChangeScene(SceneType.FrameScene)
+	--SceneMachine:ChangeScene(SceneType.Pvp_000)
 		
+	 --]]
 end
 
 
@@ -64,7 +84,7 @@ function Main:OnLevelWasLoaded(level)
 
 	Time.timeSinceLevelLoad = 0
 
-	WindowManager:Open(UI_Main, "UI_Main")
+	WindowManager:Open(UI_Main)
 
 	self:CreatePlayer()
 
@@ -74,27 +94,28 @@ end
 function Main:CreatePlayer()
 
 	local mode = 0
-	for i = 0, 2 do
+	for i = 1, 3 do
 		
 		local tmpPlayerInfo = PlayerInfo.new(i)
 		tmpPlayerInfo.guid = i
-		tmpPlayerInfo.position = Vector3.New(4+2*i,0, 8+3*i)
+		tmpPlayerInfo.position = Vector3.New(150+2*i,60, 100+3*i)
 		tmpPlayerInfo.direction = Vector3.New(0, -120+ i*10, 0)
 		tmpPlayerInfo.baseSpeed = 6
 		tmpPlayerInfo.moveSpeedAddition = 0.3
-		tmpPlayerInfo.character = "Ahri"
 
 		mode = i % 3
 		if mode == 0 then
-			tmpPlayerInfo.skin = "Ahri_shadowfox"
+			tmpPlayerInfo.prefab = string.format("Assets/R/Character/Ahri/Prefabs/%s.prefab","Ahri_shadowfox")
 		elseif mode == 1 then
-			tmpPlayerInfo.skin = "Ahri"
+			tmpPlayerInfo.prefab = string.format("Assets/R/Character/Ahri/Prefabs/%s.prefab","Ahri")	
 		else
-			tmpPlayerInfo.skin = "Ahri_hanbok"
+			tmpPlayerInfo.prefab = string.format("Assets/R/Character/Ahri/Prefabs/%s.prefab","Ahri_hanbok")	
 		end
 
+		tmpPlayerInfo.weapon ="Assets/R/Weapon/Ahri/Ahri.prefab"
+
 		tmpPlayerInfo.configure = Role_Configure_Ahri
-	
+		
 	
 		PlayerManager:CreatePlayerCharacter(tmpPlayerInfo.guid, tmpPlayerInfo, function (varPlayerCharacter) 
 		
@@ -103,6 +124,19 @@ function Main:CreatePlayer()
 		
 	end
 
+	local tmpJingLingnv = PlayerInfo.new(100)
+	tmpJingLingnv.guid = 0
+	tmpJingLingnv.position = Vector3.New(150,60, 100)
+	tmpJingLingnv.direction = Vector3.New(0, -120, 0)
+	tmpJingLingnv.baseSpeed = 10
+	tmpJingLingnv.moveSpeedAddition = 0.3
+	tmpJingLingnv.configure = Role_Configure_JingLingnv
+
+	tmpJingLingnv.prefab = "Assets/R/Character/Monsters/Jinglingnv_5.prefab"	
+	PlayerManager:CreatePlayerCharacter(tmpJingLingnv.guid, tmpJingLingnv, function (varPlayerCharacter) 
+		
+		
+	end)
 end
 
 function Main:OnApplicationQuit()
@@ -113,13 +147,13 @@ function Main:Update()
 
 	--local start = os.clock()
 	--资源管理器更新
-	AssetManager:Update()
+	--AssetManager:Update()
 
 	--人物管理器更新
-	PlayerManager:Update()
+	--PlayerManager:Update()
 	--print("Main Update: " .. ((os.clock() - start) * 1000))
 
-	
+	NetWorkManager:Update()
 	
 end
 
@@ -208,7 +242,7 @@ function Main:TestSocketClient()
 	local socket = require("socket")
  
 	local host = "127.0.0.1"
-	local port = 1255
+	local port = 7000
 	local sock = socket.connect(host, port)
 
 	if sock then	
@@ -221,7 +255,7 @@ function Main:TestSocketClient()
 	
 			assert(sock:send(input .. "\n"))
 		
-		 
+		    print("aaaaaaa")
 			recvt, sendt, status = socket.select({sock}, nil, 1)
 			while #recvt > 0 do
 				local response, receive_status = sock:receive()
@@ -386,6 +420,34 @@ function Main:TestAssetManagerUpdate()
     	end)
 	end
 end
+
+
+function Main:TestProtobuf()
+	
+	local person_pb = require "Protol.person_pb" 
+	local msg = person_pb.Person()
+
+	msg.id = 10
+	msg.age = 30
+	msg.name = "aaaaa"
+	msg.email = "bbbbbb"
+
+	msg.header.cmd = 11
+	msg.header.seq = 1000
+
+	msg.array:append(1)                              
+	msg.array:append(2)   
+
+	local pb_data = msg:SerializeToString()   
+
+
+	local msg = person_pb.Person()
+	msg:ParseFromString(pb_data)
+	--tostring 不会打印默认值
+	print('person_pb decoder: '..tostring(msg)..'age: '..msg.age..'\nemail: '..msg.email)
+end
+
+
 -------------------------------------------Test End-----------------------------------------
 
 

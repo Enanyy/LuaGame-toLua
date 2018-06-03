@@ -227,7 +227,9 @@ function SetActive(go, active)
     end
 end
 
-function AddLuaBehaviour(go, name, lua)
+function AddLuaBehaviour(go,lua)
+
+    local name = lua.GetType()
 
     local behaviour = GetComponent(go, typeof(LuaBehaviour))
     if behaviour == nil then

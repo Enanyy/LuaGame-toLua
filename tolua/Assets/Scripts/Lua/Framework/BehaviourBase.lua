@@ -2,7 +2,8 @@
 ---需要控制LuaBehaviour对象的都从BehaviourBase派生
 ---
 ---创建一个基类
-BehaviourBase = Class()
+BehaviourBase = Class( "BehaviourBase")
+
 
 ---构造函数 Class函数构造调用
 function BehaviourBase:ctor()

@@ -4,7 +4,7 @@ require("UnityClass")
 require("UnityLayer")
 
 --全局的WindowManager对象，继承于BehaviourBase
-WindowManager = Class(BehaviourBase).new()
+WindowManager = Class("WindowManager",BehaviourBase).new()
 
 --初始化函数
 function  WindowManager:Initialize()
@@ -19,7 +19,7 @@ function  WindowManager:Initialize()
         local go = GameObject('WindowManager')     
         GameObject.DontDestroyOnLoad(go)
 
-        local behaviour =  AddLuaBehaviour(go, "WindowManager", self)
+        local behaviour =  AddLuaBehaviour(go, self)
         
         local p = NGUITools.CreateUI(false)
         p.transform:SetParent(behaviour.transform)
@@ -89,9 +89,11 @@ function  WindowManager:SetTouchable(touchable)
     end
 end
 
-function WindowManager:Open(class, name, callback)
+function WindowManager:Open(class, callback)
 
     self:SetTouchable(false)
+
+    local name = class.GetType()
 
     local t = self:Get(name)
 
@@ -150,7 +152,7 @@ function WindowManager:Open(class, name, callback)
 
                     local reference = AssetReference.new(tmpAssetBundleName, path)
 
-                    local behaviour = AddLuaBehaviour(tran.gameObject, "AssetReference", reference)
+                    local behaviour = AddLuaBehaviour(tran.gameObject, reference)
 
                     tran.gameObject:SetActive(true)
 

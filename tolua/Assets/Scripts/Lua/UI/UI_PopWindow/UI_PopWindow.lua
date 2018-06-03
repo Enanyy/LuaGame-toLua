@@ -2,7 +2,8 @@ require("Class")
 require("BaseWindow")
 
 --UI_PopWindow继承于BaseWindow
-UI_PopWindow = Class(BaseWindow)
+UI_PopWindow = Class("UI_PopWindow",BaseWindow)
+
 local this = UI_PopWindow
 
 function this:ctor( path)
@@ -23,13 +24,13 @@ function this:Start()
 
     self.behaviour:AddClick(mainWindow.gameObject, function() 
         print("Click MainWindow")
-        WindowManager:Open(UI_Main,"UI_Main")
+        WindowManager:Open(UI_Main)
     end)
 
     local dialog = self.transform:Find("Dialog")
     self.behaviour:AddClick(dialog.gameObject, function() 
         print("Click Dialog")        
-        WindowManager:Open(UI_Dialog,"UI_Dialog")
+        WindowManager:Open(UI_Dialog)
     end)
 
     local close = self.transform:Find("Close")

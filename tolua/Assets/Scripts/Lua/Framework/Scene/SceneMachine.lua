@@ -1,9 +1,15 @@
 require("Class")
 require("StateMachine")
 require("SceneType")
-require("FrameScene")
+require("Pvp_000")
+require("Pvp_001")
+require("Pvp_002")
+require("Pvp_003")
+require("Pvp_004")
+require("Pvp_005")
 
-SceneMachine = Class(StateMachine).new()
+SceneMachine = Class("SceneMachine",StateMachine).new()
+
 
 function SceneMachine:Initialize()
 
@@ -24,7 +30,12 @@ end
 ---注册场景列表
 function SceneMachine:Init()
 
-    self.mSceneDic[SceneType.FrameScene] = FrameScene.new(SceneType.FrameScene)
+    self.mSceneDic[SceneType.Pvp_000] = Pvp_000.new(SceneType.Pvp_000)
+    self.mSceneDic[SceneType.Pvp_001] = Pvp_001.new(SceneType.Pvp_001)
+    self.mSceneDic[SceneType.Pvp_002] = Pvp_002.new(SceneType.Pvp_002)
+    self.mSceneDic[SceneType.Pvp_003] = Pvp_003.new(SceneType.Pvp_003)
+    self.mSceneDic[SceneType.Pvp_004] = Pvp_004.new(SceneType.Pvp_004)
+    self.mSceneDic[SceneType.Pvp_005] = Pvp_005.new(SceneType.Pvp_005)
 
 end
 

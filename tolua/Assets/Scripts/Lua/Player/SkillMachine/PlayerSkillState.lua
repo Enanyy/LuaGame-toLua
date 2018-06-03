@@ -5,7 +5,10 @@ require("Configures")
 require("UnityClass")
 
 
-SkillChange = Class()
+SkillChange = Class("SkillChange")
+
+
+
 function SkillChange:ctor(varSkillType, varEndAt, varBeginAt, varSpeed,  varFadeLength)
     self.mSkillType = varSkillType
     self.mEndAt = varEndAt
@@ -14,7 +17,9 @@ function SkillChange:ctor(varSkillType, varEndAt, varBeginAt, varSpeed,  varFade
     self.mFadeLength  = varFadeLength
 end
 
-SkillCancel = Class()
+SkillCancel = Class("SkillCancel")
+
+
 function SkillCancel:ctor(varSkillType, varBefore, varFadeLegnth)
     self.mSkillType = varSkillType
     self.mBefore = varBefore
@@ -22,7 +27,8 @@ function SkillCancel:ctor(varSkillType, varBefore, varFadeLegnth)
 end
 
 --技能状态,继承于State类
-PlayerSkillState = Class(State)
+PlayerSkillState = Class("PlayerSkillState",State)
+
 
 function PlayerSkillState:ctor(name)
     self.mPlayerSkillType = "None"

@@ -3,7 +3,7 @@ require("UnityClass")
 
 
 
-PlayerSkillMovePlugin = Class(PlayerSkillPlugin)
+PlayerSkillMovePlugin = Class("PlayerSkillMovePlugin",PlayerSkillPlugin)
 
 local MAX_PATHPENDGING_TIME = 1
 local STOPING_DISTANCE = 0.01

@@ -1,8 +1,8 @@
 require("PlayerEffectPlugin")
 require("Tweener")
 
-Ahri_PlayerEffectFollowPlugin = Class(PlayerEffectPlugin)
- 
+Ahri_PlayerEffectFollowPlugin = Class("Ahri_PlayerEffectFollowPlugin",PlayerEffectPlugin)
+
 function Ahri_PlayerEffectFollowPlugin:ctor(name)
 
     self.mSpeed = 10
@@ -60,7 +60,7 @@ function Ahri_PlayerEffectFollowPlugin:OnEnter()
 
     if self.mBehaviour == nil then
 
-        self.mBehaviour = AddLuaBehaviour(self.mGo, "Ahri_PlayerEffectFollowPlugin", self )
+        self.mBehaviour = AddLuaBehaviour(self.mGo,  self )
        
         self.mBehaviour.enabled = false
 

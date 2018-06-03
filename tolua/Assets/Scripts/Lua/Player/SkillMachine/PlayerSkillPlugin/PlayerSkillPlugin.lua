@@ -3,7 +3,7 @@ require("State")
 require("PlayerSkillType")
 
 
-PlayerSkillPlugin = Class(State)
+PlayerSkillPlugin = Class("PlayerSkillPlugin",State)
 
 function PlayerSkillPlugin:ctor(name)
     self.mPlayerSkillState = nil

@@ -6,7 +6,8 @@ require("AssetReference")
 require("UnityClass")
 
 --new 一个全局对象，该对象的类继承于BehaviourBase
-AssetManager = Class(BehaviourBase).new()
+AssetManager = Class("AssetManager",BehaviourBase).new()
+
 
 function AssetManager:Initialize()
 
@@ -25,7 +26,7 @@ function AssetManager:Initialize()
         GameObject.DontDestroyOnLoad(go)
 
     
-        AddLuaBehaviour(go, "AssetManager", self)
+        AddLuaBehaviour(go, self)
     end
 
     return self
@@ -321,7 +322,7 @@ function AssetManager:Instantiate(varAssetBundleName,varAssetName, varObject)
     local go = Instantiate(varObject)
     local reference = AssetReference.new(varAssetBundleName, varAssetName)
 
-    AddLuaBehaviour(go, "AssetReference", reference)
+    AddLuaBehaviour(go, reference)
 
     return go
 end

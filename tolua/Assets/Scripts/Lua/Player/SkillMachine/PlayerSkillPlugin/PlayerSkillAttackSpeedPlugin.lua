@@ -1,6 +1,7 @@
 require("PlayerSkillPlugin")
 
-PlayerSkillAttackSpeedPlugin = Class(PlayerSkillPlugin)
+PlayerSkillAttackSpeedPlugin = Class("PlayerSkillAttackSpeedPlugin",PlayerSkillPlugin)
+
 
 function PlayerSkillAttackSpeedPlugin:ctor(name)
 

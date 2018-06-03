@@ -7,7 +7,7 @@ require("UnityClass")
 require("UnityLayer")
 
 
-PlayerManager = Class(BehaviourBase).new()
+PlayerManager = Class("PlayerManager",BehaviourBase).new()
 
 --初始化函数
 function  PlayerManager:Initialize()
@@ -19,7 +19,7 @@ function  PlayerManager:Initialize()
         local go = GameObject('PlayerManager')     
         GameObject.DontDestroyOnLoad(go)
 
-        AddLuaBehaviour(go, "PlayerManager", self)
+        AddLuaBehaviour(go, self)
 
         self.mPlayerCharacterList = {}           --人物列表
 
@@ -41,8 +41,8 @@ function  PlayerManager:CreatePlayerCharacter(varGuid,  varPlayerInfo, varCallba
         SetScale(go, Vector3.one)
 
         local tmpPlayerCharacter = PlayerCharacter.new()
-        
-        AddLuaBehaviour(go, "PlayerCharacter",tmpPlayerCharacter)
+
+        AddLuaBehaviour(go,tmpPlayerCharacter)
 
 		tmpPlayerCharacter:CreatePlayerCharacter (varGuid, varPlayerInfo, function()
 
@@ -56,11 +56,11 @@ function  PlayerManager:CreatePlayerCharacter(varGuid,  varPlayerInfo, varCallba
                 self.mSmoothFollow = SmoothFollow.new()
                 self.mSmoothFollow.target = tmpPlayerCharacter.gameObject
                
-                self.mSmoothFollow.distance =3
-                self.mSmoothFollow.height = 12
-                self.mSmoothFollow.rotation = Vector3.New(76,0,0)
+                self.mSmoothFollow.distance =12
+                self.mSmoothFollow.height = 20
+                self.mSmoothFollow.rotation = Vector3.New(60,0,0)
 
-                AddLuaBehaviour(camera, "SmoothFollow", self.mSmoothFollow )
+                AddLuaBehaviour(camera, self.mSmoothFollow )
 
                 self.mCamera.cullingMask = UnityLayer.MakeMask( UnityLayer.Default, layer)
                 NGUITools.SetLayer(camera, UnityLayer.Default)

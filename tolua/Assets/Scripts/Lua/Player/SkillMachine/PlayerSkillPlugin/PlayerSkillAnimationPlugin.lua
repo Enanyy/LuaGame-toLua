@@ -1,9 +1,8 @@
 require("PlayerSkillPlugin")
 require("UnityClass")
 
+PlayerSkillAnimationPlugin = Class("PlayerSkillAnimationPlugin",PlayerSkillPlugin)
 
-
-PlayerSkillAnimationPlugin = Class(PlayerSkillPlugin)
 
 function PlayerSkillAnimationPlugin:ctor(name)
     

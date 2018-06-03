@@ -2,7 +2,7 @@ require("Class")
 require("BehaviourBase")
 require("UnityClass")
 
-FashionWeapon = Class(BehaviourBase)
+FashionWeapon = Class("FashionWeapon",BehaviourBase)
 
 function FashionWeapon:ctor()
     self.mWeapon = nil
@@ -26,7 +26,7 @@ function FashionWeapon:Start()
 
     local tmpAssetBundleName = "assetbundle.unity3d"
 
-    local tmpAssetName = string.format("Assets/R/Weapon/%s/%s.prefab",tmpPlayerInfo.character, tmpPlayerInfo.weapon) 
+    local tmpAssetName =  tmpPlayerInfo.weapon
 
     AssetManager:Load (tmpAssetBundleName, tmpAssetName, function(varObject) 
     

@@ -7,7 +7,7 @@ require("PlayerSKillMachine")
 require("PlayerEffectMachine")
 require("UnityLayer")
 
-PlayerCharacter = Class(BehaviourBase)
+PlayerCharacter = Class("PlayerCharacter",BehaviourBase)
 
 function PlayerCharacter:ctor()
 
@@ -52,7 +52,7 @@ function PlayerCharacter:CreateFashionBody()
 
     self.mFashionBody = FashionBody.new()
  
-    AddLuaBehaviour(go, "FashionBody", self.mFashionBody)
+    AddLuaBehaviour(go, self.mFashionBody)
 
 	self.mFashionBody:SetData (self, function (varBody)
 		
@@ -82,7 +82,7 @@ function PlayerCharacter:CreateFashionWeapon()
 
     self.mFashionWeapon = FashionWeapon.new()
 
-    AddLuaBehaviour(go, "FashionWeapon",self.mFashionWeapon)
+    AddLuaBehaviour(go,self.mFashionWeapon)
 
 	self.mFashionWeapon:SetData (self, function (varWeapon)
 		

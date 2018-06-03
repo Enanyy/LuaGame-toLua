@@ -1,7 +1,7 @@
 require("Class")
 require("Mathf")
 
-Tweener = Class()
+Tweener = Class("Tweener")
 TweenerMethod = 
 {
     Linear      = 0,

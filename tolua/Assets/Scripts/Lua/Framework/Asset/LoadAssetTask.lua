@@ -1,6 +1,7 @@
 require("Class")
 
-LoadAssetTask = Class()
+LoadAssetTask = Class("LoadAssetTask")
+
 
 function LoadAssetTask:ctor(varAssetName, varCallback)
     self.mAssetName = varAssetName

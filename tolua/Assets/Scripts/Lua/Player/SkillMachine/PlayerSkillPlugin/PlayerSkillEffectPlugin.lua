@@ -2,7 +2,8 @@ require("PlayerSkillPlugin")
 require("UnityClass")
 require("PlayerEffectState")
 
-PlayerSkillEffectPlugin = Class(PlayerSkillPlugin)
+PlayerSkillEffectPlugin = Class("PlayerSkillEffectPlugin",PlayerSkillPlugin)
+
 
 function PlayerSkillEffectPlugin:ctor(name)
     self.mBeginAt = 0

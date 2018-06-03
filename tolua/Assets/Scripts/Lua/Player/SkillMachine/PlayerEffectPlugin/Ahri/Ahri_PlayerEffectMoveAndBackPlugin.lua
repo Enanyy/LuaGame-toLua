@@ -3,7 +3,7 @@ require("PlayerEffectPlugin")
 local Slerp =  Quaternion.Slerp
 local LookRotation = Quaternion.LookRotation
 
-Ahri_PlayerEffectMoveAndBackPlugin = Class(PlayerEffectPlugin)
+Ahri_PlayerEffectMoveAndBackPlugin = Class("Ahri_PlayerEffectMoveAndBackPlugin",PlayerEffectPlugin)
 
 function Ahri_PlayerEffectMoveAndBackPlugin:ctor(name)
     self.mSpeed = 10
@@ -15,6 +15,7 @@ function Ahri_PlayerEffectMoveAndBackPlugin:ctor(name)
     self.mParent = nil
     self.mWeapon = nil    
     self.mGo = nil
+    self.mTransform = nil
 
     self.mStateEnd = false
     self.mEffectEnd = false
@@ -62,11 +63,14 @@ function Ahri_PlayerEffectMoveAndBackPlugin:OnEnter()
 
     if self.mBehaviour == nil then
 
-        self.mBehaviour = AddLuaBehaviour(self.mGo, "Ahri_PlayerEffectMoveAndBackPlugin", self)
+        self.mBehaviour = AddLuaBehaviour(self.mGo, self)
        
         self.mBehaviour.enabled = false
     end
 
+    if self.mTransform == nil then
+        self.mTransform = self.machine.mPlayerCharacter.transform
+    end 
 
  
     if self.mGo then
@@ -159,7 +163,10 @@ function Ahri_PlayerEffectMoveAndBackPlugin:OnExecute()
        
         self.mPosition= GetPosition(self.mGo,self.mPosition)
 
-        local direction = self.mParent.position - self.mPosition
+        local position = self.mTransform.position
+        position.y = self.mParent.position.y
+
+        local direction = position - self.mPosition
 
         local distance =  direction.magnitude
        

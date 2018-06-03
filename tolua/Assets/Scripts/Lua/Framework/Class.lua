@@ -5,9 +5,9 @@
 ----
 local setmetatable = setmetatable
 local class={}
- 
+
 ----构造一个类
-function Class(super)
+function Class(name,super)
     local class_type = {}
     class_type.ctor = false
     class_type.super = super
@@ -28,8 +28,17 @@ function Class(super)
             create(class_type, ...)
         end
 
+        o.GetType = function()
+            return class_type.GetType()
+        end
+
         setmetatable(o, { __index= class[class_type] })
         return o
+    end
+
+    ---需要重写该方法来获取该类的实际类型
+    class_type.GetType =  function()
+        return name
     end
 
     local vtbl={}

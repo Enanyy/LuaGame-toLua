@@ -4,7 +4,7 @@ require("UnityClass")
 
 local Raycast = Physics.Raycast
 
-PlayerSkillRotateMousePositionPlugin = Class(PlayerSkillPlugin)
+PlayerSkillRotateMousePositionPlugin = Class("PlayerSkillRotateMousePositionPlugin",PlayerSkillPlugin)
 
 function PlayerSkillRotateMousePositionPlugin:ctor(name)
     self.mGo = nil

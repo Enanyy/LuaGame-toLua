@@ -3,7 +3,7 @@ require("Class")
 require("BehaviourBase")
 
 
-AssetReference = Class(BehaviourBase)
+AssetReference = Class("AssetReference",BehaviourBase)
 
 function AssetReference:ctor(varAssetBundleName,varAssetName)
     self.mAssetBundleName = varAssetBundleName

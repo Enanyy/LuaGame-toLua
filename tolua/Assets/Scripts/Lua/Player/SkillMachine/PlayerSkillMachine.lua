@@ -5,7 +5,7 @@ require("PlayerSkillType")
 require("Configures")
 
 
-PlayerSKillMachine = Class(StateMachine)
+PlayerSKillMachine = Class("PlayerSKillMachine",StateMachine)
 
 --没用base保存一个基类的对象
 --不要重写StateMachine的函数了，不然会被覆盖掉的

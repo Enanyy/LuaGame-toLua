@@ -1,7 +1,8 @@
 require("Class")
 require("UnityLayer")
 
-PlayerInput = Class()
+PlayerInput = Class("PlayerInput")
+
 
 function PlayerInput:ctor(varPlayerCharacter, varCamera)
     self.mPlayerCharacter = varPlayerCharacter

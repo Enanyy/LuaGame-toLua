@@ -1,7 +1,7 @@
 require("Class")
 require("Configures")
 
-PlayerInfo = Class()
+PlayerInfo = Class("PlayerInfo")
 
 function PlayerInfo:ctor(profession)
 
@@ -23,13 +23,11 @@ function PlayerInfo:ctor(profession)
 
 	self.moveSpeedAddition = 0.0 --移速加成
 
-	self.character = "Ahri"  --角色
-
-	self.skin = "Ahri"		 --皮肤
+	self.prefab = "" --预设
 
 	self.configure = Role_Configure_Ahri --配置文件
 
-	self.weapon = "Ahri" --武器
+	self.weapon = "" --武器预设
 
 	self.weaponBone = "weapon/BUFFBONE_GLB_WEAPON_1" --武器绑定的骨骼
 

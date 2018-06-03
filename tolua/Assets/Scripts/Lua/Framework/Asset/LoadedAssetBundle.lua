@@ -5,7 +5,7 @@
 
 
 ---定义类
-LoadedAssetBundle = Class()
+LoadedAssetBundle = Class("LoadedAssetBundle")
 
 --构造函数
 function LoadedAssetBundle:ctor( varAssetBundleName, varAssetBundle )

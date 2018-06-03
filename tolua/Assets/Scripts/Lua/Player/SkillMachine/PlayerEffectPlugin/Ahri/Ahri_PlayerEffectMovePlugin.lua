@@ -1,8 +1,8 @@
 require("PlayerEffectPlugin")
 require("Tweener")
 
-Ahri_PlayerEffectMovePlugin = Class(PlayerEffectPlugin)
- 
+Ahri_PlayerEffectMovePlugin = Class("Ahri_PlayerEffectMovePlugin",PlayerEffectPlugin)
+
 function Ahri_PlayerEffectMovePlugin:ctor(name)
 
     self.mSpeed = 10
@@ -54,7 +54,7 @@ function Ahri_PlayerEffectMovePlugin:OnEnter()
 
     if self.mBehaviour == nil then
 
-        self.mBehaviour = AddLuaBehaviour(self.mGo, "Ahri_PlayerEffectMovePlugin", self )
+        self.mBehaviour = AddLuaBehaviour(self.mGo,  self )
        
         self.mBehaviour.enabled = false
 

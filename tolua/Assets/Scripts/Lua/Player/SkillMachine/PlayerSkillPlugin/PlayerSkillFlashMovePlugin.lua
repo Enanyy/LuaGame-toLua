@@ -2,8 +2,7 @@ require("PlayerSkillPlugin")
 
 local SamplePosition = NavMesh.SamplePosition
 
-PlayerSkillFlashMovePlugin = Class(PlayerSkillPlugin)
-
+PlayerSkillFlashMovePlugin = Class("PlayerSkillFlashMovePlugin",PlayerSkillPlugin)
 
 function PlayerSkillFlashMovePlugin:ctor(name)
 

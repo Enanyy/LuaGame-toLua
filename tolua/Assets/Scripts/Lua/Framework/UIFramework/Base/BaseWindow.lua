@@ -3,7 +3,8 @@ require("BehaviourBase")
 require("WindowType")
 require("UnityClass")
 
-BaseWindow = Class(BehaviourBase)
+BaseWindow = Class("BaseWindow",BehaviourBase)
+
 
 function BaseWindow:ctor(path, wondowType)
   

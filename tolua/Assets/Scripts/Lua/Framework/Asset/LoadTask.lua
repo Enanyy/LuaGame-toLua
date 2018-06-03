@@ -16,7 +16,8 @@ LoadTaskState =
 local LoadFromFile  = AssetBundle.LoadFromFile
 
 --资源加载任务类
-LoadTask = Class()
+LoadTask = Class("LoadTask")
+
 
 function LoadTask:ctor(varAssetBundleName)
     self.mAssetBundleName = varAssetBundleName                      ---AssetBundle名字

@@ -1,7 +1,7 @@
 require("Class")
 
 --定义状态类
-State = Class()
+State = Class("State")
 
 function State:ctor(name)
     self.name = name

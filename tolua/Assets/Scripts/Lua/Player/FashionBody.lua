@@ -4,7 +4,7 @@ require("UnityClass")
 
 local Instantiate = GameObject.Instantiate
 
-FashionBody = Class(BehaviourBase)
+FashionBody = Class("FashionBody",BehaviourBase)
 
 function FashionBody:ctor()
     self.mBody  = nil 
@@ -22,7 +22,7 @@ function FashionBody:Start()
     local tmpPlayerInfo = self.mPlayerCharacter.mPlayerInfo
     if tmpPlayerInfo == nil then return end 
     local tmpAssetBundleName = "assetbundle.unity3d"
-    local tmpAssetName = string.format("Assets/R/Character/%s/Prefabs/%s.prefab",tmpPlayerInfo.character, tmpPlayerInfo.skin) 
+    local tmpAssetName =tmpPlayerInfo.prefab 
     AssetManager:Load (tmpAssetBundleName, tmpAssetName, function(varObject) 
     
         if varObject then

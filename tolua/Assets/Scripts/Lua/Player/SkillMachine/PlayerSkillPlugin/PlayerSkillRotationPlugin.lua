@@ -5,7 +5,7 @@ require("UnityLayer")
 local LookRotation = Quaternion.LookRotation
 local Lerp = Quaternion.Lerp
 
-PlayerSkillRotationPlugin = Class(PlayerSkillPlugin)
+PlayerSkillRotationPlugin = Class("PlayerSkillRotationPlugin",PlayerSkillPlugin)
 
 function PlayerSkillRotationPlugin:ctor(name)
 
