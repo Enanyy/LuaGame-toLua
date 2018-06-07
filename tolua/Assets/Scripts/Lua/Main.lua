@@ -39,16 +39,7 @@ end
 
 function Main:Start()
 		
-	--self:TestTcp()
-	--self:TestSocketClient()
-	--local ret =	NetWorkManager:CreateConnection("Login", "127.0.0.1",7000)
 
-	--if ret then
-
-		--NetWorkManager:Send("Login","Hello !!!")
-	--end
-
-	self:TestOverWrite()
 
 	LuaGame.Log(AssetManager.GetAssetBundlePath())
 	--初始化资源管理器
@@ -72,7 +63,8 @@ function Main:Start()
 
 	
 	SceneMachine:ChangeScene(SceneType.Pvp_000)
-		
+	
+	--]]
 end
 
 
@@ -466,12 +458,44 @@ function Main:TestProtobuf()
 	local pb_data = msg:SerializeToString()   
 
 
+	--local msg = person_pb.Person()
+	--msg:ParseFromString(pb_data)
+	--tostring 不会打印默认值
+	--print('person_pb decoder: '..tostring(msg)..'age: '..msg.age..'\nemail: '..msg.email)
+	local buf = ByteBuffer.New()
+	local length = string.len(pb_data)
+	print(length)
+	local str =""
+	local bytes = {}
+	for i = 1, length do
+		local b = string.byte(pb_data,i)
+		buf:Add(b)
+		table.insert(bytes, b)
+		str = str .. b .. " "
+	end
+	print(str)
+	buf:Print()
+	buf:Print(pb_data)
+	
+	LuaGame.TestProtobuf(buf)
+
+	
+end
+
+function Main:TestParseProtobuf(buffer)
+
+	local buf = buffer:GetBuffer()
+	local bytes = {}
+	for i = 0, buf.Length - 1 do
+		table.insert(bytes, buf:GetValue(i))
+	end
+	local pb_data = string.char(unpack(bytes))
+	local person_pb = require "Protol.person_pb" 
 	local msg = person_pb.Person()
 	msg:ParseFromString(pb_data)
 	--tostring 不会打印默认值
 	print('person_pb decoder: '..tostring(msg)..'age: '..msg.age..'\nemail: '..msg.email)
 end
-
 
 -------------------------------------------Test End-----------------------------------------
 

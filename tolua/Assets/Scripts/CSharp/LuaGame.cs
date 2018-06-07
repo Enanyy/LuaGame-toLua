@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using LuaInterface;
 using UnityEngine.SceneManagement;
@@ -332,5 +332,10 @@ public class LuaGame : MonoBehaviour {
                 return LuaDLL.toluaL_exception(L, e);
             }
         }
+    }
+
+    public static void TestProtobuf(ByteBuffer buffer)
+    {
+        LuaHelper.CallFunction("Main", "TestParseProtobuf",buffer);
     }
 }
