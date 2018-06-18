@@ -27,7 +27,7 @@ function Ahri_PlayerEffectMoveAndBackPlugin:ctor(name)
     self.mPosition = Vector3.zero
 
 end
-function Ahri_PlayerEffectMoveAndBackPlugin:Init(behaviour)
+function Ahri_PlayerEffectMoveAndBackPlugin:_init(behaviour)
 
     self.mBehaviour = behaviour or  self.mBehaviour
    

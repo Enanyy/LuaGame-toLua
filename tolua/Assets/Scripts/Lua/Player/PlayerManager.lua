@@ -56,8 +56,8 @@ function  PlayerManager:CreatePlayerCharacter(varGuid,  varPlayerInfo, varCallba
                 self.mSmoothFollow = SmoothFollow.new()
                 self.mSmoothFollow.target = tmpPlayerCharacter.gameObject
                
-                self.mSmoothFollow.distance =12
-                self.mSmoothFollow.height = 20
+                self.mSmoothFollow.distance =6
+                self.mSmoothFollow.height = 12
                 self.mSmoothFollow.rotation = Vector3.New(60,0,0)
 
                 AddLuaBehaviour(camera, self.mSmoothFollow )

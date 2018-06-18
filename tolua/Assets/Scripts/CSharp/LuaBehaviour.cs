@@ -50,7 +50,7 @@ public class LuaBehaviour : MonoBehaviour
         if (mLuaTables.ContainsKey(name) == false)
         {
             mLuaTables.Add(name, table);
-            table.Call("Init", table, this);
+            table.Call("_init", table, this);
             table.Call("Awake", table);
             table.Call("OnEnable", table);
 

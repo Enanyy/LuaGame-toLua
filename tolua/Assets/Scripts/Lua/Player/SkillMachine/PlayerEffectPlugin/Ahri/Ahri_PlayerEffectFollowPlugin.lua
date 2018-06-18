@@ -22,7 +22,7 @@ function Ahri_PlayerEffectFollowPlugin:ctor(name)
     self.mTargetPosition = Vector3.zero
 end 
 
-function Ahri_PlayerEffectFollowPlugin:Init(behaviour)
+function Ahri_PlayerEffectFollowPlugin:_init(behaviour)
 
     self.mBehaviour = behaviour or  self.mBehaviour
    

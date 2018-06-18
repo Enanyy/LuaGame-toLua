@@ -12,7 +12,7 @@ function BehaviourBase:ctor()
 end
 
 ---初始化函数，LuaBehaviour.cs中调用
-function BehaviourBase:Init(behaviour)
+function BehaviourBase:_init(behaviour)
     self.behaviour = behaviour or nil
     if self.behaviour then 
         self.gameObject = self.behaviour.gameObject 
@@ -21,6 +21,6 @@ function BehaviourBase:Init(behaviour)
         error("BehaviourBase:Init behaviour nil")
     end
     if self.base then
-        self.base:Init(behaviour)
+        self.base:_init(behaviour)
     end
 end

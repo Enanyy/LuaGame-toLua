@@ -18,7 +18,7 @@ function Ahri_PlayerEffectMovePlugin:ctor(name)
     self.mDistanceOffset = 2
 end 
 
-function Ahri_PlayerEffectMovePlugin:Init(behaviour)
+function Ahri_PlayerEffectMovePlugin:_init(behaviour)
 
     self.mBehaviour = behaviour or  self.mBehaviour
    

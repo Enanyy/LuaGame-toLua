@@ -238,7 +238,7 @@ function AddLuaBehaviour(go,lua)
 
     if behaviour:GetLuaTable(name) == nil then
         
-        lua:Init(behaviour)
+        lua:_init(behaviour)
         behaviour:AddLuaTable(name, lua);
 
     end
