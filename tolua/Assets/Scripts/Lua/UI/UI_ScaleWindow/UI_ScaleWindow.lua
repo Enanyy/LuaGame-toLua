@@ -57,7 +57,7 @@ end
 function this:OnEnter()
 
     self.panel = self.transform:GetComponent(typeof(UIPanel))
-
+    print(self.base:GetType())
     self.base:OnEnter()
 end
 

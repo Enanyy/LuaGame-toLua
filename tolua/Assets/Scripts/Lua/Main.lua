@@ -38,9 +38,8 @@ function Main:AssetMode()
 end
 
 function Main:Start()
-		
 
-
+	print("assetmode = ",self:AssetMode())
 	LuaGame.Log(AssetManager.GetAssetBundlePath())
 	--初始化资源管理器
 	AssetManager:Initialize()
@@ -60,11 +59,8 @@ function Main:Start()
 	LateUpdateBeat:AddListener(self.lateUpate)
 	FixedUpdateBeat:AddListener(self.fixedUpdate)
 
+	SceneMachine:ChangeScene(Pvp_001.GetType())
 
-	
-	SceneMachine:ChangeScene(SceneType.Pvp_000)
-	
-	--]]
 end
 
 
@@ -85,7 +81,7 @@ end
 function Main:CreatePlayer()
 
 	local mode = 0
-	for i = 1, 3 do
+	for i = 0, 3 do
 		
 		local tmpPlayerInfo = PlayerInfo.new(i)
 		tmpPlayerInfo.guid = i
@@ -114,20 +110,6 @@ function Main:CreatePlayer()
 		end)
 		
 	end
-
-	local tmpJingLingnv = PlayerInfo.new(100)
-	tmpJingLingnv.guid = 0
-	tmpJingLingnv.position = Vector3.New(150,60, 100)
-	tmpJingLingnv.direction = Vector3.New(0, -120, 0)
-	tmpJingLingnv.baseSpeed = 10
-	tmpJingLingnv.moveSpeedAddition = 0.3
-	tmpJingLingnv.configure = Role_Configure_JingLingnv
-
-	tmpJingLingnv.prefab = "Assets/R/Character/Monsters/Jinglingnv_5.prefab"	
-	PlayerManager:CreatePlayerCharacter(tmpJingLingnv.guid, tmpJingLingnv, function (varPlayerCharacter) 
-		
-		
-	end)
 end
 
 function Main:OnApplicationQuit()

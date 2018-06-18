@@ -5,7 +5,7 @@ Scene = Class("Scene",State)
 
 
 function Scene:ctor(name)
-    
+  
 end
 
 

@@ -3,4 +3,3 @@ require("Plugins")
 
 --包含所有配置
 require("Ahri")
-require("JingLingnv")
