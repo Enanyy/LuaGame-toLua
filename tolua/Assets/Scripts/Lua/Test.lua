@@ -2,10 +2,18 @@ require("NetWorkManager")
 require("common_pb")
 require("person_pb")
 
+require("sqlite3")
+
 -------------------------------------------Test Start-----------------------------------------
 
 Test = {}
 
+function Test:onTest()
+
+	self:TestLuaFileSystem()
+	self:TestSqlite3()
+
+end
 --测试static函数
 function Test.TestStatic(self, go)
 
@@ -346,4 +354,26 @@ function Test:TestParseProtobuf(buffer)
 	print('person_pb decoder: '..tostring(msg)..'age: '..msg.age..'\nemail: '..msg.email)
 end
 
+function Test:TestLuaFileSystem()
+
+	
+
+	print(lfs._COPYRIGHT)
+
+
+
+end
+
+function Test:TestSqlite3()
+
+	print(sqlite3.version())
+	local db = sqlite3.open("database.db")
+
+	print(db)
+
+	db:exec("CREATE TABLE type_test(a,b)")
+	db:prepare("insert into type_test value(1,'qqqqq')")
+	print(db:errmsg())
+
+end
 -------------------------------------------Test End-----------------------------------------

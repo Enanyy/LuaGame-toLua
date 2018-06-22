@@ -361,8 +361,10 @@ function AssetManager:OnDestroy()
 
     tmpAssetBundleArray = nil
     self.mAssetBundleDic = nil
-    self.mManifestAssetBundle:Unload(true)
-    self.mManifestAssetBundle = nil
+    if self.mManifestAssetBundle then
+        self.mManifestAssetBundle:Unload(true)
+        self.mManifestAssetBundle = nil
+    end
     self.mManifest = nil
 end
 

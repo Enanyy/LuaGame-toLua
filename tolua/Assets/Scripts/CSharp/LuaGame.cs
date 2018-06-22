@@ -341,6 +341,6 @@ public class LuaGame : MonoBehaviour {
 
     public static void TestProtobuf(ByteBuffer buffer)
     {
-        LuaHelper.CallFunction("Main", "TestParseProtobuf",buffer);
+        LuaHelper.CallFunction("Test", "TestParseProtobuf",buffer);
     }
 }

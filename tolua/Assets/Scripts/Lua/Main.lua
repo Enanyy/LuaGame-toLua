@@ -39,6 +39,8 @@ end
 
 function Main:Start()
 
+	Test:onTest()
+
 	print("assetmode = ",self:AssetMode())
 	LuaGame.Log(AssetManager.GetAssetBundlePath())
 	--初始化资源管理器
