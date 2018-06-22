@@ -61,7 +61,7 @@ function Main:Start()
 	LateUpdateBeat:AddListener(self.lateUpate)
 	FixedUpdateBeat:AddListener(self.fixedUpdate)
 
-	--SceneMachine:ChangeScene(Pvp_001.GetType())
+	SceneMachine:ChangeScene(Pvp_001.GetType())
 
 end
 
