@@ -86,7 +86,12 @@ public class LuaGame : MonoBehaviour {
         mLuaState.OpenLibs(LuaDLL.luaopen_struct);
         mLuaState.OpenLibs(LuaDLL.luaopen_lpeg);
         mLuaState.OpenLibs(LuaDLL.luaopen_bit);
+        mLuaState.OpenLibs(LuaDLL.luaopen_lfs);
+        mLuaState.OpenLibs(LuaDLL.luaopen_pack);
+        mLuaState.OpenLibs(LuaDLL.luaopen_lsqlite3);
+        mLuaState.OpenLibs(LuaDLL.luaopen_uuid);
 
+        
         OpenLuaSocket();
 
         OpenCJson();
