@@ -66,7 +66,7 @@ public class LuaBehaviour : MonoBehaviour
         for(int i = 0; i < LuaTables.Length; ++i)
         {
             string key = LuaTables[i];
-            LuaTables[i] = key + "-"+ mLuaTables[key].Invoke<string>("GetType");
+            LuaTables[i] =mLuaTables[key].Invoke<string>("GetType")+".lua";
         }
 #endif
 

@@ -61,7 +61,7 @@ function Main:Start()
 	LateUpdateBeat:AddListener(self.lateUpate)
 	FixedUpdateBeat:AddListener(self.fixedUpdate)
 
-	SceneMachine:ChangeScene(Pvp_001.GetType())
+	SceneMachine:ChangeScene(Pvp_001)
 
 end
 
@@ -87,7 +87,7 @@ function Main:CreatePlayer()
 		
 		local tmpPlayerInfo = PlayerInfo.new(i)
 		tmpPlayerInfo.guid = i
-		tmpPlayerInfo.position = Vector3.New(150+2*i,60, 100+3*i)
+		tmpPlayerInfo.position = Vector3.New(55-1*i,0, 30+1*i)
 		tmpPlayerInfo.direction = Vector3.New(0, -120+ i*10, 0)
 		tmpPlayerInfo.baseSpeed = 6
 		tmpPlayerInfo.moveSpeedAddition = 0.3

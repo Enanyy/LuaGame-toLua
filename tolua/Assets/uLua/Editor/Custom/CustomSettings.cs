@@ -175,6 +175,7 @@ public static class CustomSettings
         _GT(typeof(LuaGame)),
         _GT(typeof(LuaBehaviour)),
         _GT(typeof(Helper)),
+        _GT(typeof(UD.Loom)),
     
         
 

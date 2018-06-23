@@ -22,16 +22,25 @@ function SceneMachine:Initialize()
    return self
 end
 
+function SceneMachine:RegisterScene(scene)
+
+    local name = scene.GetType()
+
+    self.mSceneDic[name] = scene.new(name)
+
+end
 ---注册场景列表
 function SceneMachine:Init()
 
-    self.mSceneDic[Pvp_001.GetType()] =Pvp_001.new(Pvp_001.GetType())
+    self:RegisterScene(Pvp_001)
 
 end
 
-function SceneMachine:ChangeScene(sceneType)
+function SceneMachine:ChangeScene(scene)
 
     local current = self:GetCurrentState()
+
+    local sceneType = scene.GetType()
 
     if current then
 
@@ -41,13 +50,13 @@ function SceneMachine:ChangeScene(sceneType)
         end
     end
 
-    local scene = self.mSceneDic[sceneType]
+    local state = self.mSceneDic[sceneType]
 
-    if scene == nil then
+    if state == nil then
         return
     end
 
-    self:ChangeState(scene)
+    self:ChangeState(state)
     
 end
 

@@ -12,6 +12,7 @@ function Test:onTest()
 
 	self:TestLuaFileSystem()
 	self:TestSqlite3()
+	self:TestThread()
 
 end
 --测试static函数
@@ -359,7 +360,7 @@ function Test:TestLuaFileSystem()
 	
 
 	print(lfs._COPYRIGHT)
-
+	print(lfs.currentdir ())
 
 
 end
@@ -367,13 +368,26 @@ end
 function Test:TestSqlite3()
 
 	print(sqlite3.version())
-	local db = sqlite3.open("database.db")
+	local db = sqlite3.open("Assets/R/database/game.db")
 
-	print(db)
 
-	db:exec("CREATE TABLE type_test(a,b)")
-	db:prepare("insert into type_test value(1,'qqqqq')")
-	print(db:errmsg())
+	print(db:isopen())
+
+	for row in db:nrows("select * from type_role") do 
+
+		print("id =", row.id, "name=",row.name,"speed=",row.speed)
+
+	end
+
+end
+
+function Test:TestThread()
+
+	local action = System.Action(function() 
+
+	
+	end)
+	UD.Loom.RunAsync(action)
 
 end
 -------------------------------------------Test End-----------------------------------------

@@ -1,6 +1,4 @@
-
-
-
+require("Common")
 --应用System、Unity的类
 Application = UnityEngine.Application
 ---检查当前Unity版本
