@@ -4,6 +4,7 @@ require("person_pb")
 
 require("sqlite3")
 
+require("EventDispatch")
 -------------------------------------------Test Start-----------------------------------------
 
 Test = {}
@@ -362,6 +363,15 @@ function Test:TestLuaFileSystem()
 	print(lfs._COPYRIGHT)
 	print(lfs.currentdir ())
 
+
+	EventDispatch:Register(1,self,self.TestEvent)
+	EventDispatch:Dispatch(1,1000)
+
+end
+
+function Test:TestEvent(a)
+
+	print(a)
 
 end
 

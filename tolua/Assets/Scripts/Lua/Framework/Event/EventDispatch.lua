@@ -2,13 +2,10 @@ require("Class")
 require("EventID")
 require("EventListener")
 
-EventDispatch = Class("EventDispatch")
+EventDispatch = {
+    mListenerDic = {}
+}
 
-function EventDispatch:ctor()
-
-    self.mListenerDic = {}
-
-end
 
 function EventDispatch:Register(eventid, listener,callback)
 
@@ -60,7 +57,7 @@ function EventDispatch:Dispatch(eventid, ...)
 
         for i,v in ipairs(list) do
             
-            v:Invoke(...)
+            v:Invoke(v.listener, ...)
 
         end
 
