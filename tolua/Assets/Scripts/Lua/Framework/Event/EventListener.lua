@@ -12,7 +12,7 @@ function EventListener:Invoke(...)
 
     if self.callback ~= nil and self.listener ~= nil then
 
-        self.callback(...)
+        self.callback(self.listener, ...)
 
     end
 

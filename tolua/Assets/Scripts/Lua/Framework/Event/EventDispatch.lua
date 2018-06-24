@@ -57,7 +57,7 @@ function EventDispatch:Dispatch(eventid, ...)
 
         for i,v in ipairs(list) do
             
-            v:Invoke(v.listener, ...)
+            v:Invoke(...)
 
         end
 
