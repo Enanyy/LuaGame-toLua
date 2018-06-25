@@ -13,11 +13,13 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.6.5f1</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <LangVersion Condition=" '$(VisualStudioVersion)' != '10.0' ">4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -269,17 +271,7 @@
     <Compile Include="Assets\Resources\Effect\DepthOfField\DepthOfField.cs" />
     <Compile Include="Assets\Resources\Effect\WaterWave\WaterWave.cs" />
     <Compile Include="Assets\Scripts\CSharp\Camera\SmoothFollow.cs" />
-    <Compile Include="Assets\Scripts\CSharp\Common\Network\Common\ConcurrentBatchQueue.cs" />
-    <Compile Include="Assets\Scripts\CSharp\Common\Network\Common\ConnectAsyncExtension.Net.cs" />
-    <Compile Include="Assets\Scripts\CSharp\Common\Network\Common\ConnectAsyncExtension.Net40.cs" />
-    <Compile Include="Assets\Scripts\CSharp\Common\Network\Common\ConnectAsyncExtension.cs" />
-    <Compile Include="Assets\Scripts\CSharp\Common\Network\Common\IBatchQueue.cs" />
-    <Compile Include="Assets\Scripts\CSharp\Common\Network\Core\AsyncTcpSession.cs" />
-    <Compile Include="Assets\Scripts\CSharp\Common\Network\Core\ClientSession.cs" />
-    <Compile Include="Assets\Scripts\CSharp\Common\Network\Core\DataEventArgs.cs" />
-    <Compile Include="Assets\Scripts\CSharp\Common\Network\Core\ErrorEventArgs.cs" />
-    <Compile Include="Assets\Scripts\CSharp\Common\Network\Core\IClientSession.cs" />
-    <Compile Include="Assets\Scripts\CSharp\Common\Network\Core\TcpClientSession.cs" />
+    <Compile Include="Assets\Scripts\CSharp\Net\IBatchQueue.cs" />
     <Compile Include="Assets\Scripts\CSharp\Helper.cs" />
     <Compile Include="Assets\Scripts\CSharp\LuaBehaviour.cs" />
     <Compile Include="Assets\Scripts\CSharp\LuaGame.cs" />
