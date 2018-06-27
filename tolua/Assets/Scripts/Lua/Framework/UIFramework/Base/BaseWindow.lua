@@ -8,12 +8,14 @@ BaseWindow = Class("BaseWindow",BehaviourBase)
 
 function BaseWindow:ctor(path, wondowType)
   
-   self.path = path
-   --window类型
+    self.path = path
+    --window类型
   
-   self.wondowType = wondowType  
-   self.isPause = false
-   self.useMask = true
+    self.wondowType = wondowType  
+    self.isPause = false
+  
+    self.useMask = true
+  
 end 
 
 
@@ -89,5 +91,5 @@ function BaseWindow:OnExit()
 end
 
 function BaseWindow:Close()
-    WindowManager:Close()
+    WindowManager:Close(self)
 end

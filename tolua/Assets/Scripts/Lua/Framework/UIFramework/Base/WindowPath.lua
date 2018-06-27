@@ -4,6 +4,7 @@ require("UI_FadeWindow")
 require("UI_ScaleWindow")
 require("UI_MoveWindow")
 require("UI_Dialog")
+require("UI_Widget")
 
 
 WindowPath = {
@@ -14,6 +15,7 @@ WindowPath = {
         [UI_PopWindow.GetType()]                    = "Assets/R/UI/UI_PopWindow/UI_PopWindow.prefab" , 
         [UI_ScaleWindow.GetType()]                  = "Assets/R/UI/UI_ScaleWindow/UI_ScaleWindow.prefab" , 
         [UI_Dialog.GetType()]                       = "Assets/R/UI/UI_Dialog/UI_Dialog.prefab" , 
+        [UI_Widget.GetType()]                       = "Assets/R/UI/UI_Widget/UI_Widget.prefab" , 
     },
 }
 function WindowPath:Get(name)

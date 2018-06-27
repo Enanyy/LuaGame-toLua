@@ -76,6 +76,7 @@ function  WindowManager:Initialize()
         --Window栈容器
         self.mWindowStack = Stack.New()             --C#中的栈
         self.mTmpWindowStack = Stack.New()          --C#中的栈
+        self.mWidgetList = {}
     end
 
     return self
@@ -99,33 +100,41 @@ function WindowManager:Open(class, callback)
 
     if  t then
     
-        self.mTmpWindowStack:Clear();
+        local windowType = t.wondowType 
 
-        while (self.mWindowStack.Count > 0)
-        do
-            local window = self.mWindowStack:Pop()
-            if  window == t then
+        if windowType == WindowType.Widget then
+
+            self:Push(t, callback)
+
+        else
+
+            self.mTmpWindowStack:Clear();
+
+            while (self.mWindowStack.Count > 0)
+            do
+                local window = self.mWindowStack:Pop()
+                if  window == t then
             
-                break
-            else
+                    break
+                else
             
-                self.mTmpWindowStack:Push(window)
+                    self.mTmpWindowStack:Push(window)
+                end
             end
+
+            while (self.mTmpWindowStack.Count > 0)
+            do
+                local window = self.mTmpWindowStack:Pop()
+
+                self:SetLayer(window)
+
+                self.mWindowStack:Push(window)
+            end
+
+            self.mTmpWindowStack:Clear()
+
+            self:Push(t, callback)
         end
-
-        while (self.mTmpWindowStack.Count > 0)
-        do
-            local window = self.mTmpWindowStack:Pop()
-
-            self:SetLayer(window)
-
-            self.mWindowStack:Push(window)
-        end
-
-        self.mTmpWindowStack:Clear()
-
-        self:Push(t, callback)
-    
     else
     
         local path = WindowPath:Get(name)
@@ -199,7 +208,24 @@ function WindowManager:Push(t, callback)
 
     if t ~= nil then
         
-        if self.mWindowStack.Count > 0 then
+        local windowType = t.windowType
+
+        if windowType == WindowType.Widget then
+
+            local exist = false
+            for i,v in ipairs(self.mWidgetList) do
+                if v == t or v.path == t.path then
+                    exist = true
+                    break
+                end
+            end
+
+            if exist == false then
+                table.insert( self.mWidgetList, t )
+            end
+        else
+
+            if self.mWindowStack.Count > 0 then
 
                 --打开Root 关闭其他的
                 if  t.windowType == WindowType.Root then
@@ -232,11 +258,13 @@ function WindowManager:Push(t, callback)
                     end
                 end
         
+            end
+            
+            self.mWindowStack:Push(t)
+
         end
 
         self:SetLayer(t)
-
-        self.mWindowStack:Push(t)
 
         t:OnResume()
     end
@@ -264,6 +292,13 @@ function WindowManager:Get(name)
         end
     end
 
+    for i,v in ipairs(self.mWidgetList) do
+        
+        if v.path  == path then
+            return v
+        end
+
+    end
     return nil
 end
 
@@ -301,34 +336,48 @@ function WindowManager:SetLayer(window)
     end
 end
 
-function WindowManager:Close()
+function WindowManager:Close(t)
 
-    if self.mWindowStack == nil then
-        return
-    end
+    local windowType = t.windowType
 
-    if self.mWindowStack.Count > 0 then
-
-        self:SetTouchable(false)
-
-        local window = self.mWindowStack:Pop()
-
-        --主界面不关闭
-        if window and window.windowType ~= WindowType.Root then 
-            window:OnExit()
-        end 
-
-        if self.mWindowStack.Count > 0 then
-            window = self.mWindowStack:Peek()
-            --显示栈顶窗口
-            if window and window.isPause then
-                window:OnResume()
+    if windowType == WindowType.Widget then
+        
+        for i,v in ipairs(self.mWidgetList) do
+            if v.path == t.path or v == t then
+                table.remove( self.mWidgetList, i )
+                break
             end
         end
+        t:OnExit()
+      
+    else
 
-        self:SetTouchable(true)
+        if self.mWindowStack == nil then
+            return
+        end
+
+        if self.mWindowStack.Count > 0 then
+
+            self:SetTouchable(false)
+
+            local window = self.mWindowStack:Pop()
+
+            --主界面不关闭
+            if window and window.windowType ~= WindowType.Root then 
+                window:OnExit()
+            end 
+
+            if self.mWindowStack.Count > 0 then
+                window = self.mWindowStack:Peek()
+                --显示栈顶窗口
+                if window and window.isPause then
+                    window:OnResume()
+                end
+            end
+
+            self:SetTouchable(true)
+        end
     end
-
 end
 
 -- <summary>
@@ -344,6 +393,10 @@ function WindowManager:Hide()
         
             it.Current:OnPause()
         end
+    end
+
+    for i,v in ipairs(self.mWidgetList) do
+        v:OnPause()
     end
 end
 
@@ -391,25 +444,34 @@ function WindowManager:Show()
             end
         end
     end
+
+    for i,v in ipairs(self.mWidgetList) do
+        v:OnResume()
+    end
 end
 
 function WindowManager:CloseAll()
 
-    if self.mWindowStack == nil then
-        return 
+    if self.mWindowStack ~= nil then
+        
+        while( self.mWindowStack.Count > 0)
+        do
+            local window =  self.mWindowStack:Pop()
+    
+            if window then
+            
+                window:OnExit()
+            end
+        end
+    
+        self.mWindowStack:Clear()
     end
 
-    while( self.mWindowStack.Count > 0)
-    do
-        local window =  self.mWindowStack:Pop()
-
-        if window then
-        
-            window:OnExit()
+    if self.mWidgetList then 
+        for i,v in ipairs(self.mWidgetList) do
+            v:OnExit()
         end
     end
-
-    self.mWindowStack:Clear()
 end
 
 function WindowManager:SetBlur()

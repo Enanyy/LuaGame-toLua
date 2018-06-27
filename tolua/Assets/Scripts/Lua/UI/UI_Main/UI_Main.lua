@@ -44,5 +44,10 @@ function this:Start()
         WindowManager:Open(UI_PopWindow)
     end)
    
+    local widget = self.transform:Find("Widget")
+    self.behaviour:AddClick(widget.gameObject, function() 
+        print("Click Widget")
+        WindowManager:Open(UI_Widget)
+    end)
     
 end

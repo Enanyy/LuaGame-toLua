@@ -1,5 +1,6 @@
 require("Class")
 require("UnityClass")
+require("DatabaseManager")
 require("AssetManager")
 require("WindowManager")
 require("PlayerManager")
@@ -51,6 +52,8 @@ function Main:Start()
 	PlayerManager:Initialize()
 	--初始化场景状态机
 	SceneMachine:Initialize()
+	--数据管理器
+	DatabaseManager:Initialize()
 
 	--添加Lua逻辑更新
 	self.update = UpdateBeat:CreateListener(self.Update,self)		

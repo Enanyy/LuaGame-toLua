@@ -12,7 +12,6 @@ Test = {}
 function Test:onTest()
 
 	self:TestLuaFileSystem()
-	self:TestSqlite3()
 	self:TestThread()
 
 end
@@ -363,15 +362,28 @@ function Test:TestLuaFileSystem()
 	print(lfs._COPYRIGHT)
 	print(lfs.currentdir ())
 
+	local hex = function (s)
+		s=string.gsub(s,"(.)",function (x) return string.format("%02X",string.byte(x)) end)
+		return s
+	   end
+	local a = bpack("A","sasasas")
+	print(a, string.len(a))
 
 	EventDispatch:Register(1,self,self.TestEvent)
+	EventDispatch:Register(2,self,self.TestEvent1)
 	EventDispatch:Dispatch(1,1000)
+	EventDispatch:Dispatch(2,1,"eqwe",112)
 
 end
 
 function Test:TestEvent(a)
 
 	print(a)
+
+end
+function Test:TestEvent1(a,b,c)
+
+	print(a,b,c)
 
 end
 
@@ -385,6 +397,7 @@ function Test:TestSqlite3()
 
 	for row in db:nrows("select * from type_role") do 
 
+		print(type(row))
 		print("id =", row.id, "name=",row.name,"speed=",row.speed)
 
 	end
