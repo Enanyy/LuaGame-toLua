@@ -19,7 +19,7 @@ function AssetManager:Initialize()
         self.mManifestAssetBundle = nil
         self.mManifest = nil
         self.mAssetBundleDic = {}
-        self.mLoadTaskQueue = Queue.New() --直接使用C#的队列
+        self.mLoadTaskQueue = Queue.new() --lua队列
        
    
         local go = GameObject("AssetManager")     
@@ -68,7 +68,7 @@ end
 
 function AssetManager:Update()
 
-    if self.mLoadTaskQueue.Count > 0 then
+    if self.mLoadTaskQueue:Count() > 0 then
 
         local tmpLoadTask = self.mLoadTaskQueue:Peek ()
 
@@ -135,15 +135,14 @@ end
 
 function AssetManager:GetLoadTask(varAssetBundleName)
 
-    local it = self.mLoadTaskQueue:GetEnumerator()
+    for i,v in ipairs(self.mLoadTaskQueue.items) do
 
-    while it:MoveNext() do
-
-        if it.Current.mAssetBundleName == varAssetBundleName then
-            return it.Current
+        if v.mAssetBundleName == varAssetBundleName then
+            return v
         end
 
     end
+
     return nil
 end
 

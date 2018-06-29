@@ -5,6 +5,8 @@ require("person_pb")
 require("sqlite3")
 
 require("EventDispatch")
+
+require("Stack")
 -------------------------------------------Test Start-----------------------------------------
 
 Test = {}
@@ -374,6 +376,15 @@ function Test:TestLuaFileSystem()
 	EventDispatch:Dispatch(1,1000)
 	EventDispatch:Dispatch(2,1,"eqwe",112)
 
+	local stack = Stack.new()
+	stack:Push("1")
+	stack:Push("2")
+	stack:Push("3")
+	stack:Push("4")
+
+	while stack:Count() > 0 do 
+		print(stack:Pop())
+	end
 end
 
 function Test:TestEvent(a)

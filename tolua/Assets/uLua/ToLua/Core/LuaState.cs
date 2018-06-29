@@ -133,8 +133,6 @@ namespace LuaInterface
             System_TypeWrap.Register(this);                                               
             BeginModule("Collections");
             System_Collections_IEnumeratorWrap.Register(this);
-            System_Collections_StackWrap.Register(this);
-            System_Collections_QueueWrap.Register(this);
             System_Collections_ArrayListWrap.Register(this);
             BeginModule("ObjectModel");
             System_Collections_ObjectModel_ReadOnlyCollectionWrap.Register(this);

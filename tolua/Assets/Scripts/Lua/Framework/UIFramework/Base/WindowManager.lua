@@ -74,8 +74,8 @@ function  WindowManager:Initialize()
         self.blurEffect.enabled = false
 
         --Window栈容器
-        self.mWindowStack = Stack.New()             --C#中的栈
-        self.mTmpWindowStack = Stack.New()          --C#中的栈
+        self.mWindowStack = Stack.new()             --lua栈
+        self.mTmpWindowStack = Stack.new()          --lua栈
         self.mWidgetList = {}
     end
 
@@ -110,7 +110,7 @@ function WindowManager:Open(class, callback)
 
             self.mTmpWindowStack:Clear();
 
-            while (self.mWindowStack.Count > 0)
+            while (self.mWindowStack:Count() > 0)
             do
                 local window = self.mWindowStack:Pop()
                 if  window == t then
@@ -122,7 +122,7 @@ function WindowManager:Open(class, callback)
                 end
             end
 
-            while (self.mTmpWindowStack.Count > 0)
+            while (self.mTmpWindowStack:Count() > 0)
             do
                 local window = self.mTmpWindowStack:Pop()
 
@@ -225,12 +225,12 @@ function WindowManager:Push(t, callback)
             end
         else
 
-            if self.mWindowStack.Count > 0 then
+            if self.mWindowStack:Count() > 0 then
 
                 --打开Root 关闭其他的
                 if  t.windowType == WindowType.Root then
                 
-                    while (self.mWindowStack.Count > 0)
+                    while (self.mWindowStack:Count() > 0)
                     do
                         local window =self.mWindowStack:Pop()
 
@@ -281,13 +281,10 @@ function WindowManager:Get(name)
     local path = WindowPath:Get(name)
 
     if path then
-
-        local it = self.mWindowStack:GetEnumerator()
-
-        while (it:MoveNext())
-        do
-            if it.Current.path == path then
-                return it.Current
+        for i,v in ipairs(self.mWindowStack.items) do
+     
+            if v.path == path then
+                return v
             end
         end
     end
@@ -308,13 +305,19 @@ function WindowManager:Find(windowType)
         return nil
     end
 
-    local it = self.mWindowStack:GetEnumerator()
-
-    while (it:MoveNext())
-    do
-        if it.Current.windowType == windowType then
-            return it.Current
+    for i,v in ipairs(self.mWindowStack.items) do
+     
+        if v.windowType == windowType then
+            return v
         end
+    end
+
+    for i,v in ipairs(self.mWidgetList) do
+        
+        if v.windowType == windowType then
+            return v
+        end
+
     end
 
     return nil
@@ -324,7 +327,7 @@ function WindowManager:SetLayer(window)
 
     if window then
 
-        if self.mWindowStack.Count > 0 then
+        if self.mWindowStack:Count() > 0 then
 
             local  top = self.mWindowStack:Peek()
 
@@ -348,6 +351,7 @@ function WindowManager:Close(t)
                 break
             end
         end
+
         t:OnExit()
       
     else
@@ -356,7 +360,7 @@ function WindowManager:Close(t)
             return
         end
 
-        if self.mWindowStack.Count > 0 then
+        if self.mWindowStack:Count() > 0 then
 
             self:SetTouchable(false)
 
@@ -367,7 +371,7 @@ function WindowManager:Close(t)
                 window:OnExit()
             end 
 
-            if self.mWindowStack.Count > 0 then
+            if self.mWindowStack:Count() > 0 then
                 window = self.mWindowStack:Peek()
                 --显示栈顶窗口
                 if window and window.isPause then
@@ -385,15 +389,13 @@ end
 -- </summary>
 function WindowManager:Hide()
 
-    local it = self.mWindowStack:GetEnumerator()
-
-    while (it:MoveNext())
-    do
-        if it.Current.isPause == false then
+    for i,v in ipairs(self.mWindowStack.items) do
+        if v.isPause == false then
         
-            it.Current:OnPause()
+            v:OnPause()
         end
     end
+
 
     for i,v in ipairs(self.mWidgetList) do
         v:OnPause()
@@ -405,7 +407,7 @@ end
 -- </summary>
 function WindowManager:Show()
 
-   if self.mWindowStack.Count > 0 then
+   if self.mWindowStack:Count() > 0 then
     
         local window = self.mWindowStack:Pop()
         if window  then
@@ -416,7 +418,7 @@ function WindowManager:Show()
 
                 self.mTmpWindowStack:Clear()
 
-                while ( self.mWindowStack.Count > 0)
+                while ( self.mWindowStack:Count() > 0)
                 do
                     local w = self.mWindowStack:Peek()
                     if w.windowType ~= WindowType.Pop then
@@ -430,7 +432,7 @@ function WindowManager:Show()
                 
                 end
    
-                while (self.mTmpWindowStack.Count > 0)
+                while (self.mTmpWindowStack:Count() > 0)
                 do
                     self.mWindowStack:Push(self.mTmpWindowStack:Pop())
                 end
@@ -454,7 +456,7 @@ function WindowManager:CloseAll()
 
     if self.mWindowStack ~= nil then
         
-        while( self.mWindowStack.Count > 0)
+        while( self.mWindowStack:Count() > 0)
         do
             local window =  self.mWindowStack:Pop()
     
@@ -472,6 +474,7 @@ function WindowManager:CloseAll()
             v:OnExit()
         end
     end
+    self.mWidgetList = {}
 end
 
 function WindowManager:SetBlur()
@@ -480,12 +483,12 @@ function WindowManager:SetBlur()
         return 
     end
 
-    if self.mWindowStack.Count > 0 then
+    if self.mWindowStack:Count() > 0 then
     
         local w = self.mWindowStack:Pop()
         NGUITools.SetLayer(w.gameObject,  self.uiLayer)
 
-        if self.mWindowStack.Count > 0 then
+        if self.mWindowStack:Count() > 0 then
         
             local b = self.mWindowStack:Peek()
             NGUITools.SetLayer(b.gameObject,  self.blurLayer)
@@ -493,7 +496,7 @@ function WindowManager:SetBlur()
 
         self.mWindowStack:Push(w)
     end
-    self.blurEffect.enabled = self.mWindowStack.Count > 1
+    self.blurEffect.enabled = self.mWindowStack:Count() > 1
     
     if Camera.main then 
         local blurEffect = Camera.main:GetComponent(typeof(BlurEffect))

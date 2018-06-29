@@ -1,4 +1,6 @@
 require("Common")
+require("Stack")
+require("Queue")
 --应用System、Unity的类
 Application = UnityEngine.Application
 ---检查当前Unity版本
@@ -64,8 +66,8 @@ Physics = UnityEngine.Physics
 LayerMask = UnityEngine.LayerMask
 KeyCode = UnityEngine.KeyCode
 --System Class
-Queue = System.Collections.Queue
-Stack  = System.Collections.Stack
+--Queue = System.Collections.Queue
+--Stack  = System.Collections.Stack
 
 ------------------------------------------function Begin -------------------------------------
 Instantiate = GameObject.Instantiate
