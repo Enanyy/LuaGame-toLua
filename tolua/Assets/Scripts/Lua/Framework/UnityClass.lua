@@ -25,77 +25,77 @@ function UnityVersionNewer(v)
 end
 
 
-GameObject = UnityEngine.GameObject
-Object = UnityEngine.Object
-BoxCollider = UnityEngine.BoxCollider
-CapsuleCollider = UnityEngine.CapsuleCollider
-Camera = UnityEngine.Camera
-CameraClearFlags = UnityEngine.CameraClearFlags
-AudioListener = UnityEngine.AudioListener
+GameObject                      = UnityEngine.GameObject
+Object                          = UnityEngine.Object
+BoxCollider                     = UnityEngine.BoxCollider
+CapsuleCollider                 = UnityEngine.CapsuleCollider
+Camera                          = UnityEngine.Camera
+CameraClearFlags                = UnityEngine.CameraClearFlags
+AudioListener                   = UnityEngine.AudioListener
 
-SceneManager = UnityEngine.SceneManagement.SceneManager
+SceneManager                    = UnityEngine.SceneManagement.SceneManager
 
 if UnityVersionNewer("5.6") then
 
-NavMesh = UnityEngine.AI.NavMesh    -- Unity5.6
-NavMeshHit = UnityEngine.AI.NavMeshHit --Unity5.6
-NavMeshAgent = UnityEngine.AI.NavMeshAgent  -- Unity5.6
-NavMeshPathStatus =UnityEngine.AI.NavMeshPathStatus  -- Unity5.6
+NavMesh                         = UnityEngine.AI.NavMesh                -- Unity5.6
+NavMeshHit                      = UnityEngine.AI.NavMeshHit             -- Unity5.6
+NavMeshAgent                    = UnityEngine.AI.NavMeshAgent           -- Unity5.6
+NavMeshPathStatus               = UnityEngine.AI.NavMeshPathStatus      -- Unity5.6
 
 else
 
-NavMesh = UnityEngine.NavMesh    
-NavMeshHit = UnityEngine.NavMeshHit
-NavMeshAgent = UnityEngine.NavMeshAgent
-NavMeshPathStatus =UnityEngine.NavMeshPathStatus  -- Unity5.3
+NavMesh                         = UnityEngine.NavMesh    
+NavMeshHit                      = UnityEngine.NavMeshHit
+NavMeshAgent                    = UnityEngine.NavMeshAgent
+NavMeshPathStatus               = UnityEngine.NavMeshPathStatus  -- Unity5.3
 
 end
 --引用UnityEngine.Time
-Time = UnityEngine.Time
+Time                            = UnityEngine.Time
 
 --Unity中的AssetBundle类
-AssetBundle = UnityEngine.AssetBundle
+AssetBundle                     = UnityEngine.AssetBundle
 
-Animation = UnityEngine.Animation
-AnimationState = UnityEngine.AnimationState
-WrapMode = UnityEngine.WrapMode
-Screen = UnityEngine.Screen
+Animation                       = UnityEngine.Animation
+AnimationState                  = UnityEngine.AnimationState
+WrapMode                        = UnityEngine.WrapMode
+Screen                          = UnityEngine.Screen
 
-Input = UnityEngine.Input
-Physics = UnityEngine.Physics
-LayerMask = UnityEngine.LayerMask
-KeyCode = UnityEngine.KeyCode
---System Class
---Queue = System.Collections.Queue
---Stack  = System.Collections.Stack
+Input                           = UnityEngine.Input
+Physics                         = UnityEngine.Physics
+LayerMask                       = UnityEngine.LayerMask
+KeyCode                         = UnityEngine.KeyCode
+
 
 ------------------------------------------function Begin -------------------------------------
-Instantiate = GameObject.Instantiate
-Destroy = GameObject.Destroy
+Instantiate                     = GameObject.Instantiate
+Destroy                         = GameObject.Destroy
+
+------------------------------------------function End ---------------------------------------
 
 
 ------------------------------------------Helper Begin-----------------------------------------
-local _GetPosition = Helper.GetPosition
-local _SetPosition = Helper.SetPosition
-local _GetLocalPosition = Helper.GetLocalPosition
-local _SetLocalPosition = Helper.SetLocalPosition
-local _SetScale = Helper.SetScale
-local _GetScale = Helper.GetScale
-local _SetLocalRotation = Helper.SetLocalRotation
-local _GetLocalRotation = Helper.GetLocalRotation
-local _SetRotation = Helper.SetRotation
-local _GetRotation = Helper.GetRotation
-local _SetLocalEuler = Helper.SetLocalEuler
-local _GetLocalEuler = Helper.GetLocalEuler
-local _SetEuler = Helper.SetEuler
-local _GetEuler = Helper.GetEuler
-local _SetForward = Helper.SetForward
-local _GetForward = Helper.GetForward
+local _GetPosition              = Helper.GetPosition
+local _SetPosition              = Helper.SetPosition
+local _GetLocalPosition         = Helper.GetLocalPosition
+local _SetLocalPosition         = Helper.SetLocalPosition
+local _SetScale                 = Helper.SetScale
+local _GetScale                 = Helper.GetScale
+local _SetLocalRotation         = Helper.SetLocalRotation
+local _GetLocalRotation         = Helper.GetLocalRotation
+local _SetRotation              = Helper.SetRotation
+local _GetRotation              = Helper.GetRotation
+local _SetLocalEuler            = Helper.SetLocalEuler
+local _GetLocalEuler            = Helper.GetLocalEuler
+local _SetEuler                 = Helper.SetEuler
+local _GetEuler                 = Helper.GetEuler
+local _SetForward               = Helper.SetForward
+local _GetForward               = Helper.GetForward
 
-local _SetParent = Helper.SetParent
-local _AddComponent = Helper.AddComponent
-local _GetComponent = Helper.GetComponent
-local _SetActive = Helper.SetActive
+local _SetParent                = Helper.SetParent
+local _AddComponent             = Helper.AddComponent
+local _GetComponent             = Helper.GetComponent
+local _SetActive                = Helper.SetActive
 
 function GetPosition(go, position)
     local pos = position or  Vector3.New(0,0,0)
