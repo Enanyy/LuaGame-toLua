@@ -75,7 +75,6 @@ function  WindowManager:Initialize()
 
         --Window栈容器
         self.mWindowStack = Stack.new()             --lua栈
-        self.mTmpWindowStack = Stack.new()          --lua栈
         self.mWidgetList = {}
     end
 
@@ -108,7 +107,7 @@ function WindowManager:Open(class, callback)
 
         else
 
-            self.mTmpWindowStack:Clear();
+            local stack = Stack.new()
 
             while (self.mWindowStack:Count() > 0)
             do
@@ -118,21 +117,18 @@ function WindowManager:Open(class, callback)
                     break
                 else
             
-                    self.mTmpWindowStack:Push(window)
+                    stack:Push(window)
                 end
             end
 
-            while (self.mTmpWindowStack:Count() > 0)
+            while (stack:Count() > 0)
             do
-                local window = self.mTmpWindowStack:Pop()
+                local window = stack:Pop()
 
                 self:SetLayer(window)
 
                 self.mWindowStack:Push(window)
             end
-
-            self.mTmpWindowStack:Clear()
-
             self:Push(t, callback)
         end
     else
@@ -416,7 +412,7 @@ function WindowManager:Show()
             --弹出类型
             if window.windowType == WindowType.Pop then
 
-                self.mTmpWindowStack:Clear()
+                local stack = Stack.new()
 
                 while ( self.mWindowStack:Count() > 0)
                 do
@@ -427,16 +423,15 @@ function WindowManager:Show()
                     else
                         w = self.mWindowStack:Pop()
                         w:OnResume()
-                        self.mTmpWindowStack:Push(w)
+                        stack:Push(w)
                     end
                 
                 end
    
-                while (self.mTmpWindowStack:Count() > 0)
+                while (stack:Count() > 0)
                 do
-                    self.mWindowStack:Push(self.mTmpWindowStack:Pop())
+                    self.mWindowStack:Push(stack:Pop())
                 end
-                self.mTmpWindowStack:Clear()
 
             end
             
