@@ -44,7 +44,7 @@ function LoadTask:Load()
         end
     else
         self.mState = LoadTaskState.Fail --加载失败
-        error("Can't find file:"..tmpFullPath)
+        print("Can't find file:"..tmpFullPath)
     end
 
   
@@ -66,12 +66,12 @@ function LoadTask:LoadAsync()
             self.mState = LoadTaskState.Success     --加载完成
         else
             self.mState = LoadTaskState.Fail        --加载失败
-            error("Can't find file:"..tmpFullPath)
+            print("Can't find file:"..tmpFullPath)
         end
 
     else
         self.mState = LoadTaskState.Fail            --加载失败
-        error("Can't find file:"..tmpFullPath)
+        print("Can't find file:"..tmpFullPath)
     end
 end
 

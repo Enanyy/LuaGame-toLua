@@ -125,6 +125,8 @@ function AssetManager:Update()
             
             elseif tmpLoadTask.mState == LoadTaskState.Fail then            --加载失败
                           
+                self:OnLoadTaskFinish(tmpLoadTask)
+                
                 self.mLoadTaskQueue:Dequeue()
                 tmpLoadTask = nil
 

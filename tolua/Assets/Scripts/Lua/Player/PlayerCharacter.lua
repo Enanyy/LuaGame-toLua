@@ -60,13 +60,14 @@ function PlayerCharacter:CreateFashionBody()
         
             self:CreateFashionWeapon()
             
-			if self.mCallback ~=nil then
+    end)
+    
+    if self.mCallback ~=nil then
 			
-				self.mCallback()
-            end
-            
-            self.mCallback = nil
-	end)
+        self.mCallback()
+    end
+    
+    self.mCallback = nil
 end
 
 function PlayerCharacter:CreateFashionWeapon()

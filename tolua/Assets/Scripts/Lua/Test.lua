@@ -364,27 +364,7 @@ function Test:TestLuaFileSystem()
 	print(lfs._COPYRIGHT)
 	print(lfs.currentdir ())
 
-	local hex = function (s)
-		s=string.gsub(s,"(.)",function (x) return string.format("%02X",string.byte(x)) end)
-		return s
-	   end
-	local a = bpack("A","sasasas")
-	print(a, string.len(a))
 
-	EventDispatch:Register(1,self,self.TestEvent)
-	EventDispatch:Register(2,self,self.TestEvent1)
-	EventDispatch:Dispatch(1,1000)
-	EventDispatch:Dispatch(2,1,"eqwe",112)
-
-	local stack = Stack.new()
-	stack:Push("1")
-	stack:Push("2")
-	stack:Push("3")
-	stack:Push("4")
-
-	while stack:Count() > 0 do 
-		print(stack:Pop())
-	end
 end
 
 function Test:TestEvent(a)

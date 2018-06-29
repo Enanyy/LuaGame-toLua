@@ -11,7 +11,7 @@ function Queue:Peek()
 end
 
 function Queue:Enqueue(item)
-    table.insert(self.items, #self.items, item)
+    table.insert(self.items, self:Count() + 1, item)
 end
 
 function Queue:Dequeue()

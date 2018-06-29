@@ -77,12 +77,10 @@ function  PlayerManager:CreatePlayerCharacter(varGuid,  varPlayerInfo, varCallba
 
             end
         end)
-        printf(varPlayerInfo.position)
         local tmpFlag, tmpHit = NavMesh.SamplePosition(varPlayerInfo.position, nil, 10, NavMesh.AllAreas)
         if tmpFlag then
             
             SetPosition(go,tmpHit.position)
-            printf(tmpHit.position)
         end
      
         SetEuler(go, varPlayerInfo.direction)
