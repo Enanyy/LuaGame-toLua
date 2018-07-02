@@ -24,7 +24,7 @@ function BaseWindow:OnEnter()
     if self.useMask then
         self:CreateMask()
     end
-    self.panel = self.transform:GetComponent(typeof(UIPanel))
+    self.panel = GetComponent(self.gameObject, typeof(UIPanel))
 end
 
 function BaseWindow:CreateMask()
@@ -39,10 +39,10 @@ function BaseWindow:CreateMask()
   
     self.mask = go
 
-    local box = go:AddComponent(typeof(BoxCollider))
+    local box = AddComponent(go,typeof(BoxCollider))
     box.center = Vector3.zero
 
-    local widget = go:AddComponent(typeof(UIWidget))
+    local widget = AddComponent(go,typeof(UIWidget))
     widget.depth = -1
 
     local root = WindowManager.uiRoot
@@ -60,7 +60,7 @@ function BaseWindow:OnPause()
     self.isPause = true
 
     if self.panel == nil then
-        self.panel = self.transform:GetComponent(typeof(UIPanel))
+        self.panel = GetComponent(self.gameObject,typeof(UIPanel))
     end
     if self.panel then
         self.panel.alpha = 0
@@ -72,7 +72,7 @@ function BaseWindow:OnResume()
     self.isPause = false
 
     if self.panel == nil then
-        self.panel = self.transform:GetComponent(typeof(UIPanel))
+        self.panel = GetComponent(self.gameObject, typeof(UIPanel))
     end
     if self.panel then
         self.panel.alpha = 1

@@ -11,6 +11,7 @@ function this:ctor( path)
     self.path  = path
     self.windowType = WindowType.Widget --widget界面
     self.useMask = false --可以点击背景后面
+    self.depth = 0      --可以设置depth
 
 end
 

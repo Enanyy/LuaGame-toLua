@@ -272,6 +272,9 @@ function WindowManager:Push(t, callback)
     end
 end
 
+---
+---根据WindowPath中注册的路径查找
+---
 function WindowManager:Get(name)
 
     local path = WindowPath:Get(name)
@@ -295,7 +298,9 @@ function WindowManager:Get(name)
     return nil
 end
 
-
+--
+--返回查找到的第一个windowType的窗口
+--
 function WindowManager:Find(windowType)
     if self.mWindowStack == nil then
         return nil
@@ -323,14 +328,20 @@ function WindowManager:SetLayer(window)
 
     if window then
 
-        if self.mWindowStack:Count() > 0 then
+        if window.depth ~= nil then
+            --可以在界面构造函数中设置depth
+            window.panel.depth = window.depth
 
-            local  top = self.mWindowStack:Peek()
+        else
+            if self.mWindowStack:Count() > 0 then
 
-            window.panel.depth = top.panel.depth + 50
+                local  top = self.mWindowStack:Peek()
 
-        else 
-            window.panel.depth = 100
+                window.panel.depth = top.panel.depth + 50
+
+            else 
+                window.panel.depth = 100
+            end
         end
     end
 end

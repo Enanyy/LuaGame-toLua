@@ -41,7 +41,7 @@ function  PlayerManager:CreatePlayerCharacter(varGuid,  varPlayerInfo, varCallba
         SetScale(go, Vector3.one)
 
         local tmpPlayerCharacter = PlayerCharacter.new()
-
+       
         AddLuaBehaviour(go,tmpPlayerCharacter)
 
 		tmpPlayerCharacter:CreatePlayerCharacter (varGuid, varPlayerInfo, function()
