@@ -79,7 +79,7 @@ public static class CustomSettings
         //_GT(typeof(TrailRenderer)).AddExtendType(typeof(DG.Tweening.ShortcutExtensions)),    
 #else
                                          
-        _GT(typeof(Component)),
+        //_GT(typeof(Component)),
         _GT(typeof(Transform)),
         _GT(typeof(Material)),
         _GT(typeof(Light)),
@@ -90,7 +90,7 @@ public static class CustomSettings
         //_GT(typeof(TrailRenderer))
 #endif
       
-        _GT(typeof(Behaviour)),
+        //_GT(typeof(Behaviour)),
         _GT(typeof(MonoBehaviour)),        
         _GT(typeof(GameObject)),
         _GT(typeof(TrackedReference)),
@@ -176,7 +176,7 @@ public static class CustomSettings
         _GT(typeof(LuaBehaviour)),
         _GT(typeof(Helper)),
         _GT(typeof(UD.Loom)),
-    
+        _GT(typeof(ByteBuffer)),
         
 
         //Effect    
