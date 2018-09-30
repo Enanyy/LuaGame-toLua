@@ -17,7 +17,7 @@ public class LuaBehaviour : MonoBehaviour
 
 #if UNITY_EDITOR
     [SerializeField]
-    private string[] LuaTables;
+    private List<string> LuaTables;
 #endif
 
     bool mStart = false;
@@ -61,12 +61,16 @@ public class LuaBehaviour : MonoBehaviour
         }
 
 #if UNITY_EDITOR
-        LuaTables = new string[mLuaTables.Count];
-        mLuaTables.Keys.CopyTo(LuaTables, 0);
-        for(int i = 0; i < LuaTables.Length; ++i)
+        if(LuaTables==null)
         {
-            string key = LuaTables[i];
-            LuaTables[i] =mLuaTables[key].Invoke<string>("GetType")+".lua";
+            LuaTables = new List<string>();
+        }
+        LuaTables.Clear();
+
+        var it = mLuaTables.GetEnumerator();
+        while (it.MoveNext()) {
+
+            LuaTables.Add(it.Current.Value.Invoke<string>("GetType")+".lua");
         }
 #endif
 
